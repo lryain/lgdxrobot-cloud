@@ -9,15 +9,15 @@
 
 ## Overview
 
-LGDXRobot Cloud is a robot management system for Automated Guided Vehicles (AGVs), designed with a focus on flexibility and security. It can monitor the status of robots in real-time and manage automated tasks for transportation and logistics. The system is also designed to support easy integration with third-party services and workflows. It integrates seamlessly with the [LGDXRobot2](https://lgdxrobot.bristolgram.uk/lgdxrobot2/) robot, as well as open integrations with any ROS 2-compatible robot with `LGDXRobot Cloud Adapter`.
+LGDXRobot Cloud is a robot management system for Automated Guided Vehicles (AGVs), designed with a focus on flexibility and security. It can monitor the status of robots in real-time and manage automated tasks for transportation and logistics. The system is also designed to support easy integration with third-party services and workflows. It integrates seamlessly with the [LGDXRobot2](https://lgdxrobot.lgdxrobot.uk/lgdxrobot2/) robot, as well as open integrations with any ROS 2-compatible robot with `LGDXRobot Cloud Adapter`.
 
 - LGDXRobot Cloud: ([GitLab](https://gitlab.com/lgdxrobotics/lgdxrobot-cloud) | [GitHub](https://github.com/yukaitung/lgdxrobot-cloud))
 - LGDXRobot Cloud Adapter: ([GitLab](https://gitlab.com/lgdxrobotics/lgdxrobot-cloud-adapter) | [GitHub](https://github.com/yukaitung/lgdxrobot-cloud-adapter))
 
 ### Getting Help
 
-- [Homepage](https://bristolgram.uk/cloud/)
-- [Documentation](https://bristolgram.uk/cloud/docs/)
+- [Homepage](https://lgdxrobot.uk/cloud/)
+- [Documentation](https://lgdxrobot.uk/cloud/docs/)
 - Issue boards on both GitLab and GitHub
 
 ## Features
@@ -68,7 +68,7 @@ The solution consists of the following projects:
 
 For users who want to set up and customise the system for their specific needs.
 
-[https://docs.lgdxrobot.bristolgram.uk/cloud/](https://docs.lgdxrobot.bristolgram.uk/cloud/)
+[https://lgdxrobot.uk/cloud/docs/setup/](https://lgdxrobot.uk/cloud/docs/setup/)
 
 ### Fast Setup
 
