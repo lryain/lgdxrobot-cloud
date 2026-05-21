@@ -1,8 +1,9 @@
 # LGDXRobot Cloud GitLab CI/CD
 # Variables Needed
-# $EXT_REGISTRY: Registry URL (e.g. docker.io)
-# $EXT_USER: Username for the registry
-# $EXT_PAT: PAT for the registry (https://docs.docker.com/security/for-developers/access-tokens/)
+# $DOCKER_REGISTRY: Registry URL (e.g. docker.io)
+# $DOCKER_LOGIN: Username for the registry
+# $DOCKER_PUSH_NAMESPACE: The namespace to push to (if not the same as $DOCKER_LOGIN)
+# $DOCKER_HUB_PAT: PAT for the registry (https://docs.docker.com/security/for-developers/access-tokens/)
 
 variables:
   # 1) Name of directory where restore and build objects are stored.
@@ -119,17 +120,17 @@ build-amd64:
   variables:
     ARCH: amd64
   script:
-    - echo -n $EXT_PAT | docker login -u $EXT_USER --password-stdin $EXT_REGISTRY
+    - echo -n $DOCKER_HUB_PAT | docker login -u $DOCKER_LOGIN --password-stdin $DOCKER_REGISTRY
     # Build Docker images
-    - docker build -t $EXT_REGISTRY/$EXT_USER/$API_IMAGE_NAME:dev-$ARCH -f Docker/Dockerfile.api .
-    - docker build -t $EXT_REGISTRY/$EXT_USER/$UI_IMAGE_NAME:dev-$ARCH -f Docker/Dockerfile.ui .
-    - docker build -t $EXT_REGISTRY/$EXT_USER/$WORKER_IMAGE_NAME:dev-$ARCH -f Docker/Dockerfile.worker .
-    - docker build -t $EXT_REGISTRY/$EXT_USER/$DATA_IMAGE_NAME:dev-$ARCH -f Docker/Dockerfile.data .
+    - docker build -t $DOCKER_REGISTRY/$DOCKER_PUSH_NAMESPACE/$API_IMAGE_NAME:dev-$ARCH -f Docker/Dockerfile.api .
+    - docker build -t $DOCKER_REGISTRY/$DOCKER_PUSH_NAMESPACE/$UI_IMAGE_NAME:dev-$ARCH -f Docker/Dockerfile.ui .
+    - docker build -t $DOCKER_REGISTRY/$DOCKER_PUSH_NAMESPACE/$WORKER_IMAGE_NAME:dev-$ARCH -f Docker/Dockerfile.worker .
+    - docker build -t $DOCKER_REGISTRY/$DOCKER_PUSH_NAMESPACE/$DATA_IMAGE_NAME:dev-$ARCH -f Docker/Dockerfile.data .
     # Push Docker images
-    - docker push $EXT_REGISTRY/$EXT_USER/$API_IMAGE_NAME:dev-$ARCH
-    - docker push $EXT_REGISTRY/$EXT_USER/$UI_IMAGE_NAME:dev-$ARCH
-    - docker push $EXT_REGISTRY/$EXT_USER/$WORKER_IMAGE_NAME:dev-$ARCH
-    - docker push $EXT_REGISTRY/$EXT_USER/$DATA_IMAGE_NAME:dev-$ARCH
+    - docker push $DOCKER_REGISTRY/$DOCKER_PUSH_NAMESPACE/$API_IMAGE_NAME:dev-$ARCH
+    - docker push $DOCKER_REGISTRY/$DOCKER_PUSH_NAMESPACE/$UI_IMAGE_NAME:dev-$ARCH
+    - docker push $DOCKER_REGISTRY/$DOCKER_PUSH_NAMESPACE/$WORKER_IMAGE_NAME:dev-$ARCH
+    - docker push $DOCKER_REGISTRY/$DOCKER_PUSH_NAMESPACE/$DATA_IMAGE_NAME:dev-$ARCH
 
 build-arm64:
   stage: build-2
@@ -148,17 +149,17 @@ build-arm64:
     DOCKER_TLS_CERTDIR: "/certs"
     ARCH: arm64
   script:
-    - echo -n $EXT_PAT | docker login -u $EXT_USER --password-stdin $EXT_REGISTRY
+    - echo -n $DOCKER_HUB_PAT | docker login -u $DOCKER_LOGIN --password-stdin $DOCKER_REGISTRY
     # Build Docker images
-    - docker build -t $EXT_REGISTRY/$EXT_USER/$API_IMAGE_NAME:dev-$ARCH -f Docker/Dockerfile.api .
-    - docker build -t $EXT_REGISTRY/$EXT_USER/$UI_IMAGE_NAME:dev-$ARCH -f Docker/Dockerfile.ui .
-    - docker build -t $EXT_REGISTRY/$EXT_USER/$WORKER_IMAGE_NAME:dev-$ARCH -f Docker/Dockerfile.worker .
-    - docker build -t $EXT_REGISTRY/$EXT_USER/$DATA_IMAGE_NAME:dev-$ARCH -f Docker/Dockerfile.data .
+    - docker build -t $DOCKER_REGISTRY/$DOCKER_PUSH_NAMESPACE/$API_IMAGE_NAME:dev-$ARCH -f Docker/Dockerfile.api .
+    - docker build -t $DOCKER_REGISTRY/$DOCKER_PUSH_NAMESPACE/$UI_IMAGE_NAME:dev-$ARCH -f Docker/Dockerfile.ui .
+    - docker build -t $DOCKER_REGISTRY/$DOCKER_PUSH_NAMESPACE/$WORKER_IMAGE_NAME:dev-$ARCH -f Docker/Dockerfile.worker .
+    - docker build -t $DOCKER_REGISTRY/$DOCKER_PUSH_NAMESPACE/$DATA_IMAGE_NAME:dev-$ARCH -f Docker/Dockerfile.data .
     # Push Docker images
-    - docker push $EXT_REGISTRY/$EXT_USER/$API_IMAGE_NAME:dev-$ARCH
-    - docker push $EXT_REGISTRY/$EXT_USER/$UI_IMAGE_NAME:dev-$ARCH
-    - docker push $EXT_REGISTRY/$EXT_USER/$WORKER_IMAGE_NAME:dev-$ARCH
-    - docker push $EXT_REGISTRY/$EXT_USER/$DATA_IMAGE_NAME:dev-$ARCH
+    - docker push $DOCKER_REGISTRY/$DOCKER_PUSH_NAMESPACE/$API_IMAGE_NAME:dev-$ARCH
+    - docker push $DOCKER_REGISTRY/$DOCKER_PUSH_NAMESPACE/$UI_IMAGE_NAME:dev-$ARCH
+    - docker push $DOCKER_REGISTRY/$DOCKER_PUSH_NAMESPACE/$WORKER_IMAGE_NAME:dev-$ARCH
+    - docker push $DOCKER_REGISTRY/$DOCKER_PUSH_NAMESPACE/$DATA_IMAGE_NAME:dev-$ARCH
 
 release_job:
   stage: release
@@ -180,25 +181,25 @@ release_job:
     - apk add glab
     - apk add gitlab-release-cli
   script:
-    - echo -n $EXT_PAT | docker login -u $EXT_USER --password-stdin $EXT_REGISTRY
+    - echo -n $DOCKER_HUB_PAT | docker login -u $DOCKER_LOGIN --password-stdin $DOCKER_REGISTRY
     # Create Manifest for combined architecture
-    - docker manifest create $EXT_REGISTRY/$EXT_USER/$API_IMAGE_NAME:latest --amend $EXT_USER/$API_IMAGE_NAME:dev-amd64 --amend $EXT_USER/$API_IMAGE_NAME:dev-arm64
-    - docker manifest create $EXT_REGISTRY/$EXT_USER/$API_IMAGE_NAME:$APP_VERSION --amend $EXT_USER/$API_IMAGE_NAME:dev-amd64 --amend $EXT_USER/$API_IMAGE_NAME:dev-arm64
-    - docker manifest create $EXT_REGISTRY/$EXT_USER/$UI_IMAGE_NAME:latest --amend $EXT_USER/$UI_IMAGE_NAME:dev-amd64 --amend $EXT_USER/$UI_IMAGE_NAME:dev-arm64
-    - docker manifest create $EXT_REGISTRY/$EXT_USER/$UI_IMAGE_NAME:$APP_VERSION --amend $EXT_USER/$UI_IMAGE_NAME:dev-amd64 --amend $EXT_USER/$UI_IMAGE_NAME:dev-arm64
-    - docker manifest create $EXT_REGISTRY/$EXT_USER/$WORKER_IMAGE_NAME:latest --amend $EXT_USER/$WORKER_IMAGE_NAME:dev-amd64 --amend $EXT_USER/$WORKER_IMAGE_NAME:dev-arm64
-    - docker manifest create $EXT_REGISTRY/$EXT_USER/$WORKER_IMAGE_NAME:$APP_VERSION --amend $EXT_USER/$WORKER_IMAGE_NAME:dev-amd64 --amend $EXT_USER/$WORKER_IMAGE_NAME:dev-arm64
-    - docker manifest create $EXT_REGISTRY/$EXT_USER/$DATA_IMAGE_NAME:latest --amend $EXT_USER/$DATA_IMAGE_NAME:dev-amd64 --amend $EXT_USER/$DATA_IMAGE_NAME:dev-arm64
-    - docker manifest create $EXT_REGISTRY/$EXT_USER/$DATA_IMAGE_NAME:$APP_VERSION --amend $EXT_USER/$DATA_IMAGE_NAME:dev-amd64 --amend $EXT_USER/$DATA_IMAGE_NAME:dev-arm64
+    - docker manifest create $DOCKER_REGISTRY/$DOCKER_PUSH_NAMESPACE/$API_IMAGE_NAME:latest --amend $DOCKER_PUSH_NAMESPACE/$API_IMAGE_NAME:dev-amd64 --amend $DOCKER_PUSH_NAMESPACE/$API_IMAGE_NAME:dev-arm64
+    - docker manifest create $DOCKER_REGISTRY/$DOCKER_PUSH_NAMESPACE/$API_IMAGE_NAME:$APP_VERSION --amend $DOCKER_PUSH_NAMESPACE/$API_IMAGE_NAME:dev-amd64 --amend $DOCKER_PUSH_NAMESPACE/$API_IMAGE_NAME:dev-arm64
+    - docker manifest create $DOCKER_REGISTRY/$DOCKER_PUSH_NAMESPACE/$UI_IMAGE_NAME:latest --amend $DOCKER_PUSH_NAMESPACE/$UI_IMAGE_NAME:dev-amd64 --amend $DOCKER_PUSH_NAMESPACE/$UI_IMAGE_NAME:dev-arm64
+    - docker manifest create $DOCKER_REGISTRY/$DOCKER_PUSH_NAMESPACE/$UI_IMAGE_NAME:$APP_VERSION --amend $DOCKER_PUSH_NAMESPACE/$UI_IMAGE_NAME:dev-amd64 --amend $DOCKER_PUSH_NAMESPACE/$UI_IMAGE_NAME:dev-arm64
+    - docker manifest create $DOCKER_REGISTRY/$DOCKER_PUSH_NAMESPACE/$WORKER_IMAGE_NAME:latest --amend $DOCKER_PUSH_NAMESPACE/$WORKER_IMAGE_NAME:dev-amd64 --amend $DOCKER_PUSH_NAMESPACE/$WORKER_IMAGE_NAME:dev-arm64
+    - docker manifest create $DOCKER_REGISTRY/$DOCKER_PUSH_NAMESPACE/$WORKER_IMAGE_NAME:$APP_VERSION --amend $DOCKER_PUSH_NAMESPACE/$WORKER_IMAGE_NAME:dev-amd64 --amend $DOCKER_PUSH_NAMESPACE/$WORKER_IMAGE_NAME:dev-arm64
+    - docker manifest create $DOCKER_REGISTRY/$DOCKER_PUSH_NAMESPACE/$DATA_IMAGE_NAME:latest --amend $DOCKER_PUSH_NAMESPACE/$DATA_IMAGE_NAME:dev-amd64 --amend $DOCKER_PUSH_NAMESPACE/$DATA_IMAGE_NAME:dev-arm64
+    - docker manifest create $DOCKER_REGISTRY/$DOCKER_PUSH_NAMESPACE/$DATA_IMAGE_NAME:$APP_VERSION --amend $DOCKER_PUSH_NAMESPACE/$DATA_IMAGE_NAME:dev-amd64 --amend $DOCKER_PUSH_NAMESPACE/$DATA_IMAGE_NAME:dev-arm64
     # Push Manifest
-    - docker manifest push $EXT_REGISTRY/$EXT_USER/$API_IMAGE_NAME:latest
-    - docker manifest push $EXT_REGISTRY/$EXT_USER/$API_IMAGE_NAME:$APP_VERSION
-    - docker manifest push $EXT_REGISTRY/$EXT_USER/$UI_IMAGE_NAME:latest
-    - docker manifest push $EXT_REGISTRY/$EXT_USER/$UI_IMAGE_NAME:$APP_VERSION
-    - docker manifest push $EXT_REGISTRY/$EXT_USER/$WORKER_IMAGE_NAME:latest
-    - docker manifest push $EXT_REGISTRY/$EXT_USER/$WORKER_IMAGE_NAME:$APP_VERSION
-    - docker manifest push $EXT_REGISTRY/$EXT_USER/$DATA_IMAGE_NAME:latest
-    - docker manifest push $EXT_REGISTRY/$EXT_USER/$DATA_IMAGE_NAME:$APP_VERSION
+    - docker manifest push $DOCKER_REGISTRY/$DOCKER_PUSH_NAMESPACE/$API_IMAGE_NAME:latest
+    - docker manifest push $DOCKER_REGISTRY/$DOCKER_PUSH_NAMESPACE/$API_IMAGE_NAME:$APP_VERSION
+    - docker manifest push $DOCKER_REGISTRY/$DOCKER_PUSH_NAMESPACE/$UI_IMAGE_NAME:latest
+    - docker manifest push $DOCKER_REGISTRY/$DOCKER_PUSH_NAMESPACE/$UI_IMAGE_NAME:$APP_VERSION
+    - docker manifest push $DOCKER_REGISTRY/$DOCKER_PUSH_NAMESPACE/$WORKER_IMAGE_NAME:latest
+    - docker manifest push $DOCKER_REGISTRY/$DOCKER_PUSH_NAMESPACE/$WORKER_IMAGE_NAME:$APP_VERSION
+    - docker manifest push $DOCKER_REGISTRY/$DOCKER_PUSH_NAMESPACE/$DATA_IMAGE_NAME:latest
+    - docker manifest push $DOCKER_REGISTRY/$DOCKER_PUSH_NAMESPACE/$DATA_IMAGE_NAME:$APP_VERSION
   release:
     name : 'Release $APP_VERSION'
     tag_name: '$APP_VERSION'
