@@ -1,4 +1,3 @@
-using System.Threading.Tasks;
 using LGDXRobotCloud.UI.Client;
 using LGDXRobotCloud.UI.Client.Models;
 using LGDXRobotCloud.UI.Components.Shared.Table;
@@ -35,9 +34,6 @@ public partial class AutoTasksTable : AbstractTable
 
   public override async Task HandlePageSizeChange(int number)
   {
-    if (AutoTaskCatrgory == null)
-      return;
-      
     PageSize = number;
     if (PageSize > 100)
       PageSize = 100;
@@ -60,9 +56,6 @@ public partial class AutoTasksTable : AbstractTable
 
   public override async Task HandleSearch()
   {
-    if (AutoTaskCatrgory == null)
-      return;
-
     if (LastDataSearch == DataSearch)
       return;
 
@@ -92,9 +85,6 @@ public partial class AutoTasksTable : AbstractTable
 
   public override async Task HandlePageChange(int pageNum)
   {
-    if (AutoTaskCatrgory == null)
-      return;
-
     if (pageNum == CurrentPage)
       return;
     CurrentPage = pageNum;
@@ -117,9 +107,6 @@ public partial class AutoTasksTable : AbstractTable
 
   public override async Task Refresh(bool deleteOpt = false)
   {
-    if (AutoTaskCatrgory == null)
-      return;
-
     if (deleteOpt && CurrentPage > 1 && AutoTasks?.Count == 1)
       CurrentPage--;
 
@@ -145,10 +132,12 @@ public partial class AutoTasksTable : AbstractTable
       if (int.TryParse(args.ToString()!, out int category))
       {
         AutoTaskCatrgory = (AutoTaskCatrgory)category;
-        await Refresh();
       }
       else
+      {
         AutoTaskCatrgory = null;
+      }
+      await Refresh();
     }
   }
 
