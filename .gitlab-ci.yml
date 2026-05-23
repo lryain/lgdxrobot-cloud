@@ -116,8 +116,10 @@ build-amd64:
   tags:
     - saas-linux-small-amd64
   services:
-    - docker:29.5.1-dind
+    - name: docker:29.5.1-dind
+      command: ["--mtu=1360"]
   variables:
+    DOCKER_TLS_CERTDIR: "/certs"
     ARCH: amd64
   script:
     - echo -n $DOCKER_HUB_PAT | docker login -u $DOCKER_LOGIN --password-stdin $DOCKER_REGISTRY
