@@ -126,6 +126,17 @@ public partial class RobotDetails : ComponentBase, IAsyncDisposable
     Timer?.Change(Timeout.Infinite, Timeout.Infinite);
   }
 
+  private async Task OnRobotUpdated()
+  {
+    Guid robotId = Guid.Parse(Id);
+    var robotData = await RobotDataService.GetRobotDataFromListAsync(RealmId, [IdGuid]);
+    if (robotData.TryGetValue(robotId, out var rd) && rd != null)
+    {
+      RobotData = rd;
+      await Header!.Refresh(rd);
+    }
+  }
+
   private async Task OnRobotDataUpdated()
   {
     TimerStop();

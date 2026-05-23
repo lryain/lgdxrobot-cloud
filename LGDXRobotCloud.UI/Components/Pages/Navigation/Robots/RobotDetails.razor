@@ -34,7 +34,7 @@
       </ul>
       @if (CurrentTab == 0)
       {
-        <DetailsRobotInfoCard Robot="RobotDetailsViewModel" />
+        <DetailsRobotInfoCard Robot="RobotDetailsViewModel" OnRobotUpdated="OnRobotUpdated" />
       }
       else if (CurrentTab == 1)
       {

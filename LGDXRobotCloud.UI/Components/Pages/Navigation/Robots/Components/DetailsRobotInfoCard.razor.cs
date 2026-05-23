@@ -14,12 +14,19 @@ public partial class DetailsRobotInfoCard
   [Parameter]
   public RobotDetailsViewModel? Robot { get; set; }
 
+  [Parameter]
+  public EventCallback OnRobotUpdated { get; set; }
+
   private EditContext _editContext = null!;
   private readonly CustomFieldClassProvider _customFieldClassProvider = new();
 
   public async Task HandleValidSubmit()
   {
     await LgdxApiClient.Navigation.Robots[Robot!.Id].PutAsync(Robot!.ToUpdateDto());
+    if (OnRobotUpdated.HasDelegate)
+    {
+      await OnRobotUpdated.InvokeAsync();
+    }
   }
 
   public override async Task SetParametersAsync(ParameterView parameters)
