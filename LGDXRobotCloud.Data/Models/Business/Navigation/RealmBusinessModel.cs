@@ -10,7 +10,7 @@ public record RealmBusinessModel
 
   public string? Description { get; set; }
 
-  public required bool HasWaypointsTrafficControl { get; set; }
+  public required bool HasRouteControl { get; set; }
 
   public required string Image { get; set; }
 
@@ -31,7 +31,7 @@ public static class RealmBusinessModelExtensions
       Id = model.Id,
       Name = model.Name,
       Description = model.Description,
-      HasWaypointsTrafficControl = model.HasWaypointsTrafficControl,
+      HasRouteControl = model.HasRouteControl,
       Image = model.Image,
       Resolution = model.Resolution,
       OriginX = model.OriginX,

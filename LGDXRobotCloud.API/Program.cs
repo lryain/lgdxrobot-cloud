@@ -48,6 +48,10 @@ builder.Services.Configure<LgdxRobotCloudConfiguration>(
 builder.Services.Configure<LgdxRobotCloudSecretConfiguration>(
 	builder.Configuration.GetSection("LGDXRobotCloudSecret")
 );
+builder.Services.ConfigureHttpJsonOptions(options =>
+{
+  options.SerializerOptions.NumberHandling = System.Text.Json.Serialization.JsonNumberHandling.Strict;
+});
 
 /*
  * Infrastructure

@@ -19,7 +19,7 @@ public class Realm
   public string? Description { get; set; }
 
   [Required]
-  public bool HasWaypointsTrafficControl { get; set; }
+  public bool HasRouteControl { get; set; }
 
   [MaxLength(LgdxApiConstants.ImageMaxSize)]
   public byte[] Image { get; set; } = [];

@@ -8,7 +8,7 @@ public record RealmDto
 
   public string? Description { get; set; }
 
-  public required bool HasWaypointsTrafficControl { get; set; }
+  public required bool HasRouteControl { get; set; }
 
   public required string Image { get; set; }
 

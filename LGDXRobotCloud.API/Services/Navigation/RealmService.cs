@@ -64,7 +64,7 @@ public class RealmService(
         Id = m.Id,
         Name = m.Name,
         Description = m.Description,
-        HasWaypointsTrafficControl = m.HasWaypointsTrafficControl,
+        HasRouteControl = m.HasRouteControl,
         Image = Convert.ToBase64String(m.Image),
         Resolution = m.Resolution,
         OriginX = m.OriginX,
@@ -83,7 +83,7 @@ public class RealmService(
         Id = m.Id,
         Name = m.Name,
         Description = m.Description,
-        HasWaypointsTrafficControl = m.HasWaypointsTrafficControl,
+        HasRouteControl = m.HasRouteControl,
         Image = Convert.ToBase64String(m.Image),
         Resolution = m.Resolution,
         OriginX = m.OriginX,
@@ -99,7 +99,7 @@ public class RealmService(
     var realm = new Realm {
       Name = createModel.Name,
       Description = createModel.Description,
-      HasWaypointsTrafficControl = createModel.HasWaypointsTrafficControl,
+      HasRouteControl = createModel.HasRouteControl,
       Image = Convert.FromBase64String(createModel.Image ?? string.Empty),
       Resolution = createModel.Resolution,
       OriginX = createModel.OriginX,
@@ -122,7 +122,7 @@ public class RealmService(
       Id = realm.Id,
       Name = realm.Name,
       Description = realm.Description,
-      HasWaypointsTrafficControl = realm.HasWaypointsTrafficControl,
+      HasRouteControl = realm.HasRouteControl,
       Image = createModel.Image ?? string.Empty,
       Resolution = realm.Resolution,
       OriginX = realm.OriginX,
@@ -138,7 +138,7 @@ public class RealmService(
       .ExecuteUpdateAsync(setters => setters
         .SetProperty(m => m.Name, updateModel.Name)
         .SetProperty(m => m.Description, updateModel.Description)
-        .SetProperty(m => m.HasWaypointsTrafficControl, updateModel.HasWaypointsTrafficControl)
+        .SetProperty(m => m.HasRouteControl, updateModel.HasRouteControl)
         .SetProperty(m => m.Image, Convert.FromBase64String(updateModel.Image ?? string.Empty))
         .SetProperty(m => m.Resolution, updateModel.Resolution)
         .SetProperty(m => m.OriginX, updateModel.OriginX)

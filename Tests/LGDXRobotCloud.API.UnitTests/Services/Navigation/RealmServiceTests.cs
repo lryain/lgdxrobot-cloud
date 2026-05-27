@@ -191,7 +191,7 @@ public class RealmServiceTests
     var expected = new RealmCreateBusinessModel {
       Name = "Test Realm",
       Description = "Description",
-      HasWaypointsTrafficControl = false,
+      HasRouteControl = false,
       Image = "",
       Resolution = 0.05,
       OriginX = 0.1,

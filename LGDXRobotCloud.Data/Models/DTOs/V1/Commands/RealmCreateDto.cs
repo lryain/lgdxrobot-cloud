@@ -14,7 +14,7 @@ public record RealmCreateDto
   public string? Description { get; set; }
   
   [Required(ErrorMessage = "Please select a traffic control type.")]
-  public bool HasWaypointsTrafficControl { get; set; }
+  public bool HasRouteControl { get; set; }
   
   [MaxLength(LgdxApiConstants.ImageMaxSize, ErrorMessage = "The image size is too large.")]
   public string? Image { get; set; }
@@ -35,7 +35,7 @@ public static class RealmCreateDtoExtensions
     return new RealmCreateBusinessModel {
       Name = model.Name,
       Description = model.Description,
-      HasWaypointsTrafficControl = model.HasWaypointsTrafficControl,
+      HasRouteControl = model.HasRouteControl,
       Image = model.Image,
       Resolution = model.Resolution,
       OriginX = model.OriginX,

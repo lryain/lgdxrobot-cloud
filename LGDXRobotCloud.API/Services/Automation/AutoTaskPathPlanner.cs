@@ -152,9 +152,9 @@ public partial class AutoTaskPathPlannerService(
   public async Task<List<RobotClientsPath>> GeneratePath(AutoTask autoTask)
   {
     var realmId = autoTask.RealmId;
-    var hasWaypointsTrafficControl = _context.Realms.AsNoTracking()
+    var hasRouteControl = _context.Realms.AsNoTracking()
       .Where(r => r.Id == realmId)
-      .Select(r => r.HasWaypointsTrafficControl)
+      .Select(r => r.HasRouteControl)
       .FirstOrDefault();
 
     List<RobotClientsPath> paths = [];
@@ -182,7 +182,8 @@ public partial class AutoTaskPathPlannerService(
       return [];
     }
 
-    if (hasWaypointsTrafficControl)
+    // TODO: Romove this code when NAV 2 is ready
+    if (hasRouteControl)
     {
       // Has waypoints traffic control, return the waypoints by respecting the traffic control
       // Prepare waypoints traffic

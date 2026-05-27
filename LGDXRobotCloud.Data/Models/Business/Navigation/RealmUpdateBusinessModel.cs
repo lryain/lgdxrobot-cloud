@@ -6,7 +6,7 @@ public record RealmUpdateBusinessModel
 
   public string? Description { get; set; }
 
-  public required bool HasWaypointsTrafficControl { get; set; }
+  public required bool HasRouteControl { get; set; }
 
   public string? Image { get; set; }
 
