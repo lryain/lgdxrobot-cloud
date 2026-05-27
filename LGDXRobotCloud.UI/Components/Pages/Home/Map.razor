@@ -9,9 +9,13 @@
     {
       <img id="navigation-map-image" class="d-none" src="data:image/png;base64, @Realm.Image" />
     }
-    <div id="navigation-map-buttons" class="btn-group-vertical">
-      <button class="btn" onclick="NavigationMapZoomIn()"><i class="ti ti-zoom-in"></i></button>
-      <button class="btn" onclick="NavigationMapZoomOut()"><i class="ti ti-zoom-out"></i></button>
+    <div id="navigation-map-buttons" class="card">
+      <div class="card-body p-0">
+        <div class="btn-group-vertical">
+          <button class="btn" onclick="NavigationMapZoomIn()"><i class="ti ti-zoom-in"></i></button>
+          <button class="btn" onclick="NavigationMapZoomOut()"><i class="ti ti-zoom-out"></i></button>
+        </div>
+      </div>
     </div>
     <div id="navigation-map-ruler" class="border border-2 border-top-0 border-dark ps-2">
       1m
