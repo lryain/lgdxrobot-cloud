@@ -7,12 +7,12 @@
       <div class="modal-status @(Enabled ? "bg-primary" : "bg-danger")"></div>
       <div class="modal-body text-center py-4 d-flex flex-column">
         @if (Enabled) {
-          <i class="ti ti-circle-check text-primary mb-2" style="font-size: 48px;"></i>
+          <i class="ti ti-circle-check text-primary" style="font-size: 48px;"></i>
         }
         else {
-          <i class="ti ti-alert-triangle text-danger mb-2" style="font-size: 48px;"></i>
+          <i class="ti ti-alert-triangle text-danger" style="font-size: 48px;"></i>
         }
-        <h3>@(Enabled ? "Resuming Robot" : "Stopping Robot")</h3>
+        <h3 class="mt-3">@(Enabled ? "Resuming Robot" : "Stopping Robot")</h3>
         <div class="text-secondary">
           <div class="text-secondary">
             @(Enabled ?
