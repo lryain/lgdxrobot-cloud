@@ -1,3 +1,4 @@
+using JasperFx.CodeGeneration.Model;
 using LGDXRobotCloud.Data.DbContexts;
 using LGDXRobotCloud.Worker.Configurations;
 using LGDXRobotCloud.Worker.Services;
@@ -61,6 +62,7 @@ builder.UseWolverine(cfg =>
 	cfg.ListenToRabbitQueue("activity-logs-queue");
 	cfg.ListenToRabbitQueue("email-queue");
 	cfg.ListenToRabbitQueue("auto-task-trigger-queue");
+	cfg.ServiceLocationPolicy = ServiceLocationPolicy.AlwaysAllowed;
 });
 
 /*

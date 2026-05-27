@@ -10,8 +10,9 @@
   <Import Project="..\version.xml" />
 
   <ItemGroup>
-    <PackageReference Include="WolverineFx.RabbitMQ" Version="5.4.0" />
-    <PackageReference Include="MailKit" Version="4.14.1" />
+    <PackageReference Include="WolverineFx.RabbitMQ" Version="6.0.2" />
+    <PackageReference Include="MailKit" Version="4.17.0" />
+    <PackageReference Include="WolverineFx.RuntimeCompilation" Version="6.0.2" />
   </ItemGroup>
 
   <ItemGroup>
