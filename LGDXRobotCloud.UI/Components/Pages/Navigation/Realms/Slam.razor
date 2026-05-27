@@ -27,28 +27,35 @@
   </div>
 </PageHeader>
 
-@if (SelectedRobot != null && SelectedRobot.RobotStatus != RobotStatus.Offline)
-{
-  <div class="container-xl mt-2">
-    <div class="col-12">
-      <div class="card card-sm">
+<!-- Map -->
+<div id="navigation-map" class="flex-fill row m-0 g-0">
+  <!-- Map -->
+  <div id="navigation-map-container" class="col">
+    <div id="navigation-map-canvas"></div>
+    <img id="navigation-map-image" class="d-none" src="" />
+
+    @if (SelectedRobot != null && SelectedRobot.RobotStatus != RobotStatus.Offline)
+    {
+      <div id="navigation-map-tools" class="card">
         <div class="card-body p-0">
-          <div class="row align-items-center">
-            <div class="col">
-              <div id="map-editor-tools" class="btn-group">
-                <button class="btn" @onclick="StartSetGoal" disabled=@(SlamMode != SlamMode.Normal)>Set Goal</button>
-                <button class="btn" @onclick="StopSetGoal" disabled=@(SlamMode != SlamMode.SetGoal)>Cancel</button>
-                <button class="btn" @onclick="AbortGoal">Abort</button>
-                <button class="btn" @onclick="RefreshMap">Refresh</button>
-                <button class="btn" @onclick="SaveMap">Save Map</button>
-              </div>
-            </div>
-            <p id="navigation-map-coordinate" class="col text-center m-0"></p>
-            <p id="navigation-map-status" class="col text-end m-0 me-2">
+          <div class="btn-group">
+            <button class="btn" @onclick="StartSetGoal" disabled=@(SlamMode != SlamMode.Normal)>Set Goal</button>
+            <button class="btn" @onclick="StopSetGoal" disabled=@(SlamMode != SlamMode.SetGoal)>Cancel</button>
+            <button class="btn" @onclick="AbortGoal">Abort</button>
+            <button class="btn" @onclick="RefreshMap">Refresh</button>
+            <button class="btn" @onclick="SaveMap">Save Map</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="navigation-map-status" class="card">
+        <div class="card-body p-2">
+          <div class="row gx-3 align-items-center">
+            <p class="col-auto m-0">
               @switch (SlamMode) {
                 default:
                 case SlamMode.Normal:
-                  <text></text>
+                  <text>View Mode</text>
                   break;
                 case SlamMode.SetGoal:
                   <text>Drag on the map to setup location and rotation.</text>
@@ -58,23 +65,21 @@
           </div>
         </div>
       </div>
-    </div>
-  </div>
-}
+    }
 
-<!-- Map -->
-<div id="navigation-map" class="flex-fill row m-0 g-0">
-  <!-- Map -->
-  <div id="navigation-map-container" class="col">
-    <div id="navigation-map-canvas"></div>
-    <img id="navigation-map-image" class="d-none" src="" />
-    <div id="navigation-map-buttons" class="btn-group-vertical">
-      <button class="btn" onclick="NavigationMapZoomIn()"><i class="ti ti-zoom-in"></i></button>
-      <button class="btn" onclick="NavigationMapZoomOut()"><i class="ti ti-zoom-out"></i></button>
+    <div id="navigation-map-buttons" class="card">
+      <div class="card-body p-0">
+        <div class="btn-group-vertical">
+          <button class="btn" onclick="NavigationMapZoomIn()"><i class="ti ti-zoom-in"></i></button>
+          <button class="btn" onclick="NavigationMapZoomOut()"><i class="ti ti-zoom-out"></i></button>
+        </div>
+      </div>
     </div>
+
     <div id="navigation-map-ruler" class="border border-2 border-top-0 border-dark ps-2">
       1m
     </div>
+
     <canvas id="navigation-slam-map-data" class="d-none" style="display: none;"></canvas>
   </div>
   <!-- Sidebar -->

@@ -42,7 +42,7 @@
       <img id="navigation-map-image" class="d-none" src="data:image/png;base64, @Realm.Image" />
     }
 
-    <div id="map-editor-tools" class="card">
+    <div id="navigation-map-tools" class="card">
       <div class="card-body p-0">
         <div class="btn-group">
           <a class="btn" href="@($"{AppRoutes.Navigation.Waypoints.Create}?ReturnUrl={AppRoutes.Navigation.MapEditor.Index}")">Add Waypoint</a>
@@ -66,10 +66,10 @@
       </div>
     </div>
 
-    <div id="map-editor-status" class="card">
+    <div id="navigation-map-status" class="card">
       <div class="card-body p-2">
         <div class="row gx-3 align-items-center">
-          <p id="navigation-map-status" class="col-auto m-0">
+          <p class="col-auto m-0">
             @switch (MapEditorMode) {
               default:
               case MapEditorMode.Normal:
@@ -92,7 +92,7 @@
                 break;
             }
           </p>
-          <p id="navigation-map-error" class="col-auto m-0">
+          <p class="col-auto m-0">
             @switch (MapEditorError) {
               default:
               case MapEditorError.None:
