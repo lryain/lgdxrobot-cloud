@@ -31,10 +31,10 @@ namespace LGDXRobotCloud.UI.Client.Models
         /// <summary>The trigger property</summary>
 #if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
 #nullable enable
-        public global::LGDXRobotCloud.UI.Client.Models.TriggerSearchDto? Trigger { get; set; }
+        public global::LGDXRobotCloud.UI.Client.Models.FlowDetailDto.FlowDetailDto_trigger? Trigger { get; set; }
 #nullable restore
 #else
-        public global::LGDXRobotCloud.UI.Client.Models.TriggerSearchDto Trigger { get; set; }
+        public global::LGDXRobotCloud.UI.Client.Models.FlowDetailDto.FlowDetailDto_trigger Trigger { get; set; }
 #endif
         /// <summary>
         /// Instantiates a new <see cref="global::LGDXRobotCloud.UI.Client.Models.FlowDetailDto"/> and sets the default values.
@@ -50,7 +50,7 @@ namespace LGDXRobotCloud.UI.Client.Models
         /// <param name="parseNode">The parse node to use to read the discriminator value and create the object</param>
         public static global::LGDXRobotCloud.UI.Client.Models.FlowDetailDto CreateFromDiscriminatorValue(IParseNode parseNode)
         {
-            _ = parseNode ?? throw new ArgumentNullException(nameof(parseNode));
+            if(ReferenceEquals(parseNode, null)) throw new ArgumentNullException(nameof(parseNode));
             return new global::LGDXRobotCloud.UI.Client.Models.FlowDetailDto();
         }
         /// <summary>
@@ -65,7 +65,7 @@ namespace LGDXRobotCloud.UI.Client.Models
                 { "id", n => { Id = n.GetIntValue(); } },
                 { "order", n => { Order = n.GetIntValue(); } },
                 { "progress", n => { Progress = n.GetObjectValue<global::LGDXRobotCloud.UI.Client.Models.ProgressSearchDto>(global::LGDXRobotCloud.UI.Client.Models.ProgressSearchDto.CreateFromDiscriminatorValue); } },
-                { "trigger", n => { Trigger = n.GetObjectValue<global::LGDXRobotCloud.UI.Client.Models.TriggerSearchDto>(global::LGDXRobotCloud.UI.Client.Models.TriggerSearchDto.CreateFromDiscriminatorValue); } },
+                { "trigger", n => { Trigger = n.GetObjectValue<global::LGDXRobotCloud.UI.Client.Models.FlowDetailDto.FlowDetailDto_trigger>(global::LGDXRobotCloud.UI.Client.Models.FlowDetailDto.FlowDetailDto_trigger.CreateFromDiscriminatorValue); } },
             };
         }
         /// <summary>
@@ -74,13 +74,88 @@ namespace LGDXRobotCloud.UI.Client.Models
         /// <param name="writer">Serialization writer to use to serialize this model</param>
         public virtual void Serialize(ISerializationWriter writer)
         {
-            _ = writer ?? throw new ArgumentNullException(nameof(writer));
+            if(ReferenceEquals(writer, null)) throw new ArgumentNullException(nameof(writer));
             writer.WriteIntValue("autoTaskNextControllerId", AutoTaskNextControllerId);
             writer.WriteIntValue("id", Id);
             writer.WriteIntValue("order", Order);
             writer.WriteObjectValue<global::LGDXRobotCloud.UI.Client.Models.ProgressSearchDto>("progress", Progress);
-            writer.WriteObjectValue<global::LGDXRobotCloud.UI.Client.Models.TriggerSearchDto>("trigger", Trigger);
+            writer.WriteObjectValue<global::LGDXRobotCloud.UI.Client.Models.FlowDetailDto.FlowDetailDto_trigger>("trigger", Trigger);
             writer.WriteAdditionalData(AdditionalData);
+        }
+        /// <summary>
+        /// Composed type wrapper for classes <see cref="global::LGDXRobotCloud.UI.Client.Models.FlowDetailDto_triggerMember1"/>, <see cref="global::LGDXRobotCloud.UI.Client.Models.TriggerSearchDto"/>
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCode("Kiota", "1.0.0")]
+        public partial class FlowDetailDto_trigger : IComposedTypeWrapper, IParsable
+        {
+            /// <summary>Composed type representation for type <see cref="global::LGDXRobotCloud.UI.Client.Models.FlowDetailDto_triggerMember1"/></summary>
+#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
+#nullable enable
+            public global::LGDXRobotCloud.UI.Client.Models.FlowDetailDto_triggerMember1? FlowDetailDtoTriggerMember1 { get; set; }
+#nullable restore
+#else
+            public global::LGDXRobotCloud.UI.Client.Models.FlowDetailDto_triggerMember1 FlowDetailDtoTriggerMember1 { get; set; }
+#endif
+            /// <summary>Composed type representation for type <see cref="global::LGDXRobotCloud.UI.Client.Models.TriggerSearchDto"/></summary>
+#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
+#nullable enable
+            public global::LGDXRobotCloud.UI.Client.Models.TriggerSearchDto? TriggerSearchDto { get; set; }
+#nullable restore
+#else
+            public global::LGDXRobotCloud.UI.Client.Models.TriggerSearchDto TriggerSearchDto { get; set; }
+#endif
+            /// <summary>
+            /// Creates a new instance of the appropriate class based on discriminator value
+            /// </summary>
+            /// <returns>A <see cref="global::LGDXRobotCloud.UI.Client.Models.FlowDetailDto.FlowDetailDto_trigger"/></returns>
+            /// <param name="parseNode">The parse node to use to read the discriminator value and create the object</param>
+            public static global::LGDXRobotCloud.UI.Client.Models.FlowDetailDto.FlowDetailDto_trigger CreateFromDiscriminatorValue(IParseNode parseNode)
+            {
+                if(ReferenceEquals(parseNode, null)) throw new ArgumentNullException(nameof(parseNode));
+                var mappingValue = parseNode.GetChildNode("")?.GetStringValue();
+                var result = new global::LGDXRobotCloud.UI.Client.Models.FlowDetailDto.FlowDetailDto_trigger();
+                if("".Equals(mappingValue, StringComparison.OrdinalIgnoreCase))
+                {
+                    result.FlowDetailDtoTriggerMember1 = new global::LGDXRobotCloud.UI.Client.Models.FlowDetailDto_triggerMember1();
+                }
+                else if("TriggerSearchDto".Equals(mappingValue, StringComparison.OrdinalIgnoreCase))
+                {
+                    result.TriggerSearchDto = new global::LGDXRobotCloud.UI.Client.Models.TriggerSearchDto();
+                }
+                return result;
+            }
+            /// <summary>
+            /// The deserialization information for the current model
+            /// </summary>
+            /// <returns>A IDictionary&lt;string, Action&lt;IParseNode&gt;&gt;</returns>
+            public virtual IDictionary<string, Action<IParseNode>> GetFieldDeserializers()
+            {
+                if(FlowDetailDtoTriggerMember1 != null)
+                {
+                    return FlowDetailDtoTriggerMember1.GetFieldDeserializers();
+                }
+                else if(TriggerSearchDto != null)
+                {
+                    return TriggerSearchDto.GetFieldDeserializers();
+                }
+                return new Dictionary<string, Action<IParseNode>>();
+            }
+            /// <summary>
+            /// Serializes information the current object
+            /// </summary>
+            /// <param name="writer">Serialization writer to use to serialize this model</param>
+            public virtual void Serialize(ISerializationWriter writer)
+            {
+                if(ReferenceEquals(writer, null)) throw new ArgumentNullException(nameof(writer));
+                if(FlowDetailDtoTriggerMember1 != null)
+                {
+                    writer.WriteObjectValue<global::LGDXRobotCloud.UI.Client.Models.FlowDetailDto_triggerMember1>(null, FlowDetailDtoTriggerMember1);
+                }
+                else if(TriggerSearchDto != null)
+                {
+                    writer.WriteObjectValue<global::LGDXRobotCloud.UI.Client.Models.TriggerSearchDto>(null, TriggerSearchDto);
+                }
+            }
         }
     }
 }

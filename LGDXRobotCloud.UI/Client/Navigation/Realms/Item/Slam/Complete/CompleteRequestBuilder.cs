@@ -45,7 +45,7 @@ namespace LGDXRobotCloud.UI.Client.Navigation.Realms.Item.Slam.Complete
         public async Task PostAsync(global::LGDXRobotCloud.UI.Client.Models.RealmMapUpdateDto body, Action<RequestConfiguration<DefaultQueryParameters>> requestConfiguration = default, CancellationToken cancellationToken = default)
         {
 #endif
-            _ = body ?? throw new ArgumentNullException(nameof(body));
+            if(ReferenceEquals(body, null)) throw new ArgumentNullException(nameof(body));
             var requestInfo = ToPostRequestInformation(body, requestConfiguration);
             await RequestAdapter.SendNoContentAsync(requestInfo, default, cancellationToken).ConfigureAwait(false);
         }
@@ -61,7 +61,7 @@ namespace LGDXRobotCloud.UI.Client.Navigation.Realms.Item.Slam.Complete
         public RequestInformation ToPostRequestInformation(global::LGDXRobotCloud.UI.Client.Models.RealmMapUpdateDto body, Action<RequestConfiguration<DefaultQueryParameters>> requestConfiguration = default)
         {
 #endif
-            _ = body ?? throw new ArgumentNullException(nameof(body));
+            if(ReferenceEquals(body, null)) throw new ArgumentNullException(nameof(body));
             var requestInfo = new RequestInformation(Method.POST, UrlTemplate, PathParameters);
             requestInfo.Configure(requestConfiguration);
             requestInfo.SetContentFromParsable(RequestAdapter, "application/json", body);

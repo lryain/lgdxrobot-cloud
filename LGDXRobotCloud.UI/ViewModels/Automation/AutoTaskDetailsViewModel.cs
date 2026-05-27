@@ -102,8 +102,8 @@ public static class AutoTaskDetailsViewModelExtensions
     AutoTaskDetailsViewModel.FlowName = autoTaskDto.Flow!.Name;
     AutoTaskDetailsViewModel.RealmId = autoTaskDto.Realm!.Id;
     AutoTaskDetailsViewModel.RealmName = autoTaskDto.Realm!.Name;
-    AutoTaskDetailsViewModel.AssignedRobotId = autoTaskDto.AssignedRobot?.Id;
-    AutoTaskDetailsViewModel.AssignedRobotName = autoTaskDto.AssignedRobot?.Name;
+    AutoTaskDetailsViewModel.AssignedRobotId = autoTaskDto.AssignedRobot?.RobotSearchDto?.Id;
+    AutoTaskDetailsViewModel.AssignedRobotName = autoTaskDto.AssignedRobot?.RobotSearchDto?.Name;
     AutoTaskDetailsViewModel.CurrentProgressId = (int)autoTaskDto.CurrentProgress!.Id!;
     AutoTaskDetailsViewModel.CurrentProgressName = autoTaskDto.CurrentProgress!.Name!;
     AutoTaskDetailsViewModel.AutoTaskDetails = autoTaskDto.AutoTaskDetails!.Select(t => new TaskDetailBody
@@ -112,8 +112,8 @@ public static class AutoTaskDetailsViewModelExtensions
       CustomX = t.CustomX,
       CustomY = t.CustomY,
       CustomRotation = t.CustomRotation,
-      WaypointId = t.Waypoint?.Id,
-      WaypointName = t.Waypoint?.Name,
+      WaypointId = t.Waypoint?.WaypointDto?.Id,
+      WaypointName = t.Waypoint?.WaypointDto?.Name,
       Order = (int)t.Order!
     }).ToList();
     AutoTaskDetailsViewModel.AutoTaskJourneys = autoTaskDto.AutoTaskJourneys!.Select(t => new AutoTaskJourney {

@@ -24,6 +24,8 @@ namespace LGDXRobotCloud.UI.Client.Models
 #endif
         /// <summary>The robotId property</summary>
         public Guid? RobotId { get; set; }
+        /// <summary>The taskId property</summary>
+        public int? TaskId { get; set; }
         /// <summary>
         /// Instantiates a new <see cref="global::LGDXRobotCloud.UI.Client.Models.AutoTaskNextDto"/> and sets the default values.
         /// </summary>
@@ -38,7 +40,7 @@ namespace LGDXRobotCloud.UI.Client.Models
         /// <param name="parseNode">The parse node to use to read the discriminator value and create the object</param>
         public static global::LGDXRobotCloud.UI.Client.Models.AutoTaskNextDto CreateFromDiscriminatorValue(IParseNode parseNode)
         {
-            _ = parseNode ?? throw new ArgumentNullException(nameof(parseNode));
+            if(ReferenceEquals(parseNode, null)) throw new ArgumentNullException(nameof(parseNode));
             return new global::LGDXRobotCloud.UI.Client.Models.AutoTaskNextDto();
         }
         /// <summary>
@@ -51,6 +53,7 @@ namespace LGDXRobotCloud.UI.Client.Models
             {
                 { "nextToken", n => { NextToken = n.GetStringValue(); } },
                 { "robotId", n => { RobotId = n.GetGuidValue(); } },
+                { "taskId", n => { TaskId = n.GetIntValue(); } },
             };
         }
         /// <summary>
@@ -59,9 +62,10 @@ namespace LGDXRobotCloud.UI.Client.Models
         /// <param name="writer">Serialization writer to use to serialize this model</param>
         public virtual void Serialize(ISerializationWriter writer)
         {
-            _ = writer ?? throw new ArgumentNullException(nameof(writer));
+            if(ReferenceEquals(writer, null)) throw new ArgumentNullException(nameof(writer));
             writer.WriteStringValue("nextToken", NextToken);
             writer.WriteGuidValue("robotId", RobotId);
+            writer.WriteIntValue("taskId", TaskId);
             writer.WriteAdditionalData(AdditionalData);
         }
     }

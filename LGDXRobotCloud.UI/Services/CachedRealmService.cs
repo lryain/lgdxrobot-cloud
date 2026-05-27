@@ -33,7 +33,7 @@ public class CachedRealmService (
       Id = 0,
       Name = "Default",
       Description = "Default Realm",
-      HasWaypointsTrafficControl = false,
+      HasRouteControl = false,
       Image = "",
       Resolution = 0.0,
       OriginX = 0.0,
@@ -105,11 +105,11 @@ public class CachedRealmService (
     if (realmId == 0)
     {
       var defaultRealm = await GetDefaultRealmAsync();
-      return defaultRealm?.HasWaypointsTrafficControl ?? false;
+      return defaultRealm?.HasRouteControl ?? false;
     }
 
     var curremtRealm = await GetCurrrentRealmAsync(realmId);
-    return curremtRealm?.HasWaypointsTrafficControl ?? false;
+    return curremtRealm?.HasRouteControl ?? false;
   }
 
   public void ClearCache(int realmId)

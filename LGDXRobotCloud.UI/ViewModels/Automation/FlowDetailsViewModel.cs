@@ -57,8 +57,8 @@ public static class FlowDetailsViewModelExtensions
       Order = (int)t.Order!,
       ProgressId = t.Progress!.Id,
       ProgressName = t.Progress!.Name,
-      TriggerId = t.Trigger?.Id,
-      TriggerName = t.Trigger?.Name,
+      TriggerId = t.Trigger?.TriggerSearchDto?.Id,
+      TriggerName = t.Trigger?.TriggerSearchDto?.Name,
       AutoTaskNextControllerId = (int)t.AutoTaskNextControllerId!
     }).ToList();
   }

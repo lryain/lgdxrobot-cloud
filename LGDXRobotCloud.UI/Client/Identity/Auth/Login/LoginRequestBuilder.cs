@@ -47,7 +47,7 @@ namespace LGDXRobotCloud.UI.Client.Identity.Auth.Login
         public async Task<global::LGDXRobotCloud.UI.Client.Models.LoginResponseDto> PostAsync(global::LGDXRobotCloud.UI.Client.Models.LoginRequestDto body, Action<RequestConfiguration<DefaultQueryParameters>> requestConfiguration = default, CancellationToken cancellationToken = default)
         {
 #endif
-            _ = body ?? throw new ArgumentNullException(nameof(body));
+            if(ReferenceEquals(body, null)) throw new ArgumentNullException(nameof(body));
             var requestInfo = ToPostRequestInformation(body, requestConfiguration);
             var errorMapping = new Dictionary<string, ParsableFactory<IParsable>>
             {
@@ -67,7 +67,7 @@ namespace LGDXRobotCloud.UI.Client.Identity.Auth.Login
         public RequestInformation ToPostRequestInformation(global::LGDXRobotCloud.UI.Client.Models.LoginRequestDto body, Action<RequestConfiguration<DefaultQueryParameters>> requestConfiguration = default)
         {
 #endif
-            _ = body ?? throw new ArgumentNullException(nameof(body));
+            if(ReferenceEquals(body, null)) throw new ArgumentNullException(nameof(body));
             var requestInfo = new RequestInformation(Method.POST, UrlTemplate, PathParameters);
             requestInfo.Configure(requestConfiguration);
             requestInfo.Headers.TryAdd("Accept", "application/json, text/plain;q=0.9");

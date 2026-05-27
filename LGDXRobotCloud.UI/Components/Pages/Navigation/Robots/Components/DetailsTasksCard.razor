@@ -28,7 +28,7 @@
               <td>@(string.IsNullOrWhiteSpace(autoTask.Name) ? "-" : autoTask.Name)</td>
               <td>@autoTask.Priority</td>
               <td>@autoTask.Realm!.Name</td>
-              <td>@(string.IsNullOrWhiteSpace(autoTask.AssignedRobot?.Name) ? "-" : autoTask.AssignedRobot.Name)</td>
+              <td>@(string.IsNullOrWhiteSpace(autoTask.AssignedRobot?.RobotSearchDto?.Name) ? "-" : autoTask.AssignedRobot!.RobotSearchDto!.Name)</td>
               <td>@autoTask.CurrentProgress!.Name</td>
               <td>@autoTask.Flow!.Name</td>
             </tr>

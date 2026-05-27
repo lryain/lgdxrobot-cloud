@@ -47,7 +47,7 @@ public partial class RealtimeAutoTasksTable : IAsyncDisposable
       x.Options.Add(headersInspectionHandlerOption);
       x.QueryParameters = new AutoTasksRequestBuilderGetQueryParameters {
         RealmId = RealmId,
-        AutoTaskCatrgory = (RunningAutoTasks ? AutoTaskCatrgory.Running : AutoTaskCatrgory.Waiting).ToString(),
+        AutoTaskCatrgory = (int?)(RunningAutoTasks ? AutoTaskCatrgory.Running : AutoTaskCatrgory.Waiting),
         PageSize = MaxPageSize
       };
     });

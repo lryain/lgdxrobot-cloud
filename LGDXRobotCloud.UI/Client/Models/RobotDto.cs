@@ -53,18 +53,18 @@ namespace LGDXRobotCloud.UI.Client.Models
         /// <summary>The robotChassisInfo property</summary>
 #if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
 #nullable enable
-        public global::LGDXRobotCloud.UI.Client.Models.RobotChassisInfoDto? RobotChassisInfo { get; set; }
+        public global::LGDXRobotCloud.UI.Client.Models.RobotDto.RobotDto_robotChassisInfo? RobotChassisInfo { get; set; }
 #nullable restore
 #else
-        public global::LGDXRobotCloud.UI.Client.Models.RobotChassisInfoDto RobotChassisInfo { get; set; }
+        public global::LGDXRobotCloud.UI.Client.Models.RobotDto.RobotDto_robotChassisInfo RobotChassisInfo { get; set; }
 #endif
         /// <summary>The robotSystemInfo property</summary>
 #if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
 #nullable enable
-        public global::LGDXRobotCloud.UI.Client.Models.RobotSystemInfoDto? RobotSystemInfo { get; set; }
+        public global::LGDXRobotCloud.UI.Client.Models.RobotDto.RobotDto_robotSystemInfo? RobotSystemInfo { get; set; }
 #nullable restore
 #else
-        public global::LGDXRobotCloud.UI.Client.Models.RobotSystemInfoDto RobotSystemInfo { get; set; }
+        public global::LGDXRobotCloud.UI.Client.Models.RobotDto.RobotDto_robotSystemInfo RobotSystemInfo { get; set; }
 #endif
         /// <summary>
         /// Instantiates a new <see cref="global::LGDXRobotCloud.UI.Client.Models.RobotDto"/> and sets the default values.
@@ -80,7 +80,7 @@ namespace LGDXRobotCloud.UI.Client.Models
         /// <param name="parseNode">The parse node to use to read the discriminator value and create the object</param>
         public static global::LGDXRobotCloud.UI.Client.Models.RobotDto CreateFromDiscriminatorValue(IParseNode parseNode)
         {
-            _ = parseNode ?? throw new ArgumentNullException(nameof(parseNode));
+            if(ReferenceEquals(parseNode, null)) throw new ArgumentNullException(nameof(parseNode));
             return new global::LGDXRobotCloud.UI.Client.Models.RobotDto();
         }
         /// <summary>
@@ -97,8 +97,8 @@ namespace LGDXRobotCloud.UI.Client.Models
                 { "name", n => { Name = n.GetStringValue(); } },
                 { "realm", n => { Realm = n.GetObjectValue<global::LGDXRobotCloud.UI.Client.Models.RealmSearchDto>(global::LGDXRobotCloud.UI.Client.Models.RealmSearchDto.CreateFromDiscriminatorValue); } },
                 { "robotCertificate", n => { RobotCertificate = n.GetObjectValue<global::LGDXRobotCloud.UI.Client.Models.RobotCertificateDto>(global::LGDXRobotCloud.UI.Client.Models.RobotCertificateDto.CreateFromDiscriminatorValue); } },
-                { "robotChassisInfo", n => { RobotChassisInfo = n.GetObjectValue<global::LGDXRobotCloud.UI.Client.Models.RobotChassisInfoDto>(global::LGDXRobotCloud.UI.Client.Models.RobotChassisInfoDto.CreateFromDiscriminatorValue); } },
-                { "robotSystemInfo", n => { RobotSystemInfo = n.GetObjectValue<global::LGDXRobotCloud.UI.Client.Models.RobotSystemInfoDto>(global::LGDXRobotCloud.UI.Client.Models.RobotSystemInfoDto.CreateFromDiscriminatorValue); } },
+                { "robotChassisInfo", n => { RobotChassisInfo = n.GetObjectValue<global::LGDXRobotCloud.UI.Client.Models.RobotDto.RobotDto_robotChassisInfo>(global::LGDXRobotCloud.UI.Client.Models.RobotDto.RobotDto_robotChassisInfo.CreateFromDiscriminatorValue); } },
+                { "robotSystemInfo", n => { RobotSystemInfo = n.GetObjectValue<global::LGDXRobotCloud.UI.Client.Models.RobotDto.RobotDto_robotSystemInfo>(global::LGDXRobotCloud.UI.Client.Models.RobotDto.RobotDto_robotSystemInfo.CreateFromDiscriminatorValue); } },
             };
         }
         /// <summary>
@@ -107,16 +107,166 @@ namespace LGDXRobotCloud.UI.Client.Models
         /// <param name="writer">Serialization writer to use to serialize this model</param>
         public virtual void Serialize(ISerializationWriter writer)
         {
-            _ = writer ?? throw new ArgumentNullException(nameof(writer));
+            if(ReferenceEquals(writer, null)) throw new ArgumentNullException(nameof(writer));
             writer.WriteCollectionOfObjectValues<global::LGDXRobotCloud.UI.Client.Models.AutoTaskListDto>("assignedTasks", AssignedTasks);
             writer.WriteGuidValue("id", Id);
             writer.WriteBoolValue("isProtectingHardwareSerialNumber", IsProtectingHardwareSerialNumber);
             writer.WriteStringValue("name", Name);
             writer.WriteObjectValue<global::LGDXRobotCloud.UI.Client.Models.RealmSearchDto>("realm", Realm);
             writer.WriteObjectValue<global::LGDXRobotCloud.UI.Client.Models.RobotCertificateDto>("robotCertificate", RobotCertificate);
-            writer.WriteObjectValue<global::LGDXRobotCloud.UI.Client.Models.RobotChassisInfoDto>("robotChassisInfo", RobotChassisInfo);
-            writer.WriteObjectValue<global::LGDXRobotCloud.UI.Client.Models.RobotSystemInfoDto>("robotSystemInfo", RobotSystemInfo);
+            writer.WriteObjectValue<global::LGDXRobotCloud.UI.Client.Models.RobotDto.RobotDto_robotChassisInfo>("robotChassisInfo", RobotChassisInfo);
+            writer.WriteObjectValue<global::LGDXRobotCloud.UI.Client.Models.RobotDto.RobotDto_robotSystemInfo>("robotSystemInfo", RobotSystemInfo);
             writer.WriteAdditionalData(AdditionalData);
+        }
+        /// <summary>
+        /// Composed type wrapper for classes <see cref="global::LGDXRobotCloud.UI.Client.Models.RobotChassisInfoDto"/>, <see cref="global::LGDXRobotCloud.UI.Client.Models.RobotDto_robotChassisInfoMember1"/>
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCode("Kiota", "1.0.0")]
+        public partial class RobotDto_robotChassisInfo : IComposedTypeWrapper, IParsable
+        {
+            /// <summary>Composed type representation for type <see cref="global::LGDXRobotCloud.UI.Client.Models.RobotChassisInfoDto"/></summary>
+#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
+#nullable enable
+            public global::LGDXRobotCloud.UI.Client.Models.RobotChassisInfoDto? RobotChassisInfoDto { get; set; }
+#nullable restore
+#else
+            public global::LGDXRobotCloud.UI.Client.Models.RobotChassisInfoDto RobotChassisInfoDto { get; set; }
+#endif
+            /// <summary>Composed type representation for type <see cref="global::LGDXRobotCloud.UI.Client.Models.RobotDto_robotChassisInfoMember1"/></summary>
+#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
+#nullable enable
+            public global::LGDXRobotCloud.UI.Client.Models.RobotDto_robotChassisInfoMember1? RobotDtoRobotChassisInfoMember1 { get; set; }
+#nullable restore
+#else
+            public global::LGDXRobotCloud.UI.Client.Models.RobotDto_robotChassisInfoMember1 RobotDtoRobotChassisInfoMember1 { get; set; }
+#endif
+            /// <summary>
+            /// Creates a new instance of the appropriate class based on discriminator value
+            /// </summary>
+            /// <returns>A <see cref="global::LGDXRobotCloud.UI.Client.Models.RobotDto.RobotDto_robotChassisInfo"/></returns>
+            /// <param name="parseNode">The parse node to use to read the discriminator value and create the object</param>
+            public static global::LGDXRobotCloud.UI.Client.Models.RobotDto.RobotDto_robotChassisInfo CreateFromDiscriminatorValue(IParseNode parseNode)
+            {
+                if(ReferenceEquals(parseNode, null)) throw new ArgumentNullException(nameof(parseNode));
+                var mappingValue = parseNode.GetChildNode("")?.GetStringValue();
+                var result = new global::LGDXRobotCloud.UI.Client.Models.RobotDto.RobotDto_robotChassisInfo();
+                if("RobotChassisInfoDto".Equals(mappingValue, StringComparison.OrdinalIgnoreCase))
+                {
+                    result.RobotChassisInfoDto = new global::LGDXRobotCloud.UI.Client.Models.RobotChassisInfoDto();
+                }
+                else if("".Equals(mappingValue, StringComparison.OrdinalIgnoreCase))
+                {
+                    result.RobotDtoRobotChassisInfoMember1 = new global::LGDXRobotCloud.UI.Client.Models.RobotDto_robotChassisInfoMember1();
+                }
+                return result;
+            }
+            /// <summary>
+            /// The deserialization information for the current model
+            /// </summary>
+            /// <returns>A IDictionary&lt;string, Action&lt;IParseNode&gt;&gt;</returns>
+            public virtual IDictionary<string, Action<IParseNode>> GetFieldDeserializers()
+            {
+                if(RobotChassisInfoDto != null)
+                {
+                    return RobotChassisInfoDto.GetFieldDeserializers();
+                }
+                else if(RobotDtoRobotChassisInfoMember1 != null)
+                {
+                    return RobotDtoRobotChassisInfoMember1.GetFieldDeserializers();
+                }
+                return new Dictionary<string, Action<IParseNode>>();
+            }
+            /// <summary>
+            /// Serializes information the current object
+            /// </summary>
+            /// <param name="writer">Serialization writer to use to serialize this model</param>
+            public virtual void Serialize(ISerializationWriter writer)
+            {
+                if(ReferenceEquals(writer, null)) throw new ArgumentNullException(nameof(writer));
+                if(RobotChassisInfoDto != null)
+                {
+                    writer.WriteObjectValue<global::LGDXRobotCloud.UI.Client.Models.RobotChassisInfoDto>(null, RobotChassisInfoDto);
+                }
+                else if(RobotDtoRobotChassisInfoMember1 != null)
+                {
+                    writer.WriteObjectValue<global::LGDXRobotCloud.UI.Client.Models.RobotDto_robotChassisInfoMember1>(null, RobotDtoRobotChassisInfoMember1);
+                }
+            }
+        }
+        /// <summary>
+        /// Composed type wrapper for classes <see cref="global::LGDXRobotCloud.UI.Client.Models.RobotDto_robotSystemInfoMember1"/>, <see cref="global::LGDXRobotCloud.UI.Client.Models.RobotSystemInfoDto"/>
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCode("Kiota", "1.0.0")]
+        public partial class RobotDto_robotSystemInfo : IComposedTypeWrapper, IParsable
+        {
+            /// <summary>Composed type representation for type <see cref="global::LGDXRobotCloud.UI.Client.Models.RobotDto_robotSystemInfoMember1"/></summary>
+#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
+#nullable enable
+            public global::LGDXRobotCloud.UI.Client.Models.RobotDto_robotSystemInfoMember1? RobotDtoRobotSystemInfoMember1 { get; set; }
+#nullable restore
+#else
+            public global::LGDXRobotCloud.UI.Client.Models.RobotDto_robotSystemInfoMember1 RobotDtoRobotSystemInfoMember1 { get; set; }
+#endif
+            /// <summary>Composed type representation for type <see cref="global::LGDXRobotCloud.UI.Client.Models.RobotSystemInfoDto"/></summary>
+#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
+#nullable enable
+            public global::LGDXRobotCloud.UI.Client.Models.RobotSystemInfoDto? RobotSystemInfoDto { get; set; }
+#nullable restore
+#else
+            public global::LGDXRobotCloud.UI.Client.Models.RobotSystemInfoDto RobotSystemInfoDto { get; set; }
+#endif
+            /// <summary>
+            /// Creates a new instance of the appropriate class based on discriminator value
+            /// </summary>
+            /// <returns>A <see cref="global::LGDXRobotCloud.UI.Client.Models.RobotDto.RobotDto_robotSystemInfo"/></returns>
+            /// <param name="parseNode">The parse node to use to read the discriminator value and create the object</param>
+            public static global::LGDXRobotCloud.UI.Client.Models.RobotDto.RobotDto_robotSystemInfo CreateFromDiscriminatorValue(IParseNode parseNode)
+            {
+                if(ReferenceEquals(parseNode, null)) throw new ArgumentNullException(nameof(parseNode));
+                var mappingValue = parseNode.GetChildNode("")?.GetStringValue();
+                var result = new global::LGDXRobotCloud.UI.Client.Models.RobotDto.RobotDto_robotSystemInfo();
+                if("".Equals(mappingValue, StringComparison.OrdinalIgnoreCase))
+                {
+                    result.RobotDtoRobotSystemInfoMember1 = new global::LGDXRobotCloud.UI.Client.Models.RobotDto_robotSystemInfoMember1();
+                }
+                else if("RobotSystemInfoDto".Equals(mappingValue, StringComparison.OrdinalIgnoreCase))
+                {
+                    result.RobotSystemInfoDto = new global::LGDXRobotCloud.UI.Client.Models.RobotSystemInfoDto();
+                }
+                return result;
+            }
+            /// <summary>
+            /// The deserialization information for the current model
+            /// </summary>
+            /// <returns>A IDictionary&lt;string, Action&lt;IParseNode&gt;&gt;</returns>
+            public virtual IDictionary<string, Action<IParseNode>> GetFieldDeserializers()
+            {
+                if(RobotDtoRobotSystemInfoMember1 != null)
+                {
+                    return RobotDtoRobotSystemInfoMember1.GetFieldDeserializers();
+                }
+                else if(RobotSystemInfoDto != null)
+                {
+                    return RobotSystemInfoDto.GetFieldDeserializers();
+                }
+                return new Dictionary<string, Action<IParseNode>>();
+            }
+            /// <summary>
+            /// Serializes information the current object
+            /// </summary>
+            /// <param name="writer">Serialization writer to use to serialize this model</param>
+            public virtual void Serialize(ISerializationWriter writer)
+            {
+                if(ReferenceEquals(writer, null)) throw new ArgumentNullException(nameof(writer));
+                if(RobotDtoRobotSystemInfoMember1 != null)
+                {
+                    writer.WriteObjectValue<global::LGDXRobotCloud.UI.Client.Models.RobotDto_robotSystemInfoMember1>(null, RobotDtoRobotSystemInfoMember1);
+                }
+                else if(RobotSystemInfoDto != null)
+                {
+                    writer.WriteObjectValue<global::LGDXRobotCloud.UI.Client.Models.RobotSystemInfoDto>(null, RobotSystemInfoDto);
+                }
+            }
         }
     }
 }

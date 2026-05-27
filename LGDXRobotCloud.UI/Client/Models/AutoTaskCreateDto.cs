@@ -54,7 +54,7 @@ namespace LGDXRobotCloud.UI.Client.Models
         /// <param name="parseNode">The parse node to use to read the discriminator value and create the object</param>
         public static global::LGDXRobotCloud.UI.Client.Models.AutoTaskCreateDto CreateFromDiscriminatorValue(IParseNode parseNode)
         {
-            _ = parseNode ?? throw new ArgumentNullException(nameof(parseNode));
+            if(ReferenceEquals(parseNode, null)) throw new ArgumentNullException(nameof(parseNode));
             return new global::LGDXRobotCloud.UI.Client.Models.AutoTaskCreateDto();
         }
         /// <summary>
@@ -80,7 +80,7 @@ namespace LGDXRobotCloud.UI.Client.Models
         /// <param name="writer">Serialization writer to use to serialize this model</param>
         public virtual void Serialize(ISerializationWriter writer)
         {
-            _ = writer ?? throw new ArgumentNullException(nameof(writer));
+            if(ReferenceEquals(writer, null)) throw new ArgumentNullException(nameof(writer));
             writer.WriteGuidValue("assignedRobotId", AssignedRobotId);
             writer.WriteCollectionOfObjectValues<global::LGDXRobotCloud.UI.Client.Models.AutoTaskDetailCreateDto>("autoTaskDetails", AutoTaskDetails);
             writer.WriteIntValue("flowId", FlowId);

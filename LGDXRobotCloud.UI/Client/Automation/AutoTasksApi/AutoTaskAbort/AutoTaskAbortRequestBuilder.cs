@@ -9,28 +9,28 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Threading;
 using System;
-namespace LGDXRobotCloud.UI.Client.Automation.AutoTasksNext.Item
+namespace LGDXRobotCloud.UI.Client.Automation.AutoTasksApi.AutoTaskAbort
 {
     /// <summary>
-    /// Builds and executes requests for operations under \Automation\AutoTasksNext\{id}
+    /// Builds and executes requests for operations under \Automation\AutoTasksApi\AutoTaskAbort
     /// </summary>
     [global::System.CodeDom.Compiler.GeneratedCode("Kiota", "1.0.0")]
-    public partial class AutoTasksNextItemRequestBuilder : BaseRequestBuilder
+    public partial class AutoTaskAbortRequestBuilder : BaseRequestBuilder
     {
         /// <summary>
-        /// Instantiates a new <see cref="global::LGDXRobotCloud.UI.Client.Automation.AutoTasksNext.Item.AutoTasksNextItemRequestBuilder"/> and sets the default values.
+        /// Instantiates a new <see cref="global::LGDXRobotCloud.UI.Client.Automation.AutoTasksApi.AutoTaskAbort.AutoTaskAbortRequestBuilder"/> and sets the default values.
         /// </summary>
         /// <param name="pathParameters">Path parameters for the request</param>
         /// <param name="requestAdapter">The request adapter to use to execute the requests.</param>
-        public AutoTasksNextItemRequestBuilder(Dictionary<string, object> pathParameters, IRequestAdapter requestAdapter) : base(requestAdapter, "{+baseurl}/Automation/AutoTasksNext/{id}", pathParameters)
+        public AutoTaskAbortRequestBuilder(Dictionary<string, object> pathParameters, IRequestAdapter requestAdapter) : base(requestAdapter, "{+baseurl}/Automation/AutoTasksApi/AutoTaskAbort", pathParameters)
         {
         }
         /// <summary>
-        /// Instantiates a new <see cref="global::LGDXRobotCloud.UI.Client.Automation.AutoTasksNext.Item.AutoTasksNextItemRequestBuilder"/> and sets the default values.
+        /// Instantiates a new <see cref="global::LGDXRobotCloud.UI.Client.Automation.AutoTasksApi.AutoTaskAbort.AutoTaskAbortRequestBuilder"/> and sets the default values.
         /// </summary>
         /// <param name="rawUrl">The raw URL to use for the request builder.</param>
         /// <param name="requestAdapter">The request adapter to use to execute the requests.</param>
-        public AutoTasksNextItemRequestBuilder(string rawUrl, IRequestAdapter requestAdapter) : base(requestAdapter, "{+baseurl}/Automation/AutoTasksNext/{id}", rawUrl)
+        public AutoTaskAbortRequestBuilder(string rawUrl, IRequestAdapter requestAdapter) : base(requestAdapter, "{+baseurl}/Automation/AutoTasksApi/AutoTaskAbort", rawUrl)
         {
         }
         /// <param name="body">The request body</param>
@@ -46,7 +46,7 @@ namespace LGDXRobotCloud.UI.Client.Automation.AutoTasksNext.Item
         public async Task PostAsync(global::LGDXRobotCloud.UI.Client.Models.AutoTaskNextDto body, Action<RequestConfiguration<DefaultQueryParameters>> requestConfiguration = default, CancellationToken cancellationToken = default)
         {
 #endif
-            _ = body ?? throw new ArgumentNullException(nameof(body));
+            if(ReferenceEquals(body, null)) throw new ArgumentNullException(nameof(body));
             var requestInfo = ToPostRequestInformation(body, requestConfiguration);
             var errorMapping = new Dictionary<string, ParsableFactory<IParsable>>
             {
@@ -66,7 +66,7 @@ namespace LGDXRobotCloud.UI.Client.Automation.AutoTasksNext.Item
         public RequestInformation ToPostRequestInformation(global::LGDXRobotCloud.UI.Client.Models.AutoTaskNextDto body, Action<RequestConfiguration<DefaultQueryParameters>> requestConfiguration = default)
         {
 #endif
-            _ = body ?? throw new ArgumentNullException(nameof(body));
+            if(ReferenceEquals(body, null)) throw new ArgumentNullException(nameof(body));
             var requestInfo = new RequestInformation(Method.POST, UrlTemplate, PathParameters);
             requestInfo.Configure(requestConfiguration);
             requestInfo.Headers.TryAdd("Accept", "application/json, text/plain;q=0.9");
@@ -76,18 +76,18 @@ namespace LGDXRobotCloud.UI.Client.Automation.AutoTasksNext.Item
         /// <summary>
         /// Returns a request builder with the provided arbitrary URL. Using this method means any other path or query parameters are ignored.
         /// </summary>
-        /// <returns>A <see cref="global::LGDXRobotCloud.UI.Client.Automation.AutoTasksNext.Item.AutoTasksNextItemRequestBuilder"/></returns>
+        /// <returns>A <see cref="global::LGDXRobotCloud.UI.Client.Automation.AutoTasksApi.AutoTaskAbort.AutoTaskAbortRequestBuilder"/></returns>
         /// <param name="rawUrl">The raw URL to use for the request builder.</param>
-        public global::LGDXRobotCloud.UI.Client.Automation.AutoTasksNext.Item.AutoTasksNextItemRequestBuilder WithUrl(string rawUrl)
+        public global::LGDXRobotCloud.UI.Client.Automation.AutoTasksApi.AutoTaskAbort.AutoTaskAbortRequestBuilder WithUrl(string rawUrl)
         {
-            return new global::LGDXRobotCloud.UI.Client.Automation.AutoTasksNext.Item.AutoTasksNextItemRequestBuilder(rawUrl, RequestAdapter);
+            return new global::LGDXRobotCloud.UI.Client.Automation.AutoTasksApi.AutoTaskAbort.AutoTaskAbortRequestBuilder(rawUrl, RequestAdapter);
         }
         /// <summary>
         /// Configuration for the request such as headers, query parameters, and middleware options.
         /// </summary>
         [Obsolete("This class is deprecated. Please use the generic RequestConfiguration class generated by the generator.")]
         [global::System.CodeDom.Compiler.GeneratedCode("Kiota", "1.0.0")]
-        public partial class AutoTasksNextItemRequestBuilderPostRequestConfiguration : RequestConfiguration<DefaultQueryParameters>
+        public partial class AutoTaskAbortRequestBuilderPostRequestConfiguration : RequestConfiguration<DefaultQueryParameters>
         {
         }
     }

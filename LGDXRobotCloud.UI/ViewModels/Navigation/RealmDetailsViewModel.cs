@@ -17,7 +17,7 @@ public class RealmDetailsViewModel : FormViewModelBase
   public string? Description { get; set; }
 
   [Required(ErrorMessage = "Please select a traffic control type.")]
-  public bool HasWaypointsTrafficControl { get; set; }
+  public bool HasRouteControl { get; set; }
 
   public string? Image { get; set; }
 
@@ -39,7 +39,7 @@ public static class RealmDetailsViewModelExtensions
     RealmDetailsViewModel.Id = (int)realmDto.Id!;
     RealmDetailsViewModel.Name = realmDto.Name!;
     RealmDetailsViewModel.Description = realmDto.Description;
-    RealmDetailsViewModel.HasWaypointsTrafficControl = (bool)realmDto.HasWaypointsTrafficControl!;
+    RealmDetailsViewModel.HasRouteControl = (bool)realmDto.HasRouteControl!;
     RealmDetailsViewModel.Image = realmDto.Image!;
     RealmDetailsViewModel.Resolution = realmDto.Resolution;
     RealmDetailsViewModel.OriginX = realmDto.OriginX;
@@ -52,7 +52,7 @@ public static class RealmDetailsViewModelExtensions
     return new RealmUpdateDto {
       Name = RealmDetailsViewModel.Name,
       Description = RealmDetailsViewModel.Description,
-      HasWaypointsTrafficControl = RealmDetailsViewModel.HasWaypointsTrafficControl,
+      HasRouteControl = RealmDetailsViewModel.HasRouteControl,
       Image = RealmDetailsViewModel.Image ?? string.Empty,
       Resolution = RealmDetailsViewModel.Resolution ?? 0,
       OriginX = RealmDetailsViewModel.OriginX ?? 0,
@@ -66,7 +66,7 @@ public static class RealmDetailsViewModelExtensions
     return new RealmCreateDto {
       Name = RealmDetailsViewModel.Name,
       Description = RealmDetailsViewModel.Description,
-      HasWaypointsTrafficControl = RealmDetailsViewModel.HasWaypointsTrafficControl,
+      HasRouteControl = RealmDetailsViewModel.HasRouteControl,
       Image = RealmDetailsViewModel.Image ?? string.Empty,
       Resolution = RealmDetailsViewModel.Resolution ?? 0,
       OriginX = RealmDetailsViewModel.OriginX ?? 0,

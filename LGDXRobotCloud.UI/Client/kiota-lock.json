@@ -1,8 +1,8 @@
 {
-  "descriptionHash": "B2CE6E3981994359CA426A39F2FECB02E67134B38ED2D4001A43D5CBAC4D061C2561A896D5D63A5CCD139AF671F8219FD6FF342BE00BFC49933D733F80DF9D31",
+  "descriptionHash": "569430B9E585F7B7F0DC4FB6993F5B847D6F6A0AD8A5BCE5F43324643FB070A27BEC866CD443173D9D355A53E79D6EAFB6C9EA9E315D5F58C878F9985B54EE7D",
   "descriptionLocation": "https://localhost:5163/openapi/v1.json",
   "lockFileVersion": "1.0.0",
-  "kiotaVersion": "1.27.0",
+  "kiotaVersion": "1.31.1",
   "clientClassName": "LgdxApiClient",
   "typeAccessModifier": "Public",
   "clientNamespaceName": "LGDXRobotCloud.UI.Client",
