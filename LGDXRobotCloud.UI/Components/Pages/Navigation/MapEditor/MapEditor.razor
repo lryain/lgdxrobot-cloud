@@ -29,34 +29,51 @@
 <div class="container-xl mt-2">
   <ApiErrorAlert Errors="MapEditorViewModel.Errors" />
   <FormSubmissionSuccessAlert Display="MapEditorViewModel.IsSuccess" />
-  @if (!HasWaypointTrafficControl)
-  {
-    <InformationAlert>
-      Waypoint Traffic Control is disabled. Traffic rules can be created, but the system does not plan a path according to the rules.
-    </InformationAlert>
-  }
-  <div class="col-12">
-    <div class="card card-sm">
+</div>
+
+<div id="navigation-map" class="flex-fill row m-0 g-0">
+  <div id="navigation-map-container" class="col">
+    <div id="navigation-map-canvas"></div>
+    <a id="waypointModalButton" class="btn d-none" data-bs-toggle="modal" data-bs-target="#waypointModal">
+      Toggle modal
+    </a>
+    @if (Realm != null)
+    {
+      <img id="navigation-map-image" class="d-none" src="data:image/png;base64, @Realm.Image" />
+    }
+
+    <div id="navigation-map-tools" class="card">
       <div class="card-body p-0">
-        <div class="row align-items-center">
-          <div class="col">
-            <div id="map-editor-tools" class="btn-group">
-              <a class="btn" href="@($"{AppRoutes.Navigation.Waypoints.Create}?ReturnUrl={AppRoutes.Navigation.MapEditor.Index}")">Add Waypoint</a>
-              <a class="btn dropdown-toggle rounded-0" data-bs-toggle="dropdown">Traffic rules</a>
-              <div class="dropdown-menu">
-                <button class="dropdown-item" @onclick="() => HandleMapEditorModeChange(MapEditorMode.SingleWayTrafficFrom)">Single-way traffic</button>
-                <button class="dropdown-item" @onclick="() => HandleMapEditorModeChange(MapEditorMode.BothWaysTrafficFrom)">Two-way traffic</button>
-                <button class="dropdown-item" @onclick="() => HandleMapEditorModeChange(MapEditorMode.DeleteTraffic)">Delete Traffic rule</button>
-              </div>
-              <button class="btn" disabled="@(MapEditorMode == MapEditorMode.Normal)" @onclick="() => HandleMapEditorModeChange(MapEditorMode.Normal)">Cancel</button>
-            </div>
+        <div class="btn-group">
+          <a class="btn" href="@($"{AppRoutes.Navigation.Waypoints.Create}?ReturnUrl={AppRoutes.Navigation.MapEditor.Index}")">Add Waypoint</a>
+          <a class="btn dropdown-toggle rounded-0" data-bs-toggle="dropdown">Traffic rules</a>
+          <div class="dropdown-menu">
+            <button class="dropdown-item" @onclick="() => HandleMapEditorModeChange(MapEditorMode.SingleWayTrafficFrom)">Single-way traffic</button>
+            <button class="dropdown-item" @onclick="() => HandleMapEditorModeChange(MapEditorMode.BothWaysTrafficFrom)">Two-way traffic</button>
+            <button class="dropdown-item" @onclick="() => HandleMapEditorModeChange(MapEditorMode.DeleteTraffic)">Delete Traffic rule</button>
           </div>
-          <p id="navigation-map-coordinate" class="col text-center m-0"></p>
-          <p id="navigation-map-status" class="col text-end m-0 me-2">
+          <button class="btn" disabled="@(MapEditorMode == MapEditorMode.Normal)" @onclick="() => HandleMapEditorModeChange(MapEditorMode.Normal)">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="navigation-map-buttons" class="card">
+      <div class="card-body p-0">
+          <div class="btn-group-vertical">
+            <button class="btn" onclick="NavigationMapZoomIn()"><i class="ti ti-zoom-in"></i></button>
+            <button class="btn" onclick="NavigationMapZoomOut()"><i class="ti ti-zoom-out"></i></button>
+        </div>
+      </div>
+    </div>
+
+    <div id="navigation-map-status" class="card">
+      <div class="card-body p-2">
+        <div class="row gx-3 align-items-center">
+          <p class="col-auto m-0">
             @switch (MapEditorMode) {
               default:
               case MapEditorMode.Normal:
-                <text></text>
+                <text>View Mode</text>
                 break;
               case MapEditorMode.SingleWayTrafficFrom:
                 <text>Single-way traffic: Select a starting waypoint.</text>
@@ -74,39 +91,26 @@
                 <text>Select a traffic rule to delete.</text>
                 break;
             }
+          </p>
+          <p class="col-auto m-0">
             @switch (MapEditorError) {
               default:
               case MapEditorError.None:
                 <text></text>
                 break;
               case MapEditorError.SameWaypoint:
-                <text>Error: Cannot select same waypoint.</text>
+                <text> Error: Cannot select same waypoint.</text>
                 break;
               case MapEditorError.HasTraffic:
-                <text>Error: The waypoints have traffic rules defined.</text>
+                <text> Error: The waypoints have traffic rules defined.</text>
                 break;
             }
           </p>
+          <p id="navigation-map-coordinate" class="col-auto m-0"></p>
         </div>
       </div>
     </div>
-  </div>
-</div>
 
-<div id="navigation-map" class="flex-fill row m-0 g-0">
-  <div id="navigation-map-container" class="col">
-    <div id="navigation-map-canvas"></div>
-    <a id="waypointModalButton" class="btn d-none" data-bs-toggle="modal" data-bs-target="#waypointModal">
-      Toggle modal
-    </a>
-    @if (Realm != null)
-    {
-      <img id="navigation-map-image" class="d-none" src="data:image/png;base64, @Realm.Image" />
-    }
-    <div id="navigation-map-buttons" class="btn-group-vertical">
-      <button class="btn" onclick="NavigationMapZoomIn()"><i class="ti ti-zoom-in"></i></button>
-      <button class="btn" onclick="NavigationMapZoomOut()"><i class="ti ti-zoom-out"></i></button>
-    </div>
     <div id="navigation-map-ruler" class="border border-2 border-top-0 border-dark ps-2">
       1m
     </div>
@@ -173,8 +177,8 @@
       <div class="modal-status bg-danger"></div>
       <div class="modal-body text-center py-4 d-flex flex-column">
 
-        <i class="ti ti-alert-triangle text-danger mb-2" style="font-size: 48px;"></i>
-        <h3>Reset Map Editor</h3>
+        <i class="ti ti-alert-triangle text-danger" style="font-size: 48px;"></i>
+        <h3 class="mt-3">Reset Map Editor</h3>
         <div class="text-secondary">
           <div class="text-secondary">
             Do you want to reset the map editor?

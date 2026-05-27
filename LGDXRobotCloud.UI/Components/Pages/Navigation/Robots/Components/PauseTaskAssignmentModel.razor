@@ -7,12 +7,12 @@
       <div class="modal-status bg-primary"></div>
       <div class="modal-body text-center py-4 d-flex flex-column">
         @if (Enabled) {
-          <i class="ti ti-player-play text-primary mb-2" style="font-size: 48px;"></i>
+          <i class="ti ti-player-play text-primary" style="font-size: 48px;"></i>
         }
         else {
-          <i class="ti ti-player-pause text-primary mb-2" style="font-size: 48px;"></i>
+          <i class="ti ti-player-pause text-primary" style="font-size: 48px;"></i>
         }
-        <h3>@(Enabled ? "Resume Task Assigment" : "Pause Task Assigment")</h3>
+        <h3 class="mt-3">@(Enabled ? "Resume Task Assigment" : "Pause Task Assigment")</h3>
         <div class="text-secondary">
           <div class="text-secondary">
             @(Enabled ?
