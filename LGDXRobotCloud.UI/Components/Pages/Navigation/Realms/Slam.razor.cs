@@ -21,6 +21,9 @@ public record SlamMapMetadata
   public double OriginX { get; set; }
   public double OriginY { get; set; }
   public double OriginRotation { get; set; }
+  public List<short> MapData { get; set; } = [];
+  public int MapWidth { get; set; }
+  public int MapHeight { get; set; }
 }
 
 public partial class Slam : ComponentBase, IDisposable
@@ -111,20 +114,42 @@ public partial class Slam : ComponentBase, IDisposable
 
   public async Task UpdateRealm()
   {
-    await JSRuntime.InvokeVoidAsync("SlamUpdateMap");
-  }
-
-  [JSInvokable("UpdateRealmStage2")]
-  public async Task UpdateRealmStage2(string mapData)
-  {
     TimerStop();
+
+    // Convert ROS Map
+    byte[] data = new byte[SlamMapMetadata.MapWidth * SlamMapMetadata.MapHeight];
+    for (int row = 0; row < SlamMapMetadata.MapHeight; row++)
+    {
+      for (int col = 0; col < SlamMapMetadata.MapWidth; col++)
+      {
+        int index = col + ((SlamMapMetadata.MapHeight - row - 1) * SlamMapMetadata.MapWidth);
+        int i = col + (row * SlamMapMetadata.MapWidth);
+        var value = SlamMapMetadata.MapData[index];
+        if (value == 100)
+        {
+          data[i] = 0;
+        }
+        else if (value == 0)
+        {
+          data[i] = 255;
+        }
+        else
+        {
+          data[i] = 205;
+        }
+      }
+    }
+    var mapData = Convert.ToBase64String(data);
+
     await LgdxApiClient.Navigation.Realms[Id!.Value].Slam.Complete.PostAsync(new()
     {
       Resolution = SlamMapMetadata.Resolution,
       OriginX = SlamMapMetadata.OriginX,
       OriginY = SlamMapMetadata.OriginY,
       OriginRotation = SlamMapMetadata.OriginRotation,
-      Map = mapData
+      Map = mapData,
+      MapWidth = SlamMapMetadata.MapWidth,
+      MapHeight = SlamMapMetadata.MapHeight,
     });
     CachedRealmService.ClearCache(Id!.Value);
     NavigationManager.NavigateTo(AppRoutes.Navigation.Realms.Index + $"/{Id}");
@@ -143,6 +168,9 @@ public partial class Slam : ComponentBase, IDisposable
         SlamMapMetadata.OriginX = slamData.MapData.Origin.X;
         SlamMapMetadata.OriginY = slamData.MapData.Origin.Y;
         SlamMapMetadata.OriginRotation = slamData.MapData.Origin.Rotation;
+        SlamMapMetadata.MapData = slamData.MapData.Data;
+        SlamMapMetadata.MapWidth = (int)slamData.MapData.Width;
+        SlamMapMetadata.MapHeight = (int)slamData.MapData.Height;
         await JSRuntime.InvokeVoidAsync("UpdateSlamMapSpecification", slamData.MapData.Resolution, slamData.MapData.Origin.X, slamData.MapData.Origin.Y, slamData.MapData.Origin.Rotation);
         await JSRuntime.InvokeVoidAsync("UpdateSlamMap", slamData.MapData.Width, slamData.MapData.Height, slamData.MapData.Data);
       }

@@ -561,7 +561,7 @@ function UpdateSlamMapSpecification(resolution, originX, originY, originRotation
 function UpdateSlamMap(width, height, mapData) 
 {
   // Draw Map
-  let canvas = document.getElementById("navigation-slam-map-data");
+  let canvas = document.getElementById("navigation-map-hidden-canvas");
   canvas.width = width;
   canvas.height = height;
   let ctx = canvas.getContext("2d");
@@ -590,6 +590,10 @@ function UpdateSlamMap(width, height, mapData)
   MapBackgroundObj.src = canvas.toDataURL("image/png");
   MapBackground.width(width);
   MapBackground.height(height);
+  const div = document.getElementById('navigation-map-container');
+  const divRect = div.getBoundingClientRect();
+  MapLayer.offsetX(-(divRect.width / 2));
+  MapLayer.offsetY(-(divRect.height / 2));
   _internalOnResize();
   _internalRulerUpdate();
 }
@@ -687,10 +691,3 @@ function SlamMapSetGoalStop()
   MapStage.off('touchend', _internalSlamMapSetGoalEndHandler);
   MapStage.draggable(true);
 }
-
-function SlamUpdateMap()
-{
-  let img = MapBackgroundObj.src;
-  img = img.replace("data:image/png;base64,", "");
-  MapDotNetObject.invokeMethodAsync('UpdateRealmStage2', img);
-} 

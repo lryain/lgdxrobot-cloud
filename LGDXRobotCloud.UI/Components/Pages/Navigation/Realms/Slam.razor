@@ -32,7 +32,6 @@
   <!-- Map -->
   <div id="navigation-map-container" class="col">
     <div id="navigation-map-canvas"></div>
-    <img id="navigation-map-image" class="d-none" src="" />
 
     @if (SelectedRobot != null && SelectedRobot.RobotStatus != RobotStatus.Offline)
     {
@@ -80,7 +79,7 @@
       1m
     </div>
 
-    <canvas id="navigation-slam-map-data" class="d-none" style="display: none;"></canvas>
+    <canvas id="navigation-map-hidden-canvas" class="d-none" style="display: none;"></canvas>
   </div>
   <!-- Sidebar -->
   <div id="navigation-map-sidebar" class="col-sm-12 pe-sm-0 pe-md-2 py-sm-0 py-md-2">

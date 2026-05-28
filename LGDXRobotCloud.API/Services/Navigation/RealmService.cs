@@ -178,6 +178,7 @@ public class RealmService(
     return result;
   }
 
+  // For SLAM
   public async Task<bool> UpdateRealmMapAsync(int id, RealmMapUpdateBusinessModel updateModel)
   {
     bool result = await _context.Realms
@@ -186,6 +187,8 @@ public class RealmService(
         .SetProperty(m => m.Map, Convert.FromBase64String(updateModel.Map))
         .SetProperty(m => m.MapWidth, updateModel.MapWidth)
         .SetProperty(m => m.MapHeight, updateModel.MapHeight)
+        .SetProperty(m => m.KeepoutMask, [])
+        .SetProperty(m => m.SpeedMask, [])
         .SetProperty(m => m.Resolution, updateModel.Resolution)
         .SetProperty(m => m.OriginX, updateModel.OriginX)
         .SetProperty(m => m.OriginY, updateModel.OriginY)
