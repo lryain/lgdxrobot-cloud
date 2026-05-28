@@ -23,6 +23,33 @@ function InitSwitchRealm(dotNetObject) {
 }
 
 /*
+PGM Map
+*/
+function UpdatePgmMap(width, height, canvasId, imgId, mapData) 
+{
+  // Draw Map
+  let canvas = document.getElementById(canvasId);
+  canvas.width = width;
+  canvas.height = height;
+  let ctx = canvas.getContext("2d");
+  ctx.reset();
+  let iamgeData = ctx.createImageData(width, height);
+  for (let row = 0; row < height; row++) {
+    for (let col = 0; col < width; col++) {
+      let index = row * width + col;
+      var i = (col + (row * width)) * 4;
+      iamgeData.data[i] = mapData[index];
+      iamgeData.data[i + 1] = mapData[index];
+      iamgeData.data[i + 2] = mapData[index];
+      iamgeData.data[i + 3] = 255;
+    }
+  }
+  ctx.putImageData(iamgeData, 0, 0);
+  const img = canvas.toDataURL('image/png')
+  document.getElementById(imgId).src = img
+}
+
+/*
 Advanced Select methods
 */
 const TS_CONTROL = "-ts-control";

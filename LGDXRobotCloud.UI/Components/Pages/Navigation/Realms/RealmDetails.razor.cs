@@ -9,6 +9,7 @@ using LGDXRobotCloud.Utilities.Constants;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.JSInterop;
 using Microsoft.Kiota.Abstractions;
 
 namespace LGDXRobotCloud.UI.Components.Pages.Navigation.Realms;
@@ -24,6 +25,9 @@ public partial class RealmDetails : ComponentBase
   public required ICachedRealmService CachedRealmService { get; set; }
 
   [Inject]
+  public required IJSRuntime JSRuntime { get; set; }
+
+  [Inject]
   public required ITokenService TokenService { get; set; }
 
   [Inject]
@@ -32,6 +36,7 @@ public partial class RealmDetails : ComponentBase
   [Parameter]
   public int? Id { get; set; }
 
+  private DotNetObjectReference<RealmDetails> ObjectReference = null!;
   private int CurrentRealmId { get; set; } = 0;
   private RealmDetailsViewModel RealmDetailsViewModel { get; set; } = new();
   private DeleteEntryModalViewModel DeleteEntryModalViewModel { get; set; } = new();
@@ -245,5 +250,36 @@ public partial class RealmDetails : ComponentBase
       _editContext.SetFieldCssClassProvider(_customFieldClassProvider);
     }
     await base.SetParametersAsync(ParameterView.Empty);
+  }
+
+  protected override async Task OnAfterRenderAsync(bool firstRender)
+  {
+    await base.OnAfterRenderAsync(firstRender);
+    if (firstRender)
+    {
+      ObjectReference = DotNetObjectReference.Create(this);
+      await JSRuntime.InvokeVoidAsync("InitDotNet", ObjectReference);
+      if (RealmDetailsViewModel.Map != null)
+      {
+        var tempMap = Convert.FromBase64String(RealmDetailsViewModel.Map);
+        await JSRuntime.InvokeVoidAsync("UpdatePgmMap", RealmDetailsViewModel.MapWidth, RealmDetailsViewModel.MapHeight, "map-data", "map-image", tempMap, ObjectReference);
+      }
+      if (RealmDetailsViewModel.KeepoutMask != null)
+      {
+        var tempMask = Convert.FromBase64String(RealmDetailsViewModel.KeepoutMask);
+        await JSRuntime.InvokeVoidAsync("UpdatePgmMap", RealmDetailsViewModel.MapWidth, RealmDetailsViewModel.MapHeight, "keepout-mask-data", "keepout-mask-image", tempMask, ObjectReference);
+      }
+      if (RealmDetailsViewModel.SpeedMask != null)
+      {
+        var tempMask = Convert.FromBase64String(RealmDetailsViewModel.SpeedMask);
+        await JSRuntime.InvokeVoidAsync("UpdatePgmMap", RealmDetailsViewModel.MapWidth, RealmDetailsViewModel.MapHeight, "speed-mask-data", "speed-mask-image", tempMask, ObjectReference);
+      }
+    }
+  }
+
+  public void Dispose()
+  {
+    ObjectReference?.Dispose();
+    GC.SuppressFinalize(this);
   }
 }

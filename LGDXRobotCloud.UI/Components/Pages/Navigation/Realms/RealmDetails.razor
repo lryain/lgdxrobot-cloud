@@ -78,7 +78,8 @@
               <div class="col">
                 @if (RealmDetailsViewModel.Map != null)
                 {
-                  <img class="mx-auto d-block mb-2" src="data:image/png;base64, @RealmDetailsViewModel.Map" />
+                  <canvas id="map-data" class="d-none" style="display: none;"></canvas>
+                  <img id="map-image" class="mb-2" />
                 }
                 <InputFile id="@nameof(RealmDetailsViewModel.SelectedMap)" class="form-control" OnChange="LoadMap"
                   accept=".pgm" />
@@ -92,7 +93,8 @@
               <div class="col">
                 @if (RealmDetailsViewModel.KeepoutMask != null)
                 {
-                  <img class="mx-auto d-block mb-2" src="data:image/png;base64, @RealmDetailsViewModel.KeepoutMask" />
+                  <canvas id="keepout-mask-data" class="d-none" style="display: none;"></canvas>
+                  <img id="keepout-mask-image" class="mb-2" />
                 }
                 <InputFile id="@nameof(RealmDetailsViewModel.SelectedKeepoutMask)" class="form-control" OnChange="LoadSelectedKeepoutMask"
                   accept=".pgm" />
@@ -106,7 +108,8 @@
               <div class="col">
                 @if (RealmDetailsViewModel.SpeedMask != null)
                 {
-                  <img class="mx-auto d-block mb-2" src="data:image/png;base64, @RealmDetailsViewModel.SpeedMask" />
+                  <canvas id="speed-mask-data" class="d-none" style="display: none;"></canvas>
+                  <img id="speed-mask-image" class="mb-2" />
                 }
                 <InputFile id="@nameof(RealmDetailsViewModel.SelectedSpeedMask)" class="form-control" OnChange="LoadSelectedSpeedMask"
                   accept=".pgm" />
@@ -197,4 +200,4 @@
       </ul>
     </DeleteEntryModal>
   }
-  </AuthorizeView>
+</AuthorizeView>
