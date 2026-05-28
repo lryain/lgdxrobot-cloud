@@ -34,6 +34,7 @@ public partial class WaypointDetails : ComponentBase
   [SupplyParameterFromQuery]
   private string? ReturnUrl { get; set; }
 
+  bool HasRouteTrafficControl { get; set; } = false;
   private WaypointDetailsViewModel WaypointDetailsViewModel { get; set; } = new();
   private DeleteEntryModalViewModel DeleteEntryModalViewModel { get; set; } = new();
   private EditContext _editContext = null!;
@@ -41,6 +42,13 @@ public partial class WaypointDetails : ComponentBase
 
   public async Task HandleValidSubmit()
   {
+    if (HasRouteTrafficControl && WaypointDetailsViewModel.FeatureId == null)
+    {
+      WaypointDetailsViewModel.Errors = [];
+      WaypointDetailsViewModel.Errors.Add(nameof(WaypointDetailsViewModel.FeatureId), "Feature ID is required when Route Control is enabled.");
+      return;
+    }
+    
     try
     {
       int id = 0;
@@ -116,6 +124,7 @@ public partial class WaypointDetails : ComponentBase
     var settings = TokenService.GetSessionSettings(user);
     WaypointDetailsViewModel.RealmId = settings.CurrentRealmId;
     WaypointDetailsViewModel.RealmName = await CachedRealmService.GetRealmName(settings.CurrentRealmId);
+    HasRouteTrafficControl = await CachedRealmService.GetHasRouteTrafficControlAsync(settings.CurrentRealmId);
     await base.OnInitializedAsync();
   }
 

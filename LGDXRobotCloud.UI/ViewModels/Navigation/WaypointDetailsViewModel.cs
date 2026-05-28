@@ -28,7 +28,6 @@ public class WaypointDetailsViewModel : FormViewModelBase
   [Required (ErrorMessage = "Please enter a Y coordinate.")]
   public double? Y { get; set; } = null!;
 
-  [Required (ErrorMessage = "Please enter a rotation.")]
   public double? Rotation { get; set; } = null!;
 
   public bool IsDocking { get; set; }

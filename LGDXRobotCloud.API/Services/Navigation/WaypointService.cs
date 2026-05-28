@@ -90,9 +90,23 @@ public class WaypointService(
       .FirstOrDefaultAsync() 
         ?? throw new LgdxValidation400Expection(nameof(waypointCreateBusinessModel.RealmId), "Realm does not exist.");
 
-    if (realm.HasRouteControl && waypointCreateBusinessModel.FeatureId == null)
+    
+    if (realm.HasRouteControl)
     {
-      throw new LgdxValidation400Expection(nameof(waypointCreateBusinessModel.FeatureId), "Feature ID is required when the realm has route control.");
+      if (waypointCreateBusinessModel.FeatureId == null)
+      {
+        throw new LgdxValidation400Expection(nameof(waypointCreateBusinessModel.FeatureId), "Feature ID is required when the realm has route control.");
+      }
+      if (_context.Waypoints.Any(w => w.FeatureId == waypointCreateBusinessModel.FeatureId
+        && w.RealmId == realm.Id))
+      {
+        throw new LgdxValidation400Expection(nameof(waypointCreateBusinessModel.FeatureId), "Feature ID is already taken.");
+      }
+      if (_context.WaypointTraffics.Any(w => w.WaypointFromId == waypointCreateBusinessModel.FeatureId
+        && w.WaypointToId == realm.Id))
+      {
+        throw new LgdxValidation400Expection(nameof(waypointCreateBusinessModel.FeatureId), "Feature ID is already taken.");
+      }
     }
     
     var waypoint = new Waypoint {
@@ -143,9 +157,22 @@ public class WaypointService(
       .FirstOrDefaultAsync() 
         ?? throw new LgdxValidation400Expection(nameof(waypoint.RealmId), "Realm does not exist.");
 
-    if (realm.HasRouteControl && waypointUpdateBusinessModel.FeatureId == null)
+    if (realm.HasRouteControl)
     {
-      throw new LgdxValidation400Expection(nameof(waypointUpdateBusinessModel.FeatureId), "Feature ID is required when the realm has route control.");
+      if (waypointUpdateBusinessModel.FeatureId == null)
+      {
+        throw new LgdxValidation400Expection(nameof(waypointUpdateBusinessModel.FeatureId), "Feature ID is required when the realm has route control.");
+      }
+      if (_context.Waypoints.Any(w => w.FeatureId == waypointUpdateBusinessModel.FeatureId
+        && w.RealmId == realm.Id))
+      {
+        throw new LgdxValidation400Expection(nameof(waypointUpdateBusinessModel.FeatureId), "Feature ID is already taken.");
+      }
+      if (_context.WaypointTraffics.Any(w => w.WaypointFromId == waypointUpdateBusinessModel.FeatureId
+        && w.WaypointToId == realm.Id))
+      {
+        throw new LgdxValidation400Expection(nameof(waypointUpdateBusinessModel.FeatureId), "Feature ID is already taken.");
+      }
     }
 
     waypoint.Name = waypointUpdateBusinessModel.Name;

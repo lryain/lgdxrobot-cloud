@@ -14,7 +14,7 @@ public interface ICachedRealmService
   void ClearCache(int realmId);
 
   Task<string> GetRealmName(int realmId);
-  Task<bool> GetHasWaypointTrafficControlAsync(int realmId);
+  Task<bool> GetHasRouteTrafficControlAsync(int realmId);
 }
 
 public class CachedRealmService (
@@ -102,7 +102,7 @@ public class CachedRealmService (
     return curremtRealm?.Name ?? string.Empty;
   }
 
-  public async Task<bool> GetHasWaypointTrafficControlAsync(int realmId)
+  public async Task<bool> GetHasRouteTrafficControlAsync(int realmId)
   {
     if (realmId == 0)
     {
