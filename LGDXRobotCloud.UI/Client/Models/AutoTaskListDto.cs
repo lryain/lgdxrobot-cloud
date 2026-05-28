@@ -182,12 +182,7 @@ namespace LGDXRobotCloud.UI.Client.Models
                     writer.WriteObjectValue<global::LGDXRobotCloud.UI.Client.Models.RobotSearchDto>(null, RobotSearchDto);
                 }
             }
-
-      public static implicit operator AutoTaskListDto_assignedRobot(RobotSearchDto v)
-      {
-        throw new NotImplementedException();
-      }
-    }
+        }
     }
 }
 #pragma warning restore CS0618

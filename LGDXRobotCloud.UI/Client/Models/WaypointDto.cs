@@ -14,14 +14,20 @@ namespace LGDXRobotCloud.UI.Client.Models
     {
         /// <summary>Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.</summary>
         public IDictionary<string, object> AdditionalData { get; set; }
-        /// <summary>The hasCharger property</summary>
-        public bool? HasCharger { get; set; }
+        /// <summary>The className property</summary>
+#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
+#nullable enable
+        public string? ClassName { get; set; }
+#nullable restore
+#else
+        public string ClassName { get; set; }
+#endif
+        /// <summary>The featureId property</summary>
+        public int? FeatureId { get; set; }
         /// <summary>The id property</summary>
         public int? Id { get; set; }
-        /// <summary>The isParking property</summary>
-        public bool? IsParking { get; set; }
-        /// <summary>The isReserved property</summary>
-        public bool? IsReserved { get; set; }
+        /// <summary>The isDocking property</summary>
+        public bool? IsDocking { get; set; }
         /// <summary>The name property</summary>
 #if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
 #nullable enable
@@ -69,10 +75,10 @@ namespace LGDXRobotCloud.UI.Client.Models
         {
             return new Dictionary<string, Action<IParseNode>>
             {
-                { "hasCharger", n => { HasCharger = n.GetBoolValue(); } },
+                { "className", n => { ClassName = n.GetStringValue(); } },
+                { "featureId", n => { FeatureId = n.GetIntValue(); } },
                 { "id", n => { Id = n.GetIntValue(); } },
-                { "isParking", n => { IsParking = n.GetBoolValue(); } },
-                { "isReserved", n => { IsReserved = n.GetBoolValue(); } },
+                { "isDocking", n => { IsDocking = n.GetBoolValue(); } },
                 { "name", n => { Name = n.GetStringValue(); } },
                 { "realm", n => { Realm = n.GetObjectValue<global::LGDXRobotCloud.UI.Client.Models.RealmSearchDto>(global::LGDXRobotCloud.UI.Client.Models.RealmSearchDto.CreateFromDiscriminatorValue); } },
                 { "rotation", n => { Rotation = n.GetDoubleValue(); } },
@@ -87,10 +93,10 @@ namespace LGDXRobotCloud.UI.Client.Models
         public virtual void Serialize(ISerializationWriter writer)
         {
             if(ReferenceEquals(writer, null)) throw new ArgumentNullException(nameof(writer));
-            writer.WriteBoolValue("hasCharger", HasCharger);
+            writer.WriteStringValue("className", ClassName);
+            writer.WriteIntValue("featureId", FeatureId);
             writer.WriteIntValue("id", Id);
-            writer.WriteBoolValue("isParking", IsParking);
-            writer.WriteBoolValue("isReserved", IsReserved);
+            writer.WriteBoolValue("isDocking", IsDocking);
             writer.WriteStringValue("name", Name);
             writer.WriteObjectValue<global::LGDXRobotCloud.UI.Client.Models.RealmSearchDto>("realm", Realm);
             writer.WriteDoubleValue("rotation", Rotation);

@@ -12,10 +12,20 @@ namespace LGDXRobotCloud.UI.Client.Models
     public partial class WaypointTrafficDto : IAdditionalDataHolder, IParsable
     #pragma warning restore CS1591
     {
+        /// <summary>The absoluteSpeedLimit property</summary>
+        public double? AbsoluteSpeedLimit { get; set; }
         /// <summary>Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.</summary>
         public IDictionary<string, object> AdditionalData { get; set; }
+        /// <summary>The cost property</summary>
+        public double? Cost { get; set; }
+        /// <summary>The featureId property</summary>
+        public int? FeatureId { get; set; }
         /// <summary>The id property</summary>
         public int? Id { get; set; }
+        /// <summary>The overridable property</summary>
+        public bool? Overridable { get; set; }
+        /// <summary>The speedLimit property</summary>
+        public double? SpeedLimit { get; set; }
         /// <summary>The waypointFromId property</summary>
         public int? WaypointFromId { get; set; }
         /// <summary>The waypointToId property</summary>
@@ -45,7 +55,12 @@ namespace LGDXRobotCloud.UI.Client.Models
         {
             return new Dictionary<string, Action<IParseNode>>
             {
+                { "absoluteSpeedLimit", n => { AbsoluteSpeedLimit = n.GetDoubleValue(); } },
+                { "cost", n => { Cost = n.GetDoubleValue(); } },
+                { "featureId", n => { FeatureId = n.GetIntValue(); } },
                 { "id", n => { Id = n.GetIntValue(); } },
+                { "overridable", n => { Overridable = n.GetBoolValue(); } },
+                { "speedLimit", n => { SpeedLimit = n.GetDoubleValue(); } },
                 { "waypointFromId", n => { WaypointFromId = n.GetIntValue(); } },
                 { "waypointToId", n => { WaypointToId = n.GetIntValue(); } },
             };
@@ -57,7 +72,12 @@ namespace LGDXRobotCloud.UI.Client.Models
         public virtual void Serialize(ISerializationWriter writer)
         {
             if(ReferenceEquals(writer, null)) throw new ArgumentNullException(nameof(writer));
+            writer.WriteDoubleValue("absoluteSpeedLimit", AbsoluteSpeedLimit);
+            writer.WriteDoubleValue("cost", Cost);
+            writer.WriteIntValue("featureId", FeatureId);
             writer.WriteIntValue("id", Id);
+            writer.WriteBoolValue("overridable", Overridable);
+            writer.WriteDoubleValue("speedLimit", SpeedLimit);
             writer.WriteIntValue("waypointFromId", WaypointFromId);
             writer.WriteIntValue("waypointToId", WaypointToId);
             writer.WriteAdditionalData(AdditionalData);

@@ -76,9 +76,9 @@
             <div class="mb-3 row">
               <label class="col-3 col-form-label" for="@nameof(RealmDetailsViewModel.SelectedImage)">Image</label>
               <div class="col">
-                @if (RealmDetailsViewModel.Image != null)
+                @if (RealmDetailsViewModel.Map != null)
                 {
-                  <img class="mx-auto d-block mb-2" src="data:image/png;base64, @RealmDetailsViewModel.Image" />
+                  <img class="mx-auto d-block mb-2" src="data:image/png;base64, @RealmDetailsViewModel.Map" />
                 }
                 <InputFile id="@nameof(RealmDetailsViewModel.SelectedImage)" class="form-control" OnChange="LoadImage"
                   accept=".png" />

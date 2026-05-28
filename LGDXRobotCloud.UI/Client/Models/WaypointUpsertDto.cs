@@ -9,43 +9,57 @@ namespace LGDXRobotCloud.UI.Client.Models
 {
     [global::System.CodeDom.Compiler.GeneratedCode("Kiota", "1.0.0")]
     #pragma warning disable CS1591
-    public partial class WaypointTrafficUpdateDto : IAdditionalDataHolder, IParsable
+    public partial class WaypointUpsertDto : IAdditionalDataHolder, IParsable
     #pragma warning restore CS1591
     {
-        /// <summary>The absoluteSpeedLimit property</summary>
-        public double? AbsoluteSpeedLimit { get; set; }
         /// <summary>Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.</summary>
         public IDictionary<string, object> AdditionalData { get; set; }
-        /// <summary>The cost property</summary>
-        public double? Cost { get; set; }
+        /// <summary>The className property</summary>
+#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
+#nullable enable
+        public string? ClassName { get; set; }
+#nullable restore
+#else
+        public string ClassName { get; set; }
+#endif
         /// <summary>The featureId property</summary>
         public int? FeatureId { get; set; }
         /// <summary>The id property</summary>
         public int? Id { get; set; }
-        /// <summary>The overridable property</summary>
-        public bool? Overridable { get; set; }
-        /// <summary>The speedLimit property</summary>
-        public double? SpeedLimit { get; set; }
-        /// <summary>The waypointFromId property</summary>
-        public int? WaypointFromId { get; set; }
-        /// <summary>The waypointToId property</summary>
-        public int? WaypointToId { get; set; }
+        /// <summary>The isDocking property</summary>
+        public bool? IsDocking { get; set; }
+        /// <summary>The name property</summary>
+#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
+#nullable enable
+        public string? Name { get; set; }
+#nullable restore
+#else
+        public string Name { get; set; }
+#endif
+        /// <summary>The realmId property</summary>
+        public int? RealmId { get; set; }
+        /// <summary>The rotation property</summary>
+        public double? Rotation { get; set; }
+        /// <summary>The x property</summary>
+        public double? X { get; set; }
+        /// <summary>The y property</summary>
+        public double? Y { get; set; }
         /// <summary>
-        /// Instantiates a new <see cref="global::LGDXRobotCloud.UI.Client.Models.WaypointTrafficUpdateDto"/> and sets the default values.
+        /// Instantiates a new <see cref="global::LGDXRobotCloud.UI.Client.Models.WaypointUpsertDto"/> and sets the default values.
         /// </summary>
-        public WaypointTrafficUpdateDto()
+        public WaypointUpsertDto()
         {
             AdditionalData = new Dictionary<string, object>();
         }
         /// <summary>
         /// Creates a new instance of the appropriate class based on discriminator value
         /// </summary>
-        /// <returns>A <see cref="global::LGDXRobotCloud.UI.Client.Models.WaypointTrafficUpdateDto"/></returns>
+        /// <returns>A <see cref="global::LGDXRobotCloud.UI.Client.Models.WaypointUpsertDto"/></returns>
         /// <param name="parseNode">The parse node to use to read the discriminator value and create the object</param>
-        public static global::LGDXRobotCloud.UI.Client.Models.WaypointTrafficUpdateDto CreateFromDiscriminatorValue(IParseNode parseNode)
+        public static global::LGDXRobotCloud.UI.Client.Models.WaypointUpsertDto CreateFromDiscriminatorValue(IParseNode parseNode)
         {
             if(ReferenceEquals(parseNode, null)) throw new ArgumentNullException(nameof(parseNode));
-            return new global::LGDXRobotCloud.UI.Client.Models.WaypointTrafficUpdateDto();
+            return new global::LGDXRobotCloud.UI.Client.Models.WaypointUpsertDto();
         }
         /// <summary>
         /// The deserialization information for the current model
@@ -55,14 +69,15 @@ namespace LGDXRobotCloud.UI.Client.Models
         {
             return new Dictionary<string, Action<IParseNode>>
             {
-                { "absoluteSpeedLimit", n => { AbsoluteSpeedLimit = n.GetDoubleValue(); } },
-                { "cost", n => { Cost = n.GetDoubleValue(); } },
+                { "className", n => { ClassName = n.GetStringValue(); } },
                 { "featureId", n => { FeatureId = n.GetIntValue(); } },
                 { "id", n => { Id = n.GetIntValue(); } },
-                { "overridable", n => { Overridable = n.GetBoolValue(); } },
-                { "speedLimit", n => { SpeedLimit = n.GetDoubleValue(); } },
-                { "waypointFromId", n => { WaypointFromId = n.GetIntValue(); } },
-                { "waypointToId", n => { WaypointToId = n.GetIntValue(); } },
+                { "isDocking", n => { IsDocking = n.GetBoolValue(); } },
+                { "name", n => { Name = n.GetStringValue(); } },
+                { "realmId", n => { RealmId = n.GetIntValue(); } },
+                { "rotation", n => { Rotation = n.GetDoubleValue(); } },
+                { "x", n => { X = n.GetDoubleValue(); } },
+                { "y", n => { Y = n.GetDoubleValue(); } },
             };
         }
         /// <summary>
@@ -72,14 +87,15 @@ namespace LGDXRobotCloud.UI.Client.Models
         public virtual void Serialize(ISerializationWriter writer)
         {
             if(ReferenceEquals(writer, null)) throw new ArgumentNullException(nameof(writer));
-            writer.WriteDoubleValue("absoluteSpeedLimit", AbsoluteSpeedLimit);
-            writer.WriteDoubleValue("cost", Cost);
+            writer.WriteStringValue("className", ClassName);
             writer.WriteIntValue("featureId", FeatureId);
             writer.WriteIntValue("id", Id);
-            writer.WriteBoolValue("overridable", Overridable);
-            writer.WriteDoubleValue("speedLimit", SpeedLimit);
-            writer.WriteIntValue("waypointFromId", WaypointFromId);
-            writer.WriteIntValue("waypointToId", WaypointToId);
+            writer.WriteBoolValue("isDocking", IsDocking);
+            writer.WriteStringValue("name", Name);
+            writer.WriteIntValue("realmId", RealmId);
+            writer.WriteDoubleValue("rotation", Rotation);
+            writer.WriteDoubleValue("x", X);
+            writer.WriteDoubleValue("y", Y);
             writer.WriteAdditionalData(AdditionalData);
         }
     }

@@ -12,7 +12,7 @@ public record WaypointTrafficDisplay
 
 public class MapEditorViewModel : FormViewModelBase
 {
-  public List<WaypointListDto> Waypoints { get; set; } = [];
+  public List<WaypointDto> Waypoints { get; set; } = [];
 
   public List<WaypointTrafficDto> WaypointTraffics { get; set; } = [];
 

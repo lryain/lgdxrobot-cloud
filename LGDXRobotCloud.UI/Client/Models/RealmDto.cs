@@ -26,14 +26,26 @@ namespace LGDXRobotCloud.UI.Client.Models
         public bool? HasRouteControl { get; set; }
         /// <summary>The id property</summary>
         public int? Id { get; set; }
-        /// <summary>The image property</summary>
+        /// <summary>The keepoutMask property</summary>
 #if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
 #nullable enable
-        public string? Image { get; set; }
+        public string? KeepoutMask { get; set; }
 #nullable restore
 #else
-        public string Image { get; set; }
+        public string KeepoutMask { get; set; }
 #endif
+        /// <summary>The map property</summary>
+#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
+#nullable enable
+        public string? Map { get; set; }
+#nullable restore
+#else
+        public string Map { get; set; }
+#endif
+        /// <summary>The mapHeight property</summary>
+        public int? MapHeight { get; set; }
+        /// <summary>The mapWidth property</summary>
+        public int? MapWidth { get; set; }
         /// <summary>The name property</summary>
 #if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
 #nullable enable
@@ -50,6 +62,14 @@ namespace LGDXRobotCloud.UI.Client.Models
         public double? OriginY { get; set; }
         /// <summary>The resolution property</summary>
         public double? Resolution { get; set; }
+        /// <summary>The speedMask property</summary>
+#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
+#nullable enable
+        public string? SpeedMask { get; set; }
+#nullable restore
+#else
+        public string SpeedMask { get; set; }
+#endif
         /// <summary>
         /// Instantiates a new <see cref="global::LGDXRobotCloud.UI.Client.Models.RealmDto"/> and sets the default values.
         /// </summary>
@@ -78,12 +98,16 @@ namespace LGDXRobotCloud.UI.Client.Models
                 { "description", n => { Description = n.GetStringValue(); } },
                 { "hasRouteControl", n => { HasRouteControl = n.GetBoolValue(); } },
                 { "id", n => { Id = n.GetIntValue(); } },
-                { "image", n => { Image = n.GetStringValue(); } },
+                { "keepoutMask", n => { KeepoutMask = n.GetStringValue(); } },
+                { "map", n => { Map = n.GetStringValue(); } },
+                { "mapHeight", n => { MapHeight = n.GetIntValue(); } },
+                { "mapWidth", n => { MapWidth = n.GetIntValue(); } },
                 { "name", n => { Name = n.GetStringValue(); } },
                 { "originRotation", n => { OriginRotation = n.GetDoubleValue(); } },
                 { "originX", n => { OriginX = n.GetDoubleValue(); } },
                 { "originY", n => { OriginY = n.GetDoubleValue(); } },
                 { "resolution", n => { Resolution = n.GetDoubleValue(); } },
+                { "speedMask", n => { SpeedMask = n.GetStringValue(); } },
             };
         }
         /// <summary>
@@ -96,12 +120,16 @@ namespace LGDXRobotCloud.UI.Client.Models
             writer.WriteStringValue("description", Description);
             writer.WriteBoolValue("hasRouteControl", HasRouteControl);
             writer.WriteIntValue("id", Id);
-            writer.WriteStringValue("image", Image);
+            writer.WriteStringValue("keepoutMask", KeepoutMask);
+            writer.WriteStringValue("map", Map);
+            writer.WriteIntValue("mapHeight", MapHeight);
+            writer.WriteIntValue("mapWidth", MapWidth);
             writer.WriteStringValue("name", Name);
             writer.WriteDoubleValue("originRotation", OriginRotation);
             writer.WriteDoubleValue("originX", OriginX);
             writer.WriteDoubleValue("originY", OriginY);
             writer.WriteDoubleValue("resolution", Resolution);
+            writer.WriteStringValue("speedMask", SpeedMask);
             writer.WriteAdditionalData(AdditionalData);
         }
     }

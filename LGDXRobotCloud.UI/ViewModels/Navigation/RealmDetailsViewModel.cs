@@ -19,7 +19,15 @@ public class RealmDetailsViewModel : FormViewModelBase
   [Required(ErrorMessage = "Please select a traffic control type.")]
   public bool HasRouteControl { get; set; }
 
-  public string? Image { get; set; }
+  public string? Map { get; set; }
+
+  public int? MapWidth { get; set; }
+
+  public int? MapHeight { get; set; }
+
+  public string? KeepoutMask { get; set; }
+
+  public string? SpeedMask { get; set; }
 
   public IBrowserFile SelectedImage { get; set; } = null!;
 
@@ -40,7 +48,11 @@ public static class RealmDetailsViewModelExtensions
     RealmDetailsViewModel.Name = realmDto.Name!;
     RealmDetailsViewModel.Description = realmDto.Description;
     RealmDetailsViewModel.HasRouteControl = (bool)realmDto.HasRouteControl!;
-    RealmDetailsViewModel.Image = realmDto.Image!;
+    RealmDetailsViewModel.Map = realmDto.Map;
+    RealmDetailsViewModel.MapWidth = realmDto.MapWidth;
+    RealmDetailsViewModel.MapHeight = realmDto.MapHeight;
+    RealmDetailsViewModel.KeepoutMask = realmDto.KeepoutMask;
+    RealmDetailsViewModel.SpeedMask = realmDto.SpeedMask;
     RealmDetailsViewModel.Resolution = realmDto.Resolution;
     RealmDetailsViewModel.OriginX = realmDto.OriginX;
     RealmDetailsViewModel.OriginY = realmDto.OriginY;
@@ -53,7 +65,11 @@ public static class RealmDetailsViewModelExtensions
       Name = RealmDetailsViewModel.Name,
       Description = RealmDetailsViewModel.Description,
       HasRouteControl = RealmDetailsViewModel.HasRouteControl,
-      Image = RealmDetailsViewModel.Image ?? string.Empty,
+      Map = RealmDetailsViewModel.Map ?? string.Empty,
+      MapWidth = RealmDetailsViewModel.MapWidth ?? 0,
+      MapHeight = RealmDetailsViewModel.MapHeight ?? 0,
+      KeepoutMask = RealmDetailsViewModel.KeepoutMask ?? string.Empty,
+      SpeedMask = RealmDetailsViewModel.SpeedMask ?? string.Empty,
       Resolution = RealmDetailsViewModel.Resolution ?? 0,
       OriginX = RealmDetailsViewModel.OriginX ?? 0,
       OriginY = RealmDetailsViewModel.OriginY ?? 0,
@@ -67,7 +83,11 @@ public static class RealmDetailsViewModelExtensions
       Name = RealmDetailsViewModel.Name,
       Description = RealmDetailsViewModel.Description,
       HasRouteControl = RealmDetailsViewModel.HasRouteControl,
-      Image = RealmDetailsViewModel.Image ?? string.Empty,
+      Map = RealmDetailsViewModel.Map ?? string.Empty,
+      MapWidth = RealmDetailsViewModel.MapWidth ?? 0,
+      MapHeight = RealmDetailsViewModel.MapHeight ?? 0,
+      KeepoutMask = RealmDetailsViewModel.KeepoutMask ?? string.Empty,
+      SpeedMask = RealmDetailsViewModel.SpeedMask ?? string.Empty,
       Resolution = RealmDetailsViewModel.Resolution ?? 0,
       OriginX = RealmDetailsViewModel.OriginX ?? 0,
       OriginY = RealmDetailsViewModel.OriginY ?? 0,

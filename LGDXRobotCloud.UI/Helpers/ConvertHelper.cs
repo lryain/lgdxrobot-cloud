@@ -1,5 +1,6 @@
 using LGDXRobotCloud.Data.Models.Redis;
 using LGDXRobotCloud.UI.Client.Models;
+using static LGDXRobotCloud.UI.Client.Models.AutoTaskListDto;
 
 namespace LGDXRobotCloud.UI.Helpers;
 
@@ -19,9 +20,13 @@ public static class ConvertHelper
         Id = autoTaskUpdate.RealmId,
         Name = RealmName
       },
-      AssignedRobot = new RobotSearchDto {
-        Id = autoTaskUpdate.AssignedRobotId,
-        Name = autoTaskUpdate.AssignedRobotName
+      AssignedRobot = new AutoTaskListDto_assignedRobot
+      {
+        RobotSearchDto = new RobotSearchDto
+        {
+          Id = autoTaskUpdate.AssignedRobotId,
+          Name = autoTaskUpdate.AssignedRobotName
+        }
       },
       CurrentProgress = new ProgressSearchDto {
         Id = autoTaskUpdate.CurrentProgressId,

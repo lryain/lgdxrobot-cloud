@@ -124,7 +124,7 @@ public partial class Slam : ComponentBase, IDisposable
       OriginX = SlamMapMetadata.OriginX,
       OriginY = SlamMapMetadata.OriginY,
       OriginRotation = SlamMapMetadata.OriginRotation,
-      Image = mapData
+      Map = mapData
     });
     CachedRealmService.ClearCache(Id!.Value);
     NavigationManager.NavigateTo(AppRoutes.Navigation.Realms.Index + $"/{Id}");

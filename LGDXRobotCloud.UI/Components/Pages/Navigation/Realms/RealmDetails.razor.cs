@@ -57,7 +57,7 @@ public partial class RealmDetails : ComponentBase
         await file.OpenReadStream(LgdxApiConstants.ImageMaxSize).CopyToAsync(fs);
         fs.Close();
         var bytes = File.ReadAllBytes(path);
-        RealmDetailsViewModel.Image = Convert.ToBase64String(bytes);
+        RealmDetailsViewModel.Map = Convert.ToBase64String(bytes);
         File.Delete(path);
       }
     }

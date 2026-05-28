@@ -14,14 +14,18 @@ namespace LGDXRobotCloud.UI.Client.Models
     {
         /// <summary>Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.</summary>
         public IDictionary<string, object> AdditionalData { get; set; }
-        /// <summary>The image property</summary>
+        /// <summary>The map property</summary>
 #if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
 #nullable enable
-        public string? Image { get; set; }
+        public string? Map { get; set; }
 #nullable restore
 #else
-        public string Image { get; set; }
+        public string Map { get; set; }
 #endif
+        /// <summary>The mapHeight property</summary>
+        public int? MapHeight { get; set; }
+        /// <summary>The mapWidth property</summary>
+        public int? MapWidth { get; set; }
         /// <summary>The originRotation property</summary>
         public double? OriginRotation { get; set; }
         /// <summary>The originX property</summary>
@@ -55,7 +59,9 @@ namespace LGDXRobotCloud.UI.Client.Models
         {
             return new Dictionary<string, Action<IParseNode>>
             {
-                { "image", n => { Image = n.GetStringValue(); } },
+                { "map", n => { Map = n.GetStringValue(); } },
+                { "mapHeight", n => { MapHeight = n.GetIntValue(); } },
+                { "mapWidth", n => { MapWidth = n.GetIntValue(); } },
                 { "originRotation", n => { OriginRotation = n.GetDoubleValue(); } },
                 { "originX", n => { OriginX = n.GetDoubleValue(); } },
                 { "originY", n => { OriginY = n.GetDoubleValue(); } },
@@ -69,7 +75,9 @@ namespace LGDXRobotCloud.UI.Client.Models
         public virtual void Serialize(ISerializationWriter writer)
         {
             if(ReferenceEquals(writer, null)) throw new ArgumentNullException(nameof(writer));
-            writer.WriteStringValue("image", Image);
+            writer.WriteStringValue("map", Map);
+            writer.WriteIntValue("mapHeight", MapHeight);
+            writer.WriteIntValue("mapWidth", MapWidth);
             writer.WriteDoubleValue("originRotation", OriginRotation);
             writer.WriteDoubleValue("originX", OriginX);
             writer.WriteDoubleValue("originY", OriginY);

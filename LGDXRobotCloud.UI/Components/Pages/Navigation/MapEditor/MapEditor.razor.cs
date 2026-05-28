@@ -61,7 +61,7 @@ public partial class MapEditor : ComponentBase, IDisposable
   {
     IsSuccess = false,
   };
-  private WaypointListDto? SelectedWaypoint { get; set; }
+  private WaypointDto? SelectedWaypoint { get; set; }
   private MapEditorMode MapEditorMode { get; set; } = MapEditorMode.Normal;
   private MapEditorError MapEditorError { get; set; } = MapEditorError.None;
   private int SelectedFromWaypointId { get; set; } = 0;
@@ -254,7 +254,7 @@ public partial class MapEditor : ComponentBase, IDisposable
           var waypoint = await LgdxApiClient.Navigation.Waypoints[int.Parse(UpdateWaypointId)].GetAsync();
           if (waypoint != null)
           {
-            var newWaypoint = new WaypointListDto
+            var newWaypoint = new WaypointDto
             {
               Id = waypoint.Id,
               Name = waypoint.Name,

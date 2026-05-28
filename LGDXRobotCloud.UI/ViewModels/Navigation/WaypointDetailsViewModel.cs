@@ -15,6 +15,11 @@ public class WaypointDetailsViewModel : FormViewModelBase
   [Required (ErrorMessage = "A realm is required.")]
   public int? RealmId { get; set; } = null;
 
+  public int? FeatureId { get; set; }
+
+  [MaxLength(100)]
+  public string? ClassName { get; set; }
+
   public string? RealmName { get; set; }
   
   [Required (ErrorMessage = "Please enter a X coordinate.")]
@@ -26,11 +31,7 @@ public class WaypointDetailsViewModel : FormViewModelBase
   [Required (ErrorMessage = "Please enter a rotation.")]
   public double? Rotation { get; set; } = null!;
 
-  public bool IsParking { get; set; }
-
-  public bool HasCharger { get; set; }
-
-  public bool IsReserved { get; set; }
+  public bool IsDocking { get; set; }
 }
 
 public static class WaypointDetailsViewModelExtensions
@@ -41,24 +42,24 @@ public static class WaypointDetailsViewModelExtensions
     WaypointDetailsViewModel.Name = waypointDto.Name!;
     WaypointDetailsViewModel.RealmId = waypointDto.Realm!.Id;
     WaypointDetailsViewModel.RealmName = waypointDto.Realm!.Name;
+    WaypointDetailsViewModel.FeatureId = waypointDto.FeatureId;
+    WaypointDetailsViewModel.ClassName = waypointDto.ClassName;
     WaypointDetailsViewModel.X = waypointDto.X;
     WaypointDetailsViewModel.Y = waypointDto.Y;
     WaypointDetailsViewModel.Rotation = waypointDto.Rotation;
-    WaypointDetailsViewModel.IsParking = (bool)waypointDto.IsParking!;
-    WaypointDetailsViewModel.HasCharger = (bool)waypointDto.HasCharger!;
-    WaypointDetailsViewModel.IsReserved = (bool)waypointDto.IsReserved!;
+    WaypointDetailsViewModel.IsDocking = (bool)waypointDto.IsDocking!;
   }
 
   public static WaypointUpdateDto ToUpdateDto(this WaypointDetailsViewModel WaypointDetailsViewModel)
   {
     return new WaypointUpdateDto {
       Name = WaypointDetailsViewModel.Name,
+      FeatureId = WaypointDetailsViewModel.FeatureId,
+      ClassName = WaypointDetailsViewModel.ClassName,
       X = WaypointDetailsViewModel.X,
       Y = WaypointDetailsViewModel.Y,
       Rotation = WaypointDetailsViewModel.Rotation,
-      IsParking = WaypointDetailsViewModel.IsParking,
-      HasCharger = WaypointDetailsViewModel.HasCharger,
-      IsReserved = WaypointDetailsViewModel.IsReserved
+      IsDocking = WaypointDetailsViewModel.IsDocking,
     };
   }
 
@@ -67,12 +68,12 @@ public static class WaypointDetailsViewModelExtensions
     return new WaypointCreateDto {
       Name = WaypointDetailsViewModel.Name,
       RealmId = WaypointDetailsViewModel.RealmId,
+      FeatureId = WaypointDetailsViewModel.FeatureId,
+      ClassName = WaypointDetailsViewModel.ClassName,
       X = WaypointDetailsViewModel.X,
       Y = WaypointDetailsViewModel.Y,
       Rotation = WaypointDetailsViewModel.Rotation,
-      IsParking = WaypointDetailsViewModel.IsParking,
-      HasCharger = WaypointDetailsViewModel.HasCharger,
-      IsReserved = WaypointDetailsViewModel.IsReserved
+      IsDocking = WaypointDetailsViewModel.IsDocking,
     };
   }
 }
