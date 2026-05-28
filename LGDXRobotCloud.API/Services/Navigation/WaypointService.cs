@@ -138,10 +138,10 @@ public class WaypointService(
       .FirstOrDefaultAsync()
       ?? throw new LgdxNotFound404Exception();
 
-    var realm = await _context.Realms
+    var realm = await _context.Realms.AsNoTracking()
       .Where(r => r.Id == waypoint.RealmId)
-      .FirstOrDefaultAsync()
-      ?? throw new LgdxNotFound404Exception();
+      .FirstOrDefaultAsync() 
+        ?? throw new LgdxValidation400Expection(nameof(waypoint.RealmId), "Realm does not exist.");
 
     if (realm.HasRouteControl && waypointUpdateBusinessModel.FeatureId == null)
     {
