@@ -19,7 +19,7 @@ public class RealmServiceTests
     {
       Id = 1,
       Name = "Realm 1",
-      Image = [],
+      Map = [],
       Resolution = 1,
       OriginX = 0,
       OriginY = 0,
@@ -29,7 +29,7 @@ public class RealmServiceTests
     {
       Id = 2,
       Name = "Realm 2",
-      Image = [],
+      Map = [],
       Resolution = 1,
       OriginX = 0,
       OriginY = 0,
@@ -39,7 +39,7 @@ public class RealmServiceTests
     {
       Id = 3,
       Name = "Realm 3",
-      Image = [],
+      Map = [],
       Resolution = 1,
       OriginX = 0,
       OriginY = 0,
@@ -49,7 +49,7 @@ public class RealmServiceTests
     {
       Id = 4,
       Name = "Realm 4",
-      Image = [],
+      Map = [],
       Resolution = 1,
       OriginX = 0,
       OriginY = 0,
@@ -192,7 +192,7 @@ public class RealmServiceTests
       Name = "Test Realm",
       Description = "Description",
       HasRouteControl = false,
-      Image = "",
+      Map = "",
       Resolution = 0.05,
       OriginX = 0.1,
       OriginY = 0.2,

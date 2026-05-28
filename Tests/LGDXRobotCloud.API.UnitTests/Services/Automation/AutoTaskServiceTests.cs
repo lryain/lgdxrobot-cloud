@@ -186,7 +186,7 @@ public class AutoTaskServiceTests
     {
       Id = 1,
       Name = "Realm1",
-      Image = [],
+      Map = [],
       Resolution = 1,
       OriginX = 0,
       OriginY = 0,
@@ -330,9 +330,7 @@ public class AutoTaskServiceTests
       Assert.Equal(e.Waypoint!.X, a.Waypoint!.X);
       Assert.Equal(e.Waypoint!.Y, a.Waypoint!.Y);
       Assert.Equal(e.Waypoint!.Rotation, a.Waypoint!.Rotation);
-      Assert.Equal(e.Waypoint!.IsParking, a.Waypoint!.IsParking);
-      Assert.Equal(e.Waypoint!.HasCharger, a.Waypoint!.HasCharger);
-      Assert.Equal(e.Waypoint!.IsReserved, a.Waypoint!.IsReserved);
+      Assert.Equal(e.Waypoint!.IsDocking, a.Waypoint!.IsDocking);
     });
   }
 

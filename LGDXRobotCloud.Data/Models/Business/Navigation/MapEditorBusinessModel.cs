@@ -4,7 +4,7 @@ namespace LGDXRobotCloud.Data.Models.Business.Navigation;
 
 public record MapEditorBusinessModel
 {
-  public IEnumerable<WaypointListBusinessModel> Waypoints { get; set; } = [];
+  public IEnumerable<WaypointBusinessModel> Waypoints { get; set; } = [];
 
   public IEnumerable<WaypointTrafficBusinessModel> WaypointTraffics { get; set; } = [];
 }

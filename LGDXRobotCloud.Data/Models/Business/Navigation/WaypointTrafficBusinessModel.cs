@@ -6,9 +6,19 @@ public record WaypointTrafficBusinessModel
 {
   public required int Id { get; set; }
 
+  public required int FeatureId { get; set; }
+
   public required int WaypointFromId { get; set; }
 
   public required int WaypointToId { get; set; }
+
+  public required bool Overridable { get; set; }
+
+  public double? Cost { get; set; }
+
+  public double? SpeedLimit { get; set; }
+
+  public double? AbsoluteSpeedLimit { get; set; }
 }
 
 public static class WaypointTrafficBusinessModelExtensions
@@ -18,8 +28,13 @@ public static class WaypointTrafficBusinessModelExtensions
     return new WaypointTrafficDto
     {
       Id = model.Id,
+      FeatureId = model.FeatureId,
       WaypointFromId = model.WaypointFromId,
       WaypointToId = model.WaypointToId,
+      Overridable = model.Overridable,
+      Cost = model.Cost,
+      SpeedLimit = model.SpeedLimit,
+      AbsoluteSpeedLimit = model.AbsoluteSpeedLimit,
     };
   }
 }

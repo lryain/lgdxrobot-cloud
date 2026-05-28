@@ -131,7 +131,7 @@ public class TriggerServiceTests
     {
       Id = 1,
       Name = "Realm1",
-      Image = [],
+      Map = [],
       Resolution = 1,
       OriginX = 0,
       OriginY = 0,

@@ -23,7 +23,7 @@ public class RobotServiceTests
     {
       Id = 1,
       Name = "Realm 1",
-      Image = [],
+      Map = [],
       Resolution = 1,
       OriginX = 0,
       OriginY = 0,

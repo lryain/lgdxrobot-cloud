@@ -4,6 +4,8 @@ namespace LGDXRobotCloud.Data.Models.DTOs.V1.Commands;
 
 public record MapEditorUpdateDto
 {
+  public IEnumerable<WaypointUpsertDto> Waypoints { get; set; } = [];
+
   public IEnumerable<WaypointTrafficUpdateDto> WaypointTraffics { get; set; } = [];
 }
 
@@ -13,6 +15,8 @@ public static class MapEditUpdateDtoExtensions
   {
     return new MapEditorUpdateBusinessModel
     {
+      Waypoints = model.Waypoints.Select(x => x.ToBusinessModel()),
+      
       WaypointTraffics = model.WaypointTraffics.Select(x => x.ToBusinessModel())
     };
   }

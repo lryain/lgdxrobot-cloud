@@ -21,9 +21,7 @@ public class WaypointServiceTests
       Y = 56,
       Rotation = 0.233,
       RealmId = 1,
-      IsParking = true,
-      HasCharger = true,
-      IsReserved = true
+      IsDocking = true,
     },
     new()
     {
@@ -33,9 +31,7 @@ public class WaypointServiceTests
       Y = 45,
       Rotation = 0.56,
       RealmId = 1,
-      IsParking = true,
-      HasCharger = false,
-      IsReserved = false
+      IsDocking = true,
     },
     new()
     {
@@ -45,9 +41,7 @@ public class WaypointServiceTests
       Y = 34,
       Rotation = 0.12,
       RealmId = 2,
-      IsParking = false,
-      HasCharger = true,
-      IsReserved = true
+      IsDocking = false,
     }
   ];
 
@@ -56,7 +50,7 @@ public class WaypointServiceTests
     {
       Id = 1,
       Name = "Realm 1",
-      Image = [],
+      Map = [],
       Resolution = 1,
       OriginX = 0,
       OriginY = 0,
@@ -66,7 +60,7 @@ public class WaypointServiceTests
     {
       Id = 2,
       Name = "Realm 2",
-      Image = [],
+      Map = [],
       Resolution = 1,
       OriginX = 0,
       OriginY = 0,
@@ -158,9 +152,7 @@ public class WaypointServiceTests
     Assert.Equal(expected.Y, actual.Y);
     Assert.Equal(expected.Rotation, actual.Rotation);
     Assert.Equal(expected.RealmId, actual.RealmId);
-    Assert.Equal(expected.IsParking, actual.IsParking);
-    Assert.Equal(expected.HasCharger, actual.HasCharger);
-    Assert.Equal(expected.IsReserved, actual.IsReserved);
+    Assert.Equal(expected.IsDocking, actual.IsDocking);
   }
 
   [Fact]
@@ -186,9 +178,7 @@ public class WaypointServiceTests
       X = 123,
       Y = 456,
       Rotation = 0.123,
-      IsParking = true,
-      HasCharger = true,
-      IsReserved = true
+      IsDocking = true,
     };
     var waypointService = new WaypointService(mockActivityLogService.Object, lgdxContext);
 
@@ -202,9 +192,7 @@ public class WaypointServiceTests
     Assert.Equal(expected.Y, actual.Y);
     Assert.Equal(expected.Rotation, actual.Rotation);
     Assert.Equal(expected.RealmId, actual.RealmId);
-    Assert.Equal(expected.IsParking, actual.IsParking);
-    Assert.Equal(expected.HasCharger, actual.HasCharger);
-    Assert.Equal(expected.IsReserved, actual.IsReserved);
+    Assert.Equal(expected.IsDocking, actual.IsDocking);
   }
 
   [Fact]
@@ -217,9 +205,7 @@ public class WaypointServiceTests
       X = 123,
       Y = 456,
       Rotation = 0.123,
-      IsParking = true,
-      HasCharger = true,
-      IsReserved = true
+      IsDocking = true,
     };
     var waypointService = new WaypointService(mockActivityLogService.Object, lgdxContext);
 
