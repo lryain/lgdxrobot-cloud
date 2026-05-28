@@ -35,6 +35,8 @@ public class RealmDetailsViewModel : FormViewModelBase
 
   public IBrowserFile SelectedSpeedMask { get; set; } = null!;
 
+  public bool ClearMap { get; set; } = false;
+
   public double? Resolution { get; set; } = null!;
 
   public double? OriginX { get; set; } = null!;

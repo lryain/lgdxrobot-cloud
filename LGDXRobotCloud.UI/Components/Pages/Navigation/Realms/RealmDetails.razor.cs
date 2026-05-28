@@ -118,63 +118,74 @@ public partial class RealmDetails : ComponentBase
 
   public async Task HandleValidSubmit()
   {
-    // Read Map File
-    try
+    if (RealmDetailsViewModel.ClearMap)
     {
-      var file = RealmDetailsViewModel.SelectedMap;
-      if (file != null)
-      {
-        var (data, width, height) = await ReadPgmFile(file);
-        RealmDetailsViewModel.Map = data;
-        RealmDetailsViewModel.MapWidth = width;
-        RealmDetailsViewModel.MapHeight = height;
-      }
+      RealmDetailsViewModel.Map = null;
+      RealmDetailsViewModel.MapWidth = null;
+      RealmDetailsViewModel.MapHeight = null;
+      RealmDetailsViewModel.KeepoutMask = null;
+      RealmDetailsViewModel.SpeedMask = null;
     }
-    catch (Exception ex)
+    else
     {
-      RealmDetailsViewModel.Errors = [];
-      RealmDetailsViewModel.Errors.Add(nameof(RealmDetailsViewModel.SelectedMap), ex.Message);
-      return;
-    }
-
-    // Read Keepout Mask File
-    try {
-      var file = RealmDetailsViewModel.SelectedKeepoutMask;
-      if (file != null)
+      // Read Map File
+      try
       {
-        var (data, width, height) = await ReadPgmFile(file);
-        RealmDetailsViewModel.KeepoutMask = data;
-        if (width != RealmDetailsViewModel.MapWidth || height != RealmDetailsViewModel.MapHeight)
+        var file = RealmDetailsViewModel.SelectedMap;
+        if (file != null)
         {
-          throw new Exception("Keepout mask size does not match map size.");
+          var (data, width, height) = await ReadPgmFile(file);
+          RealmDetailsViewModel.Map = data;
+          RealmDetailsViewModel.MapWidth = width;
+          RealmDetailsViewModel.MapHeight = height;
         }
       }
-    }
-    catch (Exception ex)
-    {
-      RealmDetailsViewModel.Errors = [];
-      RealmDetailsViewModel.Errors.Add(nameof(RealmDetailsViewModel.SelectedKeepoutMask), ex.Message);
-      return;
-    }
-
-    // Read Speed Mask File
-    try {
-      var file = RealmDetailsViewModel.SelectedSpeedMask;
-      if (file != null)
+      catch (Exception ex)
       {
-        var (data, width, height) = await ReadPgmFile(file);
-        RealmDetailsViewModel.SpeedMask = data;
-        if (width != RealmDetailsViewModel.MapWidth || height != RealmDetailsViewModel.MapHeight)
+        RealmDetailsViewModel.Errors = [];
+        RealmDetailsViewModel.Errors.Add(nameof(RealmDetailsViewModel.SelectedMap), ex.Message);
+        return;
+      }
+
+      // Read Keepout Mask File
+      try {
+        var file = RealmDetailsViewModel.SelectedKeepoutMask;
+        if (file != null)
         {
-          throw new Exception("Keepout mask size does not match map size.");
+          var (data, width, height) = await ReadPgmFile(file);
+          RealmDetailsViewModel.KeepoutMask = data;
+          if (width != RealmDetailsViewModel.MapWidth || height != RealmDetailsViewModel.MapHeight)
+          {
+            throw new Exception("Keepout mask size does not match map size.");
+          }
         }
       }
-    }
-    catch (Exception ex)
-    {
-      RealmDetailsViewModel.Errors = [];
-      RealmDetailsViewModel.Errors.Add(nameof(RealmDetailsViewModel.SelectedSpeedMask), ex.Message);
-      return;
+      catch (Exception ex)
+      {
+        RealmDetailsViewModel.Errors = [];
+        RealmDetailsViewModel.Errors.Add(nameof(RealmDetailsViewModel.SelectedKeepoutMask), ex.Message);
+        return;
+      }
+
+      // Read Speed Mask File
+      try {
+        var file = RealmDetailsViewModel.SelectedSpeedMask;
+        if (file != null)
+        {
+          var (data, width, height) = await ReadPgmFile(file);
+          RealmDetailsViewModel.SpeedMask = data;
+          if (width != RealmDetailsViewModel.MapWidth || height != RealmDetailsViewModel.MapHeight)
+          {
+            throw new Exception("Keepout mask size does not match map size.");
+          }
+        }
+      }
+      catch (Exception ex)
+      {
+        RealmDetailsViewModel.Errors = [];
+        RealmDetailsViewModel.Errors.Add(nameof(RealmDetailsViewModel.SelectedSpeedMask), ex.Message);
+        return;
+      }
     }
 
     // Save
@@ -259,17 +270,17 @@ public partial class RealmDetails : ComponentBase
     {
       ObjectReference = DotNetObjectReference.Create(this);
       await JSRuntime.InvokeVoidAsync("InitDotNet", ObjectReference);
-      if (RealmDetailsViewModel.Map != null)
+      if (!string.IsNullOrWhiteSpace(RealmDetailsViewModel.Map))
       {
         var tempMap = Convert.FromBase64String(RealmDetailsViewModel.Map);
         await JSRuntime.InvokeVoidAsync("UpdatePgmMap", RealmDetailsViewModel.MapWidth, RealmDetailsViewModel.MapHeight, "map-data", "map-image", tempMap, ObjectReference);
       }
-      if (RealmDetailsViewModel.KeepoutMask != null)
+      if (!string.IsNullOrWhiteSpace(RealmDetailsViewModel.KeepoutMask))
       {
         var tempMask = Convert.FromBase64String(RealmDetailsViewModel.KeepoutMask);
         await JSRuntime.InvokeVoidAsync("UpdatePgmMap", RealmDetailsViewModel.MapWidth, RealmDetailsViewModel.MapHeight, "keepout-mask-data", "keepout-mask-image", tempMask, ObjectReference);
       }
-      if (RealmDetailsViewModel.SpeedMask != null)
+      if (!string.IsNullOrWhiteSpace(RealmDetailsViewModel.SpeedMask))
       {
         var tempMask = Convert.FromBase64String(RealmDetailsViewModel.SpeedMask);
         await JSRuntime.InvokeVoidAsync("UpdatePgmMap", RealmDetailsViewModel.MapWidth, RealmDetailsViewModel.MapHeight, "speed-mask-data", "speed-mask-image", tempMask, ObjectReference);
