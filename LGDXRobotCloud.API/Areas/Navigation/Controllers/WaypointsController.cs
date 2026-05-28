@@ -69,10 +69,7 @@ public class WaypointsController(
   [ProducesResponseType(StatusCodes.Status404NotFound)]
   public async Task<ActionResult> UpdateWaypoint(int id, WaypointUpdateDto waypointUpdateDto)
   {
-    if (!await _waypointService.UpdateWaypointAsync(id, waypointUpdateDto.ToBusinessModel())) 
-    {
-      return NotFound();
-    }
+    await _waypointService.UpdateWaypointAsync(id, waypointUpdateDto.ToBusinessModel());
     return NoContent();
   }
 

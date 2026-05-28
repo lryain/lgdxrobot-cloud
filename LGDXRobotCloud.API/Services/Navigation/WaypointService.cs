@@ -15,7 +15,7 @@ public interface IWaypointService
   Task<(IEnumerable<WaypointListBusinessModel>, PaginationHelper)> GetWaypointsAsync(int? realmId, string? name, int pageNumber, int pageSize);
   Task<WaypointBusinessModel> GetWaypointAsync(int waypointId);
   Task<WaypointBusinessModel> CreateWaypointAsync(WaypointCreateBusinessModel waypointCreateBusinessModel);
-  Task<bool> UpdateWaypointAsync(int waypointId, WaypointUpdateBusinessModel waypointUpdateBusinessModel);
+  Task UpdateWaypointAsync(int waypointId, WaypointUpdateBusinessModel waypointUpdateBusinessModel);
   Task<bool> TestDeleteWaypointAsync(int waypointId);
   Task<bool> DeleteWaypointAsync(int waypointId);
   
@@ -89,6 +89,11 @@ public class WaypointService(
       .Where(r => r.Id == waypointCreateBusinessModel.RealmId)
       .FirstOrDefaultAsync() 
         ?? throw new LgdxValidation400Expection(nameof(waypointCreateBusinessModel.RealmId), "Realm does not exist.");
+
+    if (realm.HasRouteControl && waypointCreateBusinessModel.FeatureId == null)
+    {
+      throw new LgdxValidation400Expection(nameof(waypointCreateBusinessModel.FeatureId), "Feature ID is required when the realm has route control.");
+    }
     
     var waypoint = new Waypoint {
       Name = waypointCreateBusinessModel.Name,
@@ -126,21 +131,32 @@ public class WaypointService(
     };
   }
 
-  public async Task<bool> UpdateWaypointAsync(int waypointId, WaypointUpdateBusinessModel waypointUpdateBusinessModel)
+  public async Task UpdateWaypointAsync(int waypointId, WaypointUpdateBusinessModel waypointUpdateBusinessModel)
   {
-    bool result = await _context.Waypoints
+    var waypoint = await _context.Waypoints
       .Where(w => w.Id == waypointId)
-      .ExecuteUpdateAsync(setters => setters
-        .SetProperty(w => w.Name, waypointUpdateBusinessModel.Name)
-        .SetProperty(w => w.FeatureId, waypointUpdateBusinessModel.FeatureId)
-        .SetProperty(w => w.ClassName, waypointUpdateBusinessModel.ClassName)
-        .SetProperty(w => w.X, waypointUpdateBusinessModel.X)
-        .SetProperty(w => w.Y, waypointUpdateBusinessModel.Y)
-        .SetProperty(w => w.Rotation, waypointUpdateBusinessModel.Rotation)
-        .SetProperty(w => w.IsDocking, waypointUpdateBusinessModel.IsDocking)
-      ) == 1;
+      .FirstOrDefaultAsync()
+      ?? throw new LgdxNotFound404Exception();
 
-    if (result)
+    var realm = await _context.Realms
+      .Where(r => r.Id == waypoint.RealmId)
+      .FirstOrDefaultAsync()
+      ?? throw new LgdxNotFound404Exception();
+
+    if (realm.HasRouteControl && waypointUpdateBusinessModel.FeatureId == null)
+    {
+      throw new LgdxValidation400Expection(nameof(waypointUpdateBusinessModel.FeatureId), "Feature ID is required when the realm has route control.");
+    }
+
+    waypoint.Name = waypointUpdateBusinessModel.Name;
+    waypoint.FeatureId = waypointUpdateBusinessModel.FeatureId;
+    waypoint.ClassName = waypointUpdateBusinessModel.ClassName;
+    waypoint.X = waypointUpdateBusinessModel.X;
+    waypoint.Y = waypointUpdateBusinessModel.Y;
+    waypoint.Rotation = waypointUpdateBusinessModel.Rotation;
+    waypoint.IsDocking = waypointUpdateBusinessModel.IsDocking;
+
+    if (await _context.SaveChangesAsync() == 1)
     {
       await _activityLogService.CreateActivityLogAsync(new ActivityLogCreateBusinessModel
       {
@@ -149,7 +165,6 @@ public class WaypointService(
         Action = ActivityAction.Update,
       });
     }
-    return result;
   }
 
   public async Task<bool> TestDeleteWaypointAsync(int waypointId)
