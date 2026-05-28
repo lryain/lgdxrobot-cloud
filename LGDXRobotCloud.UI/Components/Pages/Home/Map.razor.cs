@@ -206,6 +206,11 @@ public partial class Map : ComponentBase, IAsyncDisposable
     {
       ObjectReference = DotNetObjectReference.Create(this);
       await JSRuntime.InvokeVoidAsync("InitNavigationMap", ObjectReference);
+      if (!string.IsNullOrWhiteSpace(Realm.Map))
+      {
+        var tempMap = Convert.FromBase64String(Realm.Map);
+        await JSRuntime.InvokeVoidAsync("UpdateMap", Realm.MapWidth, Realm.MapHeight, tempMap, ObjectReference);
+      }
       await RealTimeService.SubscribeToTaskUpdateQueueAsync(Realm.Id!.Value, OnAutoTaskUpdated);
       Timer = new Timer(async (state) =>
       {

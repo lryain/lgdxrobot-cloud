@@ -4,7 +4,7 @@ var MapLayer;
 var MapBackground;
 var MapBackgroundObj;
 var MapEditorMode = 0;
-const InitalScale = 3;
+const InitalScale = 2;
 
 /*
  * Dotnet Functions
@@ -23,9 +23,7 @@ function InitNavigationMap(dotNetObject)
   });
 
   // Add map image
-  const mapBackgroundImage = document.getElementById('navigation-map-image');
   MapBackgroundObj = new Image();
-  MapBackgroundObj.src = mapBackgroundImage.src;
   MapBackgroundObj.onload = () => {
     let ctx = MapLayer.getContext()._context;
     ctx.imageSmoothingEnabled = false;
@@ -34,14 +32,9 @@ function InitNavigationMap(dotNetObject)
   MapBackground = new Konva.Rect({
     x: 0,
     y: 0,
-    width: mapBackgroundImage.width,
-    height: mapBackgroundImage.height,
     draggable: false,
   });
-  MapLayer = new Konva.Layer({
-    offsetX: -divRect.width / 2 + mapBackgroundImage.width / 2,
-    offsetY: -divRect.height / 2 + mapBackgroundImage.height / 2,
-  });
+  MapLayer = new Konva.Layer({});
   MapLayer.add(MapBackground);
   MapStage.add(MapLayer);
 
@@ -66,7 +59,7 @@ function InitNavigationMap(dotNetObject)
       } 
       else 
       {
-        p.innerHTML = '';
+        p.innerHTML = 'Move the mouse on the map to see the coordinates.';
       }
     });
   }
@@ -123,6 +116,39 @@ function InitNavigationMap(dotNetObject)
     strokeWidth: 1
   });
   MapLayer.add(plan);
+}
+
+function UpdateMap(width, height, mapData) 
+{
+  // Draw Map
+  let canvas = document.getElementById("navigation-map-hidden-canvas");
+  canvas.width = width;
+  canvas.height = height;
+  let ctx = canvas.getContext("2d");
+  ctx.reset();
+  let iamgeData = ctx.createImageData(width, height);
+  for (let row = 0; row < height; row++) {
+    for (let col = 0; col < width; col++) {
+      let index = row * width + col;
+      var i = (col + (row * width)) * 4;
+      iamgeData.data[i] = mapData[index];
+      iamgeData.data[i + 1] = mapData[index];
+      iamgeData.data[i + 2] = mapData[index];
+      iamgeData.data[i + 3] = 255;
+    }
+  }
+  ctx.putImageData(iamgeData, 0, 0);
+
+  // Update Map
+  MapBackgroundObj.src = canvas.toDataURL("image/png");
+  MapBackground.width(width);
+  MapBackground.height(height);
+  const div = document.getElementById('navigation-map-container');
+  const divRect = div.getBoundingClientRect();
+  MapLayer.offsetX(-(divRect.width / 2));
+  MapLayer.offsetY(-(divRect.height / 2));
+  console.log(MapLayer.offsetX());
+  console.log(MapLayer.offsetY());
 }
 
 /*

@@ -239,6 +239,11 @@ public partial class MapEditor : ComponentBase, IDisposable
     {
       ObjectReference = DotNetObjectReference.Create(this);
       await JSRuntime.InvokeVoidAsync("InitNavigationMap", ObjectReference);
+      if (!string.IsNullOrWhiteSpace(Realm.Map))
+      {
+        var tempMap = Convert.FromBase64String(Realm.Map);
+        await JSRuntime.InvokeVoidAsync("UpdateMap", Realm.MapWidth, Realm.MapHeight, tempMap, ObjectReference);
+      }
 
       // Get Map Editor data
       var user = AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User;
