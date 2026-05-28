@@ -74,16 +74,44 @@
               </div>
             </div>
             <div class="mb-3 row">
-              <label class="col-3 col-form-label" for="@nameof(RealmDetailsViewModel.SelectedImage)">Image</label>
+              <label class="col-3 col-form-label" for="@nameof(RealmDetailsViewModel.SelectedMap)">Map</label>
               <div class="col">
                 @if (RealmDetailsViewModel.Map != null)
                 {
                   <img class="mx-auto d-block mb-2" src="data:image/png;base64, @RealmDetailsViewModel.Map" />
                 }
-                <InputFile id="@nameof(RealmDetailsViewModel.SelectedImage)" class="form-control" OnChange="LoadImage"
-                  accept=".png" />
-                <ValidationMessage class="invalid-feedback" For="@(() => RealmDetailsViewModel.SelectedImage)" />
-                <span class="form-check-description">The maximum file size is @((int)(LgdxApiConstants.ImageMaxSize / 1048576)) MB, and only .png images are
+                <InputFile id="@nameof(RealmDetailsViewModel.SelectedMap)" class="form-control" OnChange="LoadMap"
+                  accept=".pgm" />
+                <ValidationMessage class="invalid-feedback" For="@(() => RealmDetailsViewModel.SelectedMap)" />
+                <span class="form-check-description">The maximum file size is @((int)(LgdxApiConstants.ImageMaxSize / 1048576)) MB, and only .pgm images are
+                  accepted.</span>
+              </div>
+            </div>
+            <div class="mb-3 row">
+              <label class="col-3 col-form-label" for="@nameof(RealmDetailsViewModel.SelectedKeepoutMask)">Keepout Mask</label>
+              <div class="col">
+                @if (RealmDetailsViewModel.KeepoutMask != null)
+                {
+                  <img class="mx-auto d-block mb-2" src="data:image/png;base64, @RealmDetailsViewModel.KeepoutMask" />
+                }
+                <InputFile id="@nameof(RealmDetailsViewModel.SelectedKeepoutMask)" class="form-control" OnChange="LoadSelectedKeepoutMask"
+                  accept=".pgm" />
+                <ValidationMessage class="invalid-feedback" For="@(() => RealmDetailsViewModel.SelectedKeepoutMask)" />
+                <span class="form-check-description">The maximum file size is @((int)(LgdxApiConstants.ImageMaxSize / 1048576)) MB, and only .pgm images are
+                  accepted.</span>
+              </div>
+            </div>
+            <div class="mb-3 row">
+              <label class="col-3 col-form-label" for="@nameof(RealmDetailsViewModel.SelectedSpeedMask)">Speed Mask</label>
+              <div class="col">
+                @if (RealmDetailsViewModel.SpeedMask != null)
+                {
+                  <img class="mx-auto d-block mb-2" src="data:image/png;base64, @RealmDetailsViewModel.SpeedMask" />
+                }
+                <InputFile id="@nameof(RealmDetailsViewModel.SelectedSpeedMask)" class="form-control" OnChange="LoadSelectedSpeedMask"
+                  accept=".pgm" />
+                <ValidationMessage class="invalid-feedback" For="@(() => RealmDetailsViewModel.SelectedSpeedMask)" />
+                <span class="form-check-description">The maximum file size is @((int)(LgdxApiConstants.ImageMaxSize / 1048576)) MB, and only .pgm images are
                   accepted.</span>
               </div>
             </div>

@@ -21,15 +21,19 @@ public class RealmDetailsViewModel : FormViewModelBase
 
   public string? Map { get; set; }
 
+  public IBrowserFile SelectedMap { get; set; } = null!;
+
   public int? MapWidth { get; set; }
 
   public int? MapHeight { get; set; }
 
   public string? KeepoutMask { get; set; }
 
+  public IBrowserFile SelectedKeepoutMask { get; set; } = null!;
+
   public string? SpeedMask { get; set; }
 
-  public IBrowserFile SelectedImage { get; set; } = null!;
+  public IBrowserFile SelectedSpeedMask { get; set; } = null!;
 
   public double? Resolution { get; set; } = null!;
 
