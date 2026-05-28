@@ -14,6 +14,10 @@ public record RealmBusinessModel
 
   public required string Map { get; set; }
 
+  public int MapWidth { get; set; }
+
+  public int MapHeight { get; set; }
+
   public string? KeepoutMask { get; set; }
 
   public string? SpeedMask { get; set; }
@@ -37,6 +41,8 @@ public static class RealmBusinessModelExtensions
       Description = model.Description,
       HasRouteControl = model.HasRouteControl,
       Map = model.Map,
+      MapWidth = model.MapWidth,
+      MapHeight = model.MapHeight,
       KeepoutMask = model.KeepoutMask,
       SpeedMask = model.SpeedMask,
       Resolution = model.Resolution,

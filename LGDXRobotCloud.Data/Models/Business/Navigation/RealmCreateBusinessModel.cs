@@ -10,6 +10,10 @@ public record RealmCreateBusinessModel
 
   public string? Map { get; set; }
 
+  public int? MapWidth { get; set; }
+
+  public int? MapHeight { get; set; }
+
   public string? KeepoutMask { get; set; }
 
   public string? SpeedMask { get; set; }

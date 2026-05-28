@@ -66,6 +66,8 @@ public class RealmService(
         Description = m.Description,
         HasRouteControl = m.HasRouteControl,
         Map = Convert.ToBase64String(m.Map),
+        MapWidth = m.MapWidth,
+        MapHeight = m.MapHeight,
         KeepoutMask = Convert.ToBase64String(m.KeepoutMask),
         SpeedMask = Convert.ToBase64String(m.SpeedMask),
         Resolution = m.Resolution,
@@ -87,6 +89,8 @@ public class RealmService(
         Description = m.Description,
         HasRouteControl = m.HasRouteControl,
         Map = Convert.ToBase64String(m.Map),
+        MapWidth = m.MapWidth,
+        MapHeight = m.MapHeight,
         KeepoutMask = Convert.ToBase64String(m.KeepoutMask),
         SpeedMask = Convert.ToBase64String(m.SpeedMask),
         Resolution = m.Resolution,
@@ -105,6 +109,8 @@ public class RealmService(
       Description = createModel.Description,
       HasRouteControl = createModel.HasRouteControl,
       Map = Convert.FromBase64String(createModel.Map ?? string.Empty),
+      MapWidth = createModel.MapWidth ?? 0,
+      MapHeight = createModel.MapHeight ?? 0,
       KeepoutMask = Convert.FromBase64String(createModel.KeepoutMask ?? string.Empty),
       SpeedMask = Convert.FromBase64String(createModel.SpeedMask ?? string.Empty),
       Resolution = createModel.Resolution,
@@ -130,6 +136,8 @@ public class RealmService(
       Description = realm.Description,
       HasRouteControl = realm.HasRouteControl,
       Map = createModel.Map ?? string.Empty,
+      MapWidth = realm.MapWidth,
+      MapHeight = realm.MapHeight,
       KeepoutMask = createModel.KeepoutMask ?? string.Empty,
       SpeedMask = createModel.SpeedMask ?? string.Empty,
       Resolution = realm.Resolution,
@@ -148,6 +156,8 @@ public class RealmService(
         .SetProperty(m => m.Description, updateModel.Description)
         .SetProperty(m => m.HasRouteControl, updateModel.HasRouteControl)
         .SetProperty(m => m.Map, Convert.FromBase64String(updateModel.Map ?? string.Empty))
+        .SetProperty(m => m.MapWidth, updateModel.MapWidth ?? 0)
+        .SetProperty(m => m.MapHeight, updateModel.MapHeight ?? 0)
         .SetProperty(m => m.KeepoutMask, Convert.FromBase64String(updateModel.KeepoutMask ?? string.Empty))
         .SetProperty(m => m.SpeedMask, Convert.FromBase64String(updateModel.SpeedMask ?? string.Empty))
         .SetProperty(m => m.Resolution, updateModel.Resolution)
@@ -174,6 +184,8 @@ public class RealmService(
       .Where(m => m.Id == id)
       .ExecuteUpdateAsync(setters => setters
         .SetProperty(m => m.Map, Convert.FromBase64String(updateModel.Map))
+        .SetProperty(m => m.MapWidth, updateModel.MapWidth)
+        .SetProperty(m => m.MapHeight, updateModel.MapHeight)
         .SetProperty(m => m.Resolution, updateModel.Resolution)
         .SetProperty(m => m.OriginX, updateModel.OriginX)
         .SetProperty(m => m.OriginY, updateModel.OriginY)

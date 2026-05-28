@@ -6,6 +6,10 @@ public record RealmMapUpdateBusinessModel
 
   public required string Map { get; set; }
 
+  public required int MapWidth { get; set; }
+
+  public required int MapHeight { get; set; }
+
   public required double Resolution { get; set; }
 
   public required double OriginX { get; set; }

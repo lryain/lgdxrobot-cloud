@@ -12,6 +12,12 @@ public record RealmMapUpdateDto
   [Required(ErrorMessage = "Please upload an image.")]
   public required string Map { get; set; }
 
+  [Required (ErrorMessage = "Please enter a map width.")]
+  public required int MapWidth { get; set; }
+
+  [Required (ErrorMessage = "Please enter a map height.")]
+  public required int MapHeight { get; set; }
+
   [Required (ErrorMessage = "Please enter a resolution.")]
   public required double Resolution { get; set; }
 
@@ -31,6 +37,8 @@ public static class RealmMapUpdateDtoExtensions
   {
     return new RealmMapUpdateBusinessModel {
       Map = model.Map,
+      MapWidth = model.MapWidth,
+      MapHeight = model.MapHeight,
       Resolution = model.Resolution,
       OriginX = model.OriginX,
       OriginY = model.OriginY,

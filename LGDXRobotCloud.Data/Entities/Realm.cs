@@ -24,6 +24,10 @@ public class Realm
   [MaxLength(LgdxApiConstants.ImageMaxSize)]
   public byte[] Map { get; set; } = [];
 
+  public int MapWidth { get; set; } = 0;
+
+  public int MapHeight { get; set; } = 0;
+
   [MaxLength(LgdxApiConstants.ImageMaxSize)]
   public byte[] KeepoutMask { get; set; } = [];
 

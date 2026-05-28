@@ -12,6 +12,10 @@ public record RealmDto
 
   public required string Map { get; set; }
 
+  public int MapWidth { get; set; }
+
+  public int MapHeight { get; set; }
+
   public string? KeepoutMask { get; set; }
 
   public string? SpeedMask { get; set; }

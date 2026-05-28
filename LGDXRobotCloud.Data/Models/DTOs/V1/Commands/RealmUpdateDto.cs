@@ -18,7 +18,11 @@ public record RealmUpdateDto
   public bool HasRouteControl { get; set; }
   
   [MaxLength(LgdxApiConstants.ImageMaxSize, ErrorMessage = "The map size is too large.")]
-  public string? Image { get; set; }
+  public string? Map { get; set; }
+
+  public int? MapWidth { get; set; }
+
+  public int? MapHeight { get; set; }
 
   [MaxLength(LgdxApiConstants.ImageMaxSize, ErrorMessage = "The keepout mask size is too large.")]
   public string? KeepoutMask { get; set; }
@@ -43,7 +47,9 @@ public static class RealmUpdateDtoExtensions
       Name = model.Name,
       Description = model.Description,
       HasRouteControl = model.HasRouteControl,
-      Map = model.Image,
+      Map = model.Map,
+      MapWidth = model.MapWidth,
+      MapHeight = model.MapHeight,
       KeepoutMask = model.KeepoutMask,
       SpeedMask = model.SpeedMask,
       Resolution = model.Resolution,
