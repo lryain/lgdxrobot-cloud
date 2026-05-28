@@ -10,7 +10,11 @@ public record RealmDto
 
   public required bool HasRouteControl { get; set; }
 
-  public required string Image { get; set; }
+  public required string Map { get; set; }
+
+  public string? KeepoutMask { get; set; }
+
+  public string? SpeedMask { get; set; }
 
   public required double Resolution { get; set; }
 

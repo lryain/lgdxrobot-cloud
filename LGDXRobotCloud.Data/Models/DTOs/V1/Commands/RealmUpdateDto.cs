@@ -17,8 +17,14 @@ public record RealmUpdateDto
   [Required(ErrorMessage = "Please select a traffic control type.")]
   public bool HasRouteControl { get; set; }
   
-  [MaxLength(LgdxApiConstants.ImageMaxSize, ErrorMessage = "The image size is too large.")]
+  [MaxLength(LgdxApiConstants.ImageMaxSize, ErrorMessage = "The map size is too large.")]
   public string? Image { get; set; }
+
+  [MaxLength(LgdxApiConstants.ImageMaxSize, ErrorMessage = "The keepout mask size is too large.")]
+  public string? KeepoutMask { get; set; }
+
+  [MaxLength(LgdxApiConstants.ImageMaxSize, ErrorMessage = "The speed mask size is too large.")]
+  public string? SpeedMask { get; set; }
 
   public double Resolution { get; set; }
 
@@ -37,7 +43,9 @@ public static class RealmUpdateDtoExtensions
       Name = model.Name,
       Description = model.Description,
       HasRouteControl = model.HasRouteControl,
-      Image = model.Image,
+      Map = model.Image,
+      KeepoutMask = model.KeepoutMask,
+      SpeedMask = model.SpeedMask,
       Resolution = model.Resolution,
       OriginX = model.OriginX,
       OriginY = model.OriginY,

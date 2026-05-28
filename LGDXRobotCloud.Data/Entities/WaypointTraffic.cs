@@ -10,6 +10,9 @@ public class WaypointTraffic
   [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
   public int Id { get; set; }
 
+  [Required]
+  public int FeatureId { get; set; }
+
   [ForeignKey("RealmId")]
   public Realm Realm { get; set; } = null!;
 
@@ -27,4 +30,14 @@ public class WaypointTraffic
 
   [Required]
   public int WaypointToId { get; set; }
+
+  [Required]
+  public bool Overridable { get; set; }
+
+  public double? Cost { get; set; }
+
+  [Range(0.0, 100.0)]
+  public double? SpeedLimit { get; set; }
+
+  public double? AbsoluteSpeedLimit { get; set; }
 }

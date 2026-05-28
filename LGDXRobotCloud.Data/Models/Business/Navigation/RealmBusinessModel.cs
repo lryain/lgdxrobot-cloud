@@ -12,7 +12,11 @@ public record RealmBusinessModel
 
   public required bool HasRouteControl { get; set; }
 
-  public required string Image { get; set; }
+  public required string Map { get; set; }
+
+  public string? KeepoutMask { get; set; }
+
+  public string? SpeedMask { get; set; }
 
   public required double Resolution { get; set; }
 
@@ -32,7 +36,9 @@ public static class RealmBusinessModelExtensions
       Name = model.Name,
       Description = model.Description,
       HasRouteControl = model.HasRouteControl,
-      Image = model.Image,
+      Map = model.Map,
+      KeepoutMask = model.KeepoutMask,
+      SpeedMask = model.SpeedMask,
       Resolution = model.Resolution,
       OriginX = model.OriginX,
       OriginY = model.OriginY,

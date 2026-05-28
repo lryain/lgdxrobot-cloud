@@ -12,17 +12,17 @@ public record WaypointBusinessModel
 
   public required string RealmName { get; set; }
 
+  public int? FeatureId { get; set; }
+
+  public string? ClassName { get; set; }
+
   public required double X { get; set; }
 
   public required double Y { get; set; }
 
-  public required double Rotation { get; set; }
+  public double Rotation { get; set; } = 0;
 
-  public required bool IsParking { get; set; }
-
-  public required bool HasCharger { get; set; }
-
-  public required bool IsReserved { get; set; }
+  public required bool IsDocking { get; set; }
 }
 
 public static class WaypointBusinessModelExtensions
@@ -36,12 +36,12 @@ public static class WaypointBusinessModelExtensions
         Id = model.RealmId,
         Name = model.RealmName,
       },
+      FeatureId = model.FeatureId,
+      ClassName = model.ClassName,
       X = model.X,
       Y = model.Y,
       Rotation = model.Rotation,
-      IsParking = model.IsParking,
-      HasCharger = model.HasCharger,
-      IsReserved = model.IsReserved,
+      IsDocking = model.IsDocking,
     };
   }
 }

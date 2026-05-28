@@ -72,12 +72,12 @@ public class WaypointService(
         Name = w.Name,
         RealmId = w.RealmId,
         RealmName = w.Realm.Name,
+        FeatureId = w.FeatureId,
+        ClassName = w.ClassName,
         X = w.X,
         Y = w.Y,
         Rotation = w.Rotation,
-        IsParking = w.IsParking,
-        HasCharger = w.HasCharger,
-        IsReserved = w.IsReserved,
+        IsDocking = w.IsDocking,
       })
       .FirstOrDefaultAsync()
         ?? throw new LgdxNotFound404Exception();
@@ -93,12 +93,12 @@ public class WaypointService(
     var waypoint = new Waypoint {
       Name = waypointCreateBusinessModel.Name,
       RealmId = waypointCreateBusinessModel.RealmId,
+      FeatureId = waypointCreateBusinessModel.FeatureId,
+      ClassName = waypointCreateBusinessModel.ClassName,
       X = waypointCreateBusinessModel.X,
       Y = waypointCreateBusinessModel.Y,
       Rotation = waypointCreateBusinessModel.Rotation,
-      IsParking = waypointCreateBusinessModel.IsParking,
-      HasCharger = waypointCreateBusinessModel.HasCharger,
-      IsReserved = waypointCreateBusinessModel.IsReserved,
+      IsDocking = waypointCreateBusinessModel.IsDocking,
     };
 
     await _context.Waypoints.AddAsync(waypoint);
@@ -117,12 +117,12 @@ public class WaypointService(
       Name = waypoint.Name,
       RealmId = waypoint.RealmId,
       RealmName = realm.Name,
+      FeatureId = waypoint.FeatureId,
+      ClassName = waypoint.ClassName,
       X = waypoint.X,
       Y = waypoint.Y,
       Rotation = waypoint.Rotation,
-      IsParking = waypoint.IsParking,
-      HasCharger = waypoint.HasCharger,
-      IsReserved = waypoint.IsReserved,
+      IsDocking = waypoint.IsDocking,
     };
   }
 
@@ -132,12 +132,12 @@ public class WaypointService(
       .Where(w => w.Id == waypointId)
       .ExecuteUpdateAsync(setters => setters
         .SetProperty(w => w.Name, waypointUpdateBusinessModel.Name)
+        .SetProperty(w => w.FeatureId, waypointUpdateBusinessModel.FeatureId)
+        .SetProperty(w => w.ClassName, waypointUpdateBusinessModel.ClassName)
         .SetProperty(w => w.X, waypointUpdateBusinessModel.X)
         .SetProperty(w => w.Y, waypointUpdateBusinessModel.Y)
         .SetProperty(w => w.Rotation, waypointUpdateBusinessModel.Rotation)
-        .SetProperty(w => w.IsParking, waypointUpdateBusinessModel.IsParking)
-        .SetProperty(w => w.HasCharger, waypointUpdateBusinessModel.HasCharger)
-        .SetProperty(w => w.IsReserved, waypointUpdateBusinessModel.IsReserved)
+        .SetProperty(w => w.IsDocking, waypointUpdateBusinessModel.IsDocking)
       ) == 1;
 
     if (result)

@@ -10,7 +10,7 @@ public record RealmMapUpdateDto
   
   [MaxLength(LgdxApiConstants.ImageMaxSize, ErrorMessage = "The image size is too large.")]
   [Required(ErrorMessage = "Please upload an image.")]
-  public required string Image { get; set; }
+  public required string Map { get; set; }
 
   [Required (ErrorMessage = "Please enter a resolution.")]
   public required double Resolution { get; set; }
@@ -30,7 +30,7 @@ public static class RealmMapUpdateDtoExtensions
   public static RealmMapUpdateBusinessModel ToBusinessModel(this RealmMapUpdateDto model)
   {
     return new RealmMapUpdateBusinessModel {
-      Image = model.Image,
+      Map = model.Map,
       Resolution = model.Resolution,
       OriginX = model.OriginX,
       OriginY = model.OriginY,

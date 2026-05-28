@@ -151,12 +151,12 @@ public class AutoTaskService(
             Name = td.Waypoint.Name,
             RealmId = t.Realm.Id,
             RealmName = t.Realm.Name,
+            FeatureId = td.Waypoint.FeatureId,
+            ClassName = td.Waypoint.ClassName,
             X = td.Waypoint.X,
             Y = td.Waypoint.Y,
             Rotation = td.Waypoint.Rotation,
-            IsParking = td.Waypoint.IsParking,
-            HasCharger = td.Waypoint.HasCharger,
-            IsReserved = td.Waypoint.IsReserved,
+            IsDocking = td.Waypoint.IsDocking,
           },
         })
         .OrderBy(td => td.Order)
@@ -271,12 +271,12 @@ public class AutoTaskService(
             Name = td.Waypoint.Name,
             RealmId = t.Realm.Id,
             RealmName = t.Realm.Name,
+            FeatureId = td.Waypoint.FeatureId,
+            ClassName = td.Waypoint.ClassName,
             X = td.Waypoint.X,
             Y = td.Waypoint.Y,
             Rotation = td.Waypoint.Rotation,
-            IsParking = td.Waypoint.IsParking,
-            HasCharger = td.Waypoint.HasCharger,
-            IsReserved = td.Waypoint.IsReserved,
+            IsDocking = td.Waypoint.IsDocking,
           },
         })
         .OrderBy(td => td.Order)

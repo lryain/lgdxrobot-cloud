@@ -134,7 +134,7 @@ public class LgdxContext(DbContextOptions<LgdxContext> options) : IdentityDbCont
         Id = 1,
         Name = "First Realm",
         Description = "Please update this realm",
-        Image = [],
+        Map = [],
         Resolution = 0,
         OriginX = 0,
         OriginY = 0,

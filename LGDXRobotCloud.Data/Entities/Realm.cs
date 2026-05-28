@@ -22,7 +22,13 @@ public class Realm
   public bool HasRouteControl { get; set; }
 
   [MaxLength(LgdxApiConstants.ImageMaxSize)]
-  public byte[] Image { get; set; } = [];
+  public byte[] Map { get; set; } = [];
+
+  [MaxLength(LgdxApiConstants.ImageMaxSize)]
+  public byte[] KeepoutMask { get; set; } = [];
+
+  [MaxLength(LgdxApiConstants.ImageMaxSize)]
+  public byte[] SpeedMask { get; set; } = [];
 
   public double Resolution { get; set; } = 0;
 

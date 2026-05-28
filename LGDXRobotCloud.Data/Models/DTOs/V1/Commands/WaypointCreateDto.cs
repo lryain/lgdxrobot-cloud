@@ -11,6 +11,11 @@ public record WaypointCreateDto
 
   [Required (ErrorMessage = "A realm is required.")]
   public required int RealmId { get; set; }
+
+  public int? FeatureId { get; set; }
+
+  [MaxLength(100)]
+  public string? ClassName { get; set; }
   
   [Required (ErrorMessage = "Please enter a X coordinate.")]
   public required double X { get; set; }
@@ -18,14 +23,9 @@ public record WaypointCreateDto
   [Required (ErrorMessage = "Please enter a Y coordinate.")]
   public required double Y { get; set; }
 
-  [Required (ErrorMessage = "Please enter a rotation.")]
-  public required double Rotation { get; set; }
+  public double Rotation { get; set; } = 0;
 
-  public bool IsParking { get; set; } = false;
-
-  public bool HasCharger { get; set; } = false;
-
-  public bool IsReserved { get; set; } = false;
+  public bool IsDocking { get; set; } = false;
 }
 
 public static class WaypointCreateDtoExtensions
@@ -35,12 +35,12 @@ public static class WaypointCreateDtoExtensions
     return new WaypointCreateBusinessModel {
       Name = model.Name,
       RealmId = model.RealmId,
+      FeatureId = model.FeatureId,
+      ClassName = model.ClassName,
       X = model.X,
       Y = model.Y,
       Rotation = model.Rotation,
-      IsParking = model.IsParking,
-      HasCharger = model.HasCharger,
-      IsReserved = model.IsReserved,
+      IsDocking = model.IsDocking,
     };
   }
 }

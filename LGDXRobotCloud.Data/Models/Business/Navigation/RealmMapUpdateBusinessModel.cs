@@ -4,7 +4,7 @@ public record RealmMapUpdateBusinessModel
 {
   // All fields are required in SLAM mode
 
-  public required string Image { get; set; }
+  public required string Map { get; set; }
 
   public required double Resolution { get; set; }
 

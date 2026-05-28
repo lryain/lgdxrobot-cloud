@@ -8,7 +8,11 @@ public record RealmCreateBusinessModel
 
   public required bool HasRouteControl { get; set; }
 
-  public string? Image { get; set; }
+  public string? Map { get; set; }
+
+  public string? KeepoutMask { get; set; }
+
+  public string? SpeedMask { get; set; }
 
   public double Resolution { get; set; }
 

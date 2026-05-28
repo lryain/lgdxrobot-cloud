@@ -65,7 +65,9 @@ public class RealmService(
         Name = m.Name,
         Description = m.Description,
         HasRouteControl = m.HasRouteControl,
-        Image = Convert.ToBase64String(m.Image),
+        Map = Convert.ToBase64String(m.Map),
+        KeepoutMask = Convert.ToBase64String(m.KeepoutMask),
+        SpeedMask = Convert.ToBase64String(m.SpeedMask),
         Resolution = m.Resolution,
         OriginX = m.OriginX,
         OriginY = m.OriginY,
@@ -84,7 +86,9 @@ public class RealmService(
         Name = m.Name,
         Description = m.Description,
         HasRouteControl = m.HasRouteControl,
-        Image = Convert.ToBase64String(m.Image),
+        Map = Convert.ToBase64String(m.Map),
+        KeepoutMask = Convert.ToBase64String(m.KeepoutMask),
+        SpeedMask = Convert.ToBase64String(m.SpeedMask),
         Resolution = m.Resolution,
         OriginX = m.OriginX,
         OriginY = m.OriginY,
@@ -100,7 +104,9 @@ public class RealmService(
       Name = createModel.Name,
       Description = createModel.Description,
       HasRouteControl = createModel.HasRouteControl,
-      Image = Convert.FromBase64String(createModel.Image ?? string.Empty),
+      Map = Convert.FromBase64String(createModel.Map ?? string.Empty),
+      KeepoutMask = Convert.FromBase64String(createModel.KeepoutMask ?? string.Empty),
+      SpeedMask = Convert.FromBase64String(createModel.SpeedMask ?? string.Empty),
       Resolution = createModel.Resolution,
       OriginX = createModel.OriginX,
       OriginY = createModel.OriginY,
@@ -123,7 +129,9 @@ public class RealmService(
       Name = realm.Name,
       Description = realm.Description,
       HasRouteControl = realm.HasRouteControl,
-      Image = createModel.Image ?? string.Empty,
+      Map = createModel.Map ?? string.Empty,
+      KeepoutMask = createModel.KeepoutMask ?? string.Empty,
+      SpeedMask = createModel.SpeedMask ?? string.Empty,
       Resolution = realm.Resolution,
       OriginX = realm.OriginX,
       OriginY = realm.OriginY,
@@ -139,7 +147,9 @@ public class RealmService(
         .SetProperty(m => m.Name, updateModel.Name)
         .SetProperty(m => m.Description, updateModel.Description)
         .SetProperty(m => m.HasRouteControl, updateModel.HasRouteControl)
-        .SetProperty(m => m.Image, Convert.FromBase64String(updateModel.Image ?? string.Empty))
+        .SetProperty(m => m.Map, Convert.FromBase64String(updateModel.Map ?? string.Empty))
+        .SetProperty(m => m.KeepoutMask, Convert.FromBase64String(updateModel.KeepoutMask ?? string.Empty))
+        .SetProperty(m => m.SpeedMask, Convert.FromBase64String(updateModel.SpeedMask ?? string.Empty))
         .SetProperty(m => m.Resolution, updateModel.Resolution)
         .SetProperty(m => m.OriginX, updateModel.OriginX)
         .SetProperty(m => m.OriginY, updateModel.OriginY)
@@ -163,7 +173,7 @@ public class RealmService(
     bool result = await _context.Realms
       .Where(m => m.Id == id)
       .ExecuteUpdateAsync(setters => setters
-        .SetProperty(m => m.Image, Convert.FromBase64String(updateModel.Image))
+        .SetProperty(m => m.Map, Convert.FromBase64String(updateModel.Map))
         .SetProperty(m => m.Resolution, updateModel.Resolution)
         .SetProperty(m => m.OriginX, updateModel.OriginX)
         .SetProperty(m => m.OriginY, updateModel.OriginY)

@@ -35,12 +35,12 @@ public static class AutoTaskDetailBusinessModelExtensions
           Id = model.Waypoint.RealmId,
           Name = model.Waypoint.RealmName,
         },
+        FeatureId = model.Waypoint.FeatureId,
+        ClassName = model.Waypoint.ClassName,
         X = model.Waypoint.X,
         Y = model.Waypoint.Y,
         Rotation = model.Waypoint.Rotation,
-        IsParking = model.Waypoint.IsParking,
-        HasCharger = model.Waypoint.HasCharger,
-        IsReserved = model.Waypoint.IsReserved,
+        IsDocking = model.Waypoint.IsDocking,
       },
     };
   }

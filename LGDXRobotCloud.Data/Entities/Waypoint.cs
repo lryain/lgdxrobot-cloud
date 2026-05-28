@@ -19,6 +19,11 @@ public class Waypoint
 
   [Required]
   public int RealmId { get; set; }
+
+  public int? FeatureId { get; set; }
+
+  [MaxLength(100)]
+  public string? ClassName { get; set; }
   
   [Required]
   public double X { get; set; }
@@ -26,15 +31,8 @@ public class Waypoint
   [Required]
   public double Y { get; set; }
 
-  [Required]
-  public double Rotation { get; set; }
+  public double Rotation { get; set; } = 0;
 
   [Required]
-  public bool IsParking { get; set; }
-
-  [Required]
-  public bool HasCharger { get; set; }
-
-  [Required]
-  public bool IsReserved { get; set; }
+  public bool IsDocking { get; set; }
 }
