@@ -147,8 +147,6 @@ function UpdateMap(width, height, mapData)
   const divRect = div.getBoundingClientRect();
   MapLayer.offsetX(-(divRect.width / 2));
   MapLayer.offsetY(-(divRect.height / 2));
-  console.log(MapLayer.offsetX());
-  console.log(MapLayer.offsetY());
 }
 
 /*
