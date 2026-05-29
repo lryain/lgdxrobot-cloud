@@ -11,8 +11,7 @@ public record WaypointUpsertDto
   [Required (ErrorMessage = "Please enter a name.")]
   public required string Name { get; set; }
 
-  [Required (ErrorMessage = "A realm is required.")]
-  public required int RealmId { get; set; }
+  // For Map Editor No realmId is required
 
   public int? FeatureId { get; set; }
 
@@ -37,7 +36,6 @@ public static class WaypointUpsertDtoExtensions
     return new WaypointUpsertBusinessModel {
       Id = model.Id,
       Name = model.Name,
-      RealmId = model.RealmId,
       FeatureId = model.FeatureId,
       ClassName = model.ClassName,
       X = model.X,

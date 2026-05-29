@@ -6,7 +6,7 @@ public record WaypointUpsertBusinessModel
 
   public required string Name { get; set; }
 
-  public required int RealmId { get; set; }
+  // For Map Editor No realmId is required
 
   public int? FeatureId { get; set; }
 

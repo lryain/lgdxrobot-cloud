@@ -6,7 +6,7 @@ namespace LGDXRobotCloud.UI.ViewModels.Navigation;
 
 public class WaypointDetailsViewModel : FormViewModelBase
 {
-  public int Id { get; set; }
+  public int? Id { get; set; }
 
   [MaxLength(100)]
   [Required (ErrorMessage = "Please enter a name.")]
@@ -31,6 +31,8 @@ public class WaypointDetailsViewModel : FormViewModelBase
   public double? Rotation { get; set; } = null!;
 
   public bool IsDocking { get; set; }
+
+  public Guid? MapEditorObjectId { get; set; }
 }
 
 public static class WaypointDetailsViewModelExtensions
@@ -67,6 +69,21 @@ public static class WaypointDetailsViewModelExtensions
     return new WaypointCreateDto {
       Name = WaypointDetailsViewModel.Name,
       RealmId = WaypointDetailsViewModel.RealmId,
+      FeatureId = WaypointDetailsViewModel.FeatureId,
+      ClassName = WaypointDetailsViewModel.ClassName,
+      X = WaypointDetailsViewModel.X,
+      Y = WaypointDetailsViewModel.Y,
+      Rotation = WaypointDetailsViewModel.Rotation,
+      IsDocking = WaypointDetailsViewModel.IsDocking,
+    };
+  }
+
+  public static WaypointDto ToDto(this WaypointDetailsViewModel WaypointDetailsViewModel)
+  {
+    return new WaypointDto
+    {
+      Id = WaypointDetailsViewModel.Id,
+      Name = WaypointDetailsViewModel.Name,
       FeatureId = WaypointDetailsViewModel.FeatureId,
       ClassName = WaypointDetailsViewModel.ClassName,
       X = WaypointDetailsViewModel.X,

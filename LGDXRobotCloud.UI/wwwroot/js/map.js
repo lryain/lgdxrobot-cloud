@@ -80,6 +80,8 @@ function InitNavigationMap(dotNetObject)
       _internalMapZoom(-1.1, true);
     }
   });
+  MapStage.on('mousedown', _internalHandleCreateWaypoint);
+  MapStage.on('touchstart', _internalHandleCreateWaypoint);
 
   // Zoom the map
   MapStage.scale({ x: InitalScale, y: InitalScale });
@@ -445,7 +447,7 @@ function MapEditorSetMode(mode) { // assume is an integer
 function MapEditorAddWaypoints(waypoints) {
   for(let i = 0; i < waypoints.length; i++) {
     const w = new Konva.Circle({
-      id: 'w-' + waypoints[i].id,
+      id: 'w-' + waypoints[i].mapEditorObjectId,
       x: _internalToMapX(waypoints[i].x),
       y: _internalToMapY(waypoints[i].y),
       radius: 4,
@@ -459,8 +461,8 @@ function MapEditorAddWaypoints(waypoints) {
       switch (MapEditorMode) {
         case 0: // Normal
           // Show Waypoint Modal
+          ShowSidebar();
           MapDotNetObject.invokeMethodAsync('HandleWaypointSelect', id);
-          document.getElementById('waypointModalButton').click();
           break;
         case 1: // SingleWayTrafficFrom
         case 2: // SingleWayTrafficTo
@@ -473,6 +475,49 @@ function MapEditorAddWaypoints(waypoints) {
     });
     MapLayer.add(w);
   }
+}
+
+function MapEditorDeleteWaypoint(waypointId) {
+  const point =  MapLayer.findOne('#w-' + waypointId);
+  if (point != null)
+  {
+    point.destroy();
+  }
+}
+
+function MapEditorMoveWaypoint(waypoint) {
+  const point =  MapLayer.findOne('#w-' + waypoint.mapEditorObjectId);
+  console.log(point);
+  if (point != null)
+  {
+    point.x(_internalToMapX(waypoint.x));
+    point.y(_internalToMapY(waypoint.y));
+  }
+}
+
+function _internalHandleCreateWaypoint() {
+  if (MapEditorMode != 5) // AddWaypoint mode
+  {
+    return;
+  }
+
+  const p = document.getElementById('navigation-map-coordinate');
+  if (!p) return;
+  const pointer = MapStage.getPointerPosition();
+  if (!pointer) return;
+
+  // Transform stage coordinates to rect-local coordinates
+  const localPos = MapBackground.getAbsoluteTransform().copy().invert().point(pointer);
+
+  // Check if pointer is inside the rectangle bounds
+  if (localPos.x >= 0 && localPos.x <= MapBackground.width() 
+      && localPos.y >= 0 && localPos.y <= MapBackground.height()) 
+  {
+    let y = _internalToRobotPositionY(localPos.y);
+    let x = _internalToRobotPositionX(localPos.x);
+    MapDotNetObject.invokeMethodAsync('HandleWaypointCreate', x, y);
+    ShowSidebar();
+  } 
 }
 
 function _internalGetConnectorPoints(from, to, isBothWaysTraffic) {

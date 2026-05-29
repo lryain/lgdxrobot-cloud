@@ -151,7 +151,7 @@ public class MapEditorService(
     var addingWaypoints = newWaypoints.Select(w => new Waypoint
     {
       Name = w.Name,
-      RealmId = w.RealmId,
+      RealmId = realmId,
       FeatureId = w.FeatureId,
       ClassName = w.ClassName,
       X = w.X,

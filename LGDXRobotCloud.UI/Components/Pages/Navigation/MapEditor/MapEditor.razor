@@ -1,6 +1,7 @@
 @attribute [Route(AppRoutes.Navigation.MapEditor.Index)]
 @attribute [Authorize (Policy = Permissions.Navigation.MapEditor.Read)]
 @attribute [Authorize (Policy = Permissions.Navigation.Waypoints.Read)]
+@using LGDXRobotCloud.UI.Components.Pages.Navigation.Waypoints.Components
 
 <PageHeader Title="Map Editor">
   <div class="row align-items-center">
@@ -31,22 +32,20 @@
   <FormSubmissionSuccessAlert Display="MapEditorViewModel.IsSuccess" />
 </div>
 
+<!-- Map -->
 <div id="navigation-map" class="flex-fill row m-0 g-0">
+  <!-- Map -->
   <div id="navigation-map-container" class="col">
     <div id="navigation-map-canvas"></div>
-    <a id="waypointModalButton" class="btn d-none" data-bs-toggle="modal" data-bs-target="#waypointModal">
-      Toggle modal
-    </a>
 
     <div id="navigation-map-tools" class="card">
       <div class="card-body p-0">
         <div class="btn-group">
-          <a class="btn" href="@($"{AppRoutes.Navigation.Waypoints.Create}?ReturnUrl={AppRoutes.Navigation.MapEditor.Index}")">Add Waypoint</a>
-          <a class="btn dropdown-toggle rounded-0" data-bs-toggle="dropdown">Traffic rules</a>
+          <a class="btn dropdown-toggle rounded-0" data-bs-toggle="dropdown">Create</a>
           <div class="dropdown-menu">
+            <button class="dropdown-item" @onclick="() => HandleMapEditorModeChange(MapEditorMode.AddWaypoint)">Waypoint</button>
             <button class="dropdown-item" @onclick="() => HandleMapEditorModeChange(MapEditorMode.SingleWayTrafficFrom)">Single-way traffic</button>
             <button class="dropdown-item" @onclick="() => HandleMapEditorModeChange(MapEditorMode.BothWaysTrafficFrom)">Two-way traffic</button>
-            <button class="dropdown-item" @onclick="() => HandleMapEditorModeChange(MapEditorMode.DeleteTraffic)">Delete Traffic rule</button>
           </div>
           <button class="btn" disabled="@(MapEditorMode == MapEditorMode.Normal)" @onclick="() => HandleMapEditorModeChange(MapEditorMode.Normal)">Cancel</button>
         </div>
@@ -83,8 +82,8 @@
               case MapEditorMode.BothWaysTrafficTo:
                 <text>Two-way traffic: Select an ending waypoint.</text>
                 break;
-              case MapEditorMode.DeleteTraffic:
-                <text>Select a traffic rule to delete.</text>
+              case MapEditorMode.AddWaypoint:
+                <text>Select the map to add a waypoint.</text>
                 break;
             }
           </p>
@@ -113,57 +112,31 @@
 
     <canvas id="navigation-map-hidden-canvas" class="d-none" style="display: none;"></canvas>
   </div>
-</div>
 
-
-<div class="modal modal-blur fade" id="waypointModal" tabindex="-1" role="dialog" aria-hidden="true">
-  <div class="modal-dialog modal-3 modal-dialog-centered" role="document">
-    <div class="modal-content">
-      @if (SelectedWaypoint != null)
-      {
-        <div class="modal-header">
-          <h5 class="modal-title">Waypoint Details</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-
-        <div class="modal-body">
-          <div class="mb-3 row">
-            <label class="col-3 col-form-label">Id</label>
-            <div class="col">
-              <div class="col form-control-plaintext">@SelectedWaypoint.Id</div>
+  <!-- Sidebar -->
+  <div id="navigation-map-sidebar" class="col-sm-12 pe-sm-0 pe-md-2 pb-sm-0 pb-md-2">
+    <div id="navigation-map-sidebar-info" class="card h-100">
+      <div class="card-header">
+        <h3 class="mb-0">@(IsEditingWaypoint ? "Waypoint Details" : "Traffic Rules")</h3>
+        <button type="button" class="btn-close text-reset ms-auto" onclick="HideSidebar()"></button>
+      </div>
+      <div class="card-body">
+        @if (IsEditingWaypoint)
+        {
+          <EditForm EditContext="@_editContext" OnValidSubmit="HandleWaypointSubmit">
+            <DataAnnotationsValidator />
+            <FormValidationErrorAlert Errors="@_editContext.GetValidationMessages()" />
+            <WaypointDetailForm Id="EditingWaypoint.Id" HasRouteTrafficControl="HasRouteTrafficControl" WaypointDetailsViewModel="EditingWaypoint" FieldNameWidth="4" />
+            <div class="d-flex align-items-center">
+              @if (EditingWaypoint.MapEditorObjectId != null)
+              {
+                <button type="button" class="btn btn-ghost-danger" @onclick="HandleWaypointDelete">Delete</button>
+              }
+              <button type="submit" class="btn btn-primary ms-auto">@(EditingWaypoint.Id != null ? "Update" : "Create")</button>
             </div>
-          </div>
-          <div class="mb-3 row">
-            <label class="col-3 col-form-label">Name</label>
-            <div class="col">
-              <div class="col form-control-plaintext">@SelectedWaypoint.Name</div>
-            </div>
-          </div>
-          <div class="mb-3 row">
-            <label class="col-3 col-form-label">X (m)</label>
-            <div class="col">
-              <div class="col form-control-plaintext">@SelectedWaypoint.X</div>
-            </div>
-          </div>
-          <div class="mb-3 row">
-            <label class="col-3 col-form-label">Y (m)</label>
-            <div class="col">
-              <div class="col form-control-plaintext">@SelectedWaypoint.Y</div>
-            </div>
-          </div>
-          <div class="mb-3 row">
-            <label class="col-3 col-form-label">Rotation (rad)</label>
-            <div class="col">
-              <div class="col form-control-plaintext">@SelectedWaypoint.Rotation</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="modal-footer">
-          <button type="button" class="btn me-auto" data-bs-dismiss="modal">Close</button>
-          <button class="btn btn-primary" data-bs-dismiss="modal" @onclick="() => OnEditWaypointClick((int)SelectedWaypoint.Id!)">Edit</button>
-        </div>
-      }
+          </EditForm>
+        }
+      </div>
     </div>
   </div>
 </div>

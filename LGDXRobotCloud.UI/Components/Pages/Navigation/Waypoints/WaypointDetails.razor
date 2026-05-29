@@ -3,6 +3,7 @@
 @attribute [Authorize (Policy = Permissions.Navigation.Waypoints.Read)]
 @using LGDXRobotCloud.Data.Entities
 @using LGDXRobotCloud.UI.Components.Pages.Administration.ActivityLogs.Components;
+@using LGDXRobotCloud.UI.Components.Pages.Navigation.Waypoints.Components
 
 <PageHeader Title="@(Id != null ? "Edit Waypoint" : "Create Waypoint")">
   <div class="row align-items-center">
@@ -27,75 +28,7 @@
           <div class="card-body">
             <ApiErrorAlert Errors="WaypointDetailsViewModel.Errors" />
             <FormValidationErrorAlert Errors="@_editContext.GetValidationMessages()" />
-            @if (Id != null)
-            {
-              <div class="mb-3 row">
-                <label class="col-3 col-form-label">ID</label>
-                <div class="col">
-                  <div class="col form-control-plaintext">@WaypointDetailsViewModel.Id</div>
-                </div>
-              </div>
-            }
-            <div class="mb-3 row">
-              <label class="col-3 col-form-label">Realm</label>
-              <div class="col">
-                <div class="col form-control-plaintext">@WaypointDetailsViewModel.RealmName</div>
-              </div>
-            </div>
-            <div class="mb-3 row">
-              <label class="col-3 col-form-label required" for="@nameof(WaypointDetailsViewModel.Name)">Name</label>
-              <div class="col">
-                <InputText id="@nameof(WaypointDetailsViewModel.Name)" type="text" class="form-control" @bind-Value="WaypointDetailsViewModel.Name" />
-                <ValidationMessage class="invalid-feedback" For="@(() => WaypointDetailsViewModel.Name)" />
-              </div>
-            </div>
-            @if (HasRouteTrafficControl)
-            {
-              <div class="mb-3 row">
-                <label class="col-3 col-form-label required" for="@nameof(WaypointDetailsViewModel.FeatureId)">Feature ID</label>
-                <div class="col">
-                  <InputNumber id="@nameof(WaypointDetailsViewModel.FeatureId)" type="text" class="form-control" @bind-Value="WaypointDetailsViewModel.FeatureId" />
-                  <ValidationMessage class="invalid-feedback" For="@(() => WaypointDetailsViewModel.FeatureId)" />
-                </div>
-              </div>
-              <div class="mb-3 row">
-              <label class="col-3 col-form-label" for="@nameof(WaypointDetailsViewModel.ClassName)">Class Name</label>
-              <div class="col">
-                <InputText id="@nameof(WaypointDetailsViewModel.ClassName)" type="text" class="form-control" @bind-Value="WaypointDetailsViewModel.ClassName" />
-                <ValidationMessage class="invalid-feedback" For="@(() => WaypointDetailsViewModel.ClassName)" />
-              </div>
-            </div>
-            }
-            <div class="mb-3 row">
-              <label class="col-3 col-form-label required" for="@nameof(WaypointDetailsViewModel.X)">X (m)</label>
-              <div class="col">
-                <InputNumber id="@nameof(WaypointDetailsViewModel.X)" type="number" step="any" class="form-control" @bind-Value="WaypointDetailsViewModel.X" />
-                <ValidationMessage class="invalid-feedback" For="@(() => WaypointDetailsViewModel.X)" />
-              </div>
-            </div>
-            <div class="mb-3 row">
-              <label class="col-3 col-form-label required" for="@nameof(WaypointDetailsViewModel.Y)">Y (m)</label>
-              <div class="col">
-                <InputNumber id="@nameof(WaypointDetailsViewModel.Y)" type="number" step="any" class="form-control"  @bind-Value="WaypointDetailsViewModel.Y" />
-                <ValidationMessage class="invalid-feedback" For="@(() => WaypointDetailsViewModel.Y)" />
-              </div>
-            </div>
-            <div class="mb-3 row">
-              <label class="col-3 col-form-label" for="@nameof(WaypointDetailsViewModel.Rotation)">Rotation (rad)</label>
-              <div class="col">
-                <InputNumber id="@nameof(WaypointDetailsViewModel.Rotation)" type="number" step="any" class="form-control" @bind-Value="WaypointDetailsViewModel.Rotation" />
-                <ValidationMessage class="invalid-feedback" For="@(() => WaypointDetailsViewModel.Rotation)" />
-              </div>
-            </div>
-            <div class="mb-3 row align-items-center">
-              <label class="col-3 col-form-label">Facilities</label>
-              <div class="col">
-                <label class="form-check form-check-inline mb-0">
-                  <InputCheckbox id="@nameof(WaypointDetailsViewModel.IsDocking)" class="form-check-input" @bind-Value=WaypointDetailsViewModel.IsDocking />
-                  <span class="form-check-label">Docking</span>
-                </label>
-              </div>
-            </div>
+            <WaypointDetailForm Id="@Id" HasRouteTrafficControl="@HasRouteTrafficControl" WaypointDetailsViewModel="@WaypointDetailsViewModel" />
           </div>
           <div class="card-footer d-flex">
             <AuthorizeView Policy="@Permissions.Navigation.Waypoints.Delete" Context="DeleteButton">

@@ -1,11 +1,11 @@
 using LGDXRobotCloud.UI.Client;
 using LGDXRobotCloud.UI.Client.Models;
-using LGDXRobotCloud.UI.Constants;
 using LGDXRobotCloud.UI.Helpers;
 using LGDXRobotCloud.UI.Services;
 using LGDXRobotCloud.UI.ViewModels.Navigation;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.JSInterop;
 using Microsoft.Kiota.Abstractions;
 
@@ -18,7 +18,7 @@ public enum MapEditorMode
   SingleWayTrafficTo = 2,
   BothWaysTrafficFrom = 3,
   BothWaysTrafficTo = 4,
-  DeleteTraffic = 5,
+  AddWaypoint = 5,
 }
 
 public enum MapEditorError
@@ -61,12 +61,24 @@ public partial class MapEditor : ComponentBase, IDisposable
   {
     IsSuccess = false,
   };
-  private WaypointDto? SelectedWaypoint { get; set; }
+  
   private MapEditorMode MapEditorMode { get; set; } = MapEditorMode.Normal;
   private MapEditorError MapEditorError { get; set; } = MapEditorError.None;
   private int SelectedFromWaypointId { get; set; } = 0;
   private int SelectedToWaypointId { get; set; } = 0;
   bool HasRouteTrafficControl { get; set; } = false;
+  
+  // Form
+  bool IsEditingWaypoint { get; set; } = false;
+  private WaypointDetailsViewModel EditingWaypoint { get; set; } = new();
+  private readonly CustomFieldClassProvider _customFieldClassProvider = new();
+  private EditContext _editContext = null!;
+  private EditContext _editContextWaypoint = null!;
+  private EditContext _editContextTraffic = null!;
+
+  /*
+  ** Map Editor
+  */
 
   private async Task HandleMapEditorModeChange(MapEditorMode mode)
   {
@@ -84,11 +96,6 @@ public partial class MapEditor : ComponentBase, IDisposable
     var settings = TokenService.GetSessionSettings(user);
     settings.MapEditorData = MapEditorViewModel;
     TokenService.UpdateSessionSettings(user, settings);
-  }
-
-  public void OnEditWaypointClick(int id)
-  {
-    NavigationManager.NavigateTo($"{AppRoutes.Navigation.Waypoints.Index}/{id}?ReturnUrl={AppRoutes.Navigation.MapEditor.Index}");
   }
 
   public void HandelResetMapEditor()
@@ -114,6 +121,69 @@ public partial class MapEditor : ComponentBase, IDisposable
       MapEditorViewModel.Errors = ApiHelper.GenerateErrorDictionary(ex);
     }
   }
+
+  /*
+  ** Waypoints
+  */
+
+  [JSInvokable("HandleWaypointCreate")]
+  public async Task HandleWaypointCreate(double x, double y)
+  {
+    IsEditingWaypoint = true;
+    await HandleMapEditorModeChange(MapEditorMode.Normal);
+    EditingWaypoint = new WaypointDetailsViewModel {
+      Id = null,
+      RealmId = Realm.Id,
+      RealmName = Realm.Name,
+      X = x,
+      Y = y,
+    };
+    _editContext = new EditContext(EditingWaypoint);
+    _editContext.SetFieldCssClassProvider(_customFieldClassProvider);
+    StateHasChanged();
+  }
+
+  [JSInvokable("HandleWaypointSelect")]
+  public void HandleWaypointSelect(string waypointId)
+  {
+    IsEditingWaypoint = true;
+    Guid id = Guid.Parse(waypointId);
+    EditingWaypoint = MapEditorViewModel.Waypoints.FirstOrDefault(w => w.MapEditorObjectId == id)!;
+    _editContext = new EditContext(EditingWaypoint);
+    _editContext.SetFieldCssClassProvider(_customFieldClassProvider);
+    StateHasChanged();
+  }
+
+  public async Task HandleWaypointDelete()
+  {
+    MapEditorViewModel.Waypoints.RemoveAll(w => w.MapEditorObjectId == EditingWaypoint.MapEditorObjectId);
+    await JSRuntime.InvokeVoidAsync("MapEditorDeleteWaypoint", EditingWaypoint.MapEditorObjectId);
+    await JSRuntime.InvokeVoidAsync("HideSidebar");
+  }
+
+  public async Task HandleWaypointSubmit()
+  {
+    if (EditingWaypoint.Id == null)
+    {
+      // Create
+      EditingWaypoint.MapEditorObjectId = Guid.NewGuid(); // Allow Delete
+      MapEditorViewModel.Waypoints.Add(EditingWaypoint);
+      List<WaypointDetailsViewModel> waypoints = [EditingWaypoint];
+      await JSRuntime.InvokeVoidAsync("MapEditorAddWaypoints", waypoints);
+    }
+    else
+    {
+      // Update
+      MapEditorViewModel.Waypoints.RemoveAll(w => w.Id == EditingWaypoint.Id);
+      MapEditorViewModel.Waypoints.Add(EditingWaypoint);
+      await JSRuntime.InvokeVoidAsync("MapEditorMoveWaypoint", EditingWaypoint);
+    }
+    await JSRuntime.InvokeVoidAsync("HideSidebar");
+  }
+
+  /*
+  ** Traffic
+  */
 
   public async Task CheckAndAddTraffic(bool isBothWaysTraffic)
   {
@@ -213,15 +283,6 @@ public partial class MapEditor : ComponentBase, IDisposable
     StateHasChanged();
   }
 
-  [JSInvokable("HandleWaypointSelect")]
-  public void HandleWaypointSelect(string waypointId)
-  {
-    // Remove prefix w-
-    int id = int.Parse(waypointId);
-    SelectedWaypoint = MapEditorViewModel.Waypoints.FirstOrDefault(w => w.Id == id);
-    StateHasChanged();
-  }
-
   protected override async Task OnInitializedAsync()
   {
     // Get Realm
@@ -230,6 +291,8 @@ public partial class MapEditor : ComponentBase, IDisposable
     Realm = await CachedRealmService.GetCurrrentRealmAsync(settings.CurrentRealmId);
     RealmName = Realm.Name ?? string.Empty;
     HasRouteTrafficControl = await CachedRealmService.GetHasRouteTrafficControlAsync(settings.CurrentRealmId);
+    _editContextWaypoint = new EditContext(EditingWaypoint);
+    _editContextWaypoint.SetFieldCssClassProvider(_customFieldClassProvider);
     await base.OnInitializedAsync();
   }
 
@@ -252,37 +315,6 @@ public partial class MapEditor : ComponentBase, IDisposable
       if (mapEditor != null)
       {
         MapEditorViewModel = mapEditor;
-
-        // Update Waypoint
-        if (!string.IsNullOrWhiteSpace(UpdateWaypointId))
-        {
-          var waypoint = await LgdxApiClient.Navigation.Waypoints[int.Parse(UpdateWaypointId)].GetAsync();
-          if (waypoint != null)
-          {
-            var newWaypoint = new WaypointDto
-            {
-              Id = waypoint.Id,
-              Name = waypoint.Name,
-              Realm = new RealmSearchDto
-              {
-                Id = waypoint.Realm!.Id,
-                Name = waypoint.Realm!.Name,
-              },
-              X = waypoint.X,
-              Y = waypoint.Y,
-              Rotation = waypoint.Rotation,
-            };
-            MapEditorViewModel.Waypoints.RemoveAll(w => w.Id == waypoint.Id);
-            MapEditorViewModel.Waypoints.Add(newWaypoint);
-            SaveMapEditorViewModel();
-          }
-        }
-        // Delete Waypoint
-        if (!string.IsNullOrWhiteSpace(DeleteWaypointId))
-        {
-          MapEditorViewModel.Waypoints.RemoveAll(w => w.Id == int.Parse(DeleteWaypointId));
-          SaveMapEditorViewModel();
-        }
       }
       else
       {

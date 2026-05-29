@@ -12,7 +12,7 @@ public record WaypointTrafficDisplay
 
 public class MapEditorViewModel : FormViewModelBase
 {
-  public List<WaypointDto> Waypoints { get; set; } = [];
+  public List<WaypointDetailsViewModel> Waypoints { get; set; } = [];
 
   public List<WaypointTrafficDto> WaypointTraffics { get; set; } = [];
 
@@ -24,7 +24,20 @@ public static class MapEditorViewModelExtensions
   public static void FromDto(this MapEditorViewModel mapEditorViewModel, MapEditorDto mapEditorDto)
   {
     // Waypoints
-    mapEditorViewModel.Waypoints = mapEditorDto.Waypoints ?? [];
+    mapEditorViewModel.Waypoints = mapEditorDto.Waypoints?.Select(w => new WaypointDetailsViewModel
+    {
+      Id = w.Id,
+      Name = w.Name!,
+      RealmId = w.Realm!.Id,
+      RealmName = w.Realm.Name,
+      FeatureId = w.FeatureId,
+      ClassName = w.ClassName,
+      X = w.X,
+      Y = w.Y,
+      Rotation = w.Rotation,
+      IsDocking = (bool)w.IsDocking!,
+      MapEditorObjectId = Guid.NewGuid(),
+    }).ToList() ?? [];
 
     // Waypoint Traffics
     mapEditorViewModel.WaypointTraffics = mapEditorDto.WaypointTraffics ?? [];
@@ -57,10 +70,27 @@ public static class MapEditorViewModelExtensions
   {
     return new MapEditorUpdateDto
     {
+      Waypoints = mapEditorViewModel.Waypoints.Select(x => new WaypointUpsertDto
+      {
+        Id = x.Id,
+        Name = x.Name,
+        FeatureId = x.FeatureId,
+        ClassName = x.ClassName,
+        X = x.X,
+        Y = x.Y,
+        Rotation = x.Rotation,
+        IsDocking = x.IsDocking,
+      }).ToList(),
       WaypointTraffics = mapEditorViewModel.WaypointTraffics.Select(x => new WaypointTrafficUpdateDto
       {
+        Id = x.Id,
+        FeatureId = x.FeatureId,
         WaypointFromId = x.WaypointFromId,
         WaypointToId = x.WaypointToId,
+        Overridable = x.Overridable,
+        Cost = x.Cost,
+        SpeedLimit = x.SpeedLimit,
+        AbsoluteSpeedLimit = x.AbsoluteSpeedLimit,
       }).ToList()
     };
   }
