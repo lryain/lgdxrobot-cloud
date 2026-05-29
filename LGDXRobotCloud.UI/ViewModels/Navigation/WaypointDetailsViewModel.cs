@@ -64,6 +64,25 @@ public static class WaypointDetailsViewModelExtensions
     };
   }
 
+  public static WaypointUpsertDto ToUpsertDto(this WaypointDetailsViewModel WaypointDetailsViewModel)
+  {
+    return new WaypointUpsertDto {
+      Id = WaypointDetailsViewModel.Id,
+      Name = WaypointDetailsViewModel.Name,
+      FeatureId = WaypointDetailsViewModel.FeatureId,
+      ClassName = WaypointDetailsViewModel.ClassName,
+      X = WaypointDetailsViewModel.X,
+      Y = WaypointDetailsViewModel.Y,
+      Rotation = WaypointDetailsViewModel.Rotation,
+      IsDocking = WaypointDetailsViewModel.IsDocking,
+    };
+  }
+
+  public static IEnumerable<WaypointUpsertDto> ToUpsertDto(this IEnumerable<WaypointDetailsViewModel> models)
+  { 
+    return models.Select(model => model.ToUpsertDto());
+  }
+
   public static WaypointCreateDto ToCreateDto(this WaypointDetailsViewModel WaypointDetailsViewModel)
   {
     return new WaypointCreateDto {

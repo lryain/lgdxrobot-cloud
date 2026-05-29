@@ -162,7 +162,7 @@ public class MapEditorService(
     await _context.Waypoints.AddRangeAsync(addingWaypoints);
     foreach (var waypoint in updateWaypoints)
     {
-      var w = newWaypoints.First(w => w.Id == waypoint.Id);
+      var w = updateWaypoints.First(w => w.Id == waypoint.Id);
       waypoint.Name = w.Name;
       waypoint.FeatureId = w.FeatureId;
       waypoint.ClassName = w.ClassName;
@@ -206,7 +206,7 @@ public class MapEditorService(
     }));
     foreach (var waypointTraffic in updateWaypointTraffics)
     {
-      var w = newWaypointTraffics.First(w => w.Id == waypointTraffic.Id);
+      var w = updateWaypointTraffics.First(w => w.Id == waypointTraffic.Id);
       waypointTraffic.FeatureId = w.FeatureId;
       waypointTraffic.WaypointFromId = w.WaypointFromId;
       waypointTraffic.WaypointToId = w.WaypointToId;

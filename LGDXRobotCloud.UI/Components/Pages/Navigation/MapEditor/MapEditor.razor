@@ -130,6 +130,7 @@
           {
             <EditForm EditContext="@_editContextWaypoint" OnValidSubmit="HandleWaypointSubmit">
               <DataAnnotationsValidator />
+              <ApiErrorAlert Errors="EditingWaypoint.Errors" />
               <FormValidationErrorAlert Errors="@_editContextWaypoint.GetValidationMessages()" />
               <WaypointDetailForm Id="EditingWaypoint.Id" HasRouteTrafficControl="HasRouteTrafficControl" WaypointDetailsViewModel="EditingWaypoint" FieldNameWidth="4" />
               <div class="d-flex align-items-center">
@@ -145,6 +146,7 @@
           {
             <EditForm EditContext="@_editContextTraffic" OnValidSubmit="HandleTrafficSubmit">
               <DataAnnotationsValidator />
+              <ApiErrorAlert Errors="EditingWaypointTraffic.Errors" />
               <FormValidationErrorAlert Errors="@_editContextTraffic.GetValidationMessages()" />
               <WaypointTrafficDetailForm Id="EditingWaypointTraffic.Id" WaypointTrafficViewModel="EditingWaypointTraffic" />
               <div class="d-flex align-items-center">

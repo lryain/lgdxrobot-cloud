@@ -87,28 +87,8 @@ public static class MapEditorViewModelExtensions
   {
     return new MapEditorUpdateDto
     {
-      Waypoints = mapEditorViewModel.Waypoints.Select(x => new WaypointUpsertDto
-      {
-        Id = x.Id,
-        Name = x.Name,
-        FeatureId = x.FeatureId,
-        ClassName = x.ClassName,
-        X = x.X,
-        Y = x.Y,
-        Rotation = x.Rotation,
-        IsDocking = x.IsDocking,
-      }).ToList(),
-      WaypointTraffics = mapEditorViewModel.WaypointTraffics.Select(x => new WaypointTrafficUpdateDto
-      {
-        Id = x.Id,
-        FeatureId = x.FeatureId,
-        WaypointFromId = x.WaypointFromId,
-        WaypointToId = x.WaypointToId,
-        Overridable = x.Overridable,
-        Cost = x.Cost,
-        SpeedLimit = x.SpeedLimit,
-        AbsoluteSpeedLimit = x.AbsoluteSpeedLimit,
-      }).ToList()
+      Waypoints = mapEditorViewModel.Waypoints.ToUpsertDto().ToList(),
+      WaypointTraffics = mapEditorViewModel.WaypointTraffics.ToUpdateDto().ToList()
     };
   }
 }

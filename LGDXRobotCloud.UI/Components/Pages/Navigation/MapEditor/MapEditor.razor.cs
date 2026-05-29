@@ -113,6 +113,39 @@ public partial class MapEditor : ComponentBase, IDisposable
   public async Task HandelSubmit()
   {
     MapEditorViewModel.ClearMessages();
+
+    // Validation
+    HashSet<int> featureIds = [];
+    foreach (var waypoint in MapEditorViewModel.Waypoints)
+    {
+      if (waypoint.FeatureId != null)
+      {
+        if (featureIds.Contains((int)waypoint.FeatureId))
+        {
+          MapEditorViewModel.Errors = [];
+          MapEditorViewModel.Errors.Add(nameof(MapEditorViewModel.Waypoints), "Feature ID cannot duplicate.");
+          return;
+        }
+        featureIds.Add((int)waypoint.FeatureId);
+      }
+      else if (HasRouteTrafficControl)
+      {
+        MapEditorViewModel.Errors = [];
+        MapEditorViewModel.Errors.Add(nameof(MapEditorViewModel.Waypoints), "Feature ID is required when Route Control is enabled.");
+        return;
+      }
+    }
+    foreach (var traffic in MapEditorViewModel.WaypointTraffics)
+    {
+      if (featureIds.Contains(traffic.FeatureId))
+      {
+        MapEditorViewModel.Errors = [];
+        MapEditorViewModel.Errors.Add(nameof(MapEditorViewModel.WaypointTraffics), "Feature ID cannot duplicate.");
+        return;
+      }
+      featureIds.Add(traffic.FeatureId);
+    }
+
     try
     {
       var realmId = Realm.Id ?? 0;
@@ -151,7 +184,8 @@ public partial class MapEditor : ComponentBase, IDisposable
   {
     IsEditingWaypoint = true;
     Guid id = Guid.Parse(waypointId);
-    EditingWaypoint = MapEditorViewModel.Waypoints.FirstOrDefault(w => w.MapEditorObjectId == id)!;
+    var waypoint = MapEditorViewModel.Waypoints.FirstOrDefault(w => w.MapEditorObjectId == id)!;
+    EditingWaypoint = LgdxHelper.DeepCopy(waypoint);
     _editContextWaypoint = new EditContext(EditingWaypoint);
     _editContextWaypoint.SetFieldCssClassProvider(_customFieldClassProvider);
     StateHasChanged();
@@ -159,6 +193,13 @@ public partial class MapEditor : ComponentBase, IDisposable
 
   public async Task HandleWaypointSubmit()
   {
+    if (HasRouteTrafficControl && EditingWaypoint.FeatureId == null)
+    {
+      EditingWaypoint.Errors = [];
+      EditingWaypoint.Errors.Add(nameof(EditingWaypoint.FeatureId), "Feature ID is required when Route Control is enabled.");
+      return;
+    }
+
     if (EditingWaypoint.MapEditorObjectId == null)
     {
       // Create
@@ -268,8 +309,9 @@ public partial class MapEditor : ComponentBase, IDisposable
     var fromWaypoint = MapEditorViewModel.Waypoints.FirstOrDefault(x => x.MapEditorObjectId == fromWaypointId);
     var toWaypoint = MapEditorViewModel.Waypoints.FirstOrDefault(x => x.MapEditorObjectId == toWaypointId);
 
-    EditingWaypointTraffic = MapEditorViewModel.WaypointTraffics
+    var traffic = MapEditorViewModel.WaypointTraffics
       .FirstOrDefault(x => x.AlternativeWaypointFromId == fromWaypointId && x.AlternativeWaypointToId == toWaypointId)!;
+    EditingWaypointTraffic = LgdxHelper.DeepCopy(traffic);
     EditingWaypointTraffic.WaypointFromName = fromWaypoint?.Name;
     EditingWaypointTraffic.WaypointToName = toWaypoint?.Name;
     EditingWaypointTraffic.WaypointFromFeatureId = fromWaypoint?.FeatureId;
@@ -309,6 +351,16 @@ public partial class MapEditor : ComponentBase, IDisposable
 
   public async Task HandleTrafficSubmit()
   {
+    if (HasRouteTrafficControl)
+    {
+      if (EditingWaypointTraffic.IsBothWaysTraffic && EditingWaypointTraffic.ReverseFeatureId == null)
+      {
+        EditingWaypointTraffic.Errors = [];
+        EditingWaypointTraffic.Errors.Add(nameof(EditingWaypointTraffic.ReverseFeatureId), "Reverse Feature ID is required when Route Control is enabled.");
+        return;
+      }
+    }
+
     if (EditingWaypointTraffic.MapEditorObjectId == null)
     {
       // Create
@@ -320,7 +372,7 @@ public partial class MapEditor : ComponentBase, IDisposable
       {
         var second = LgdxHelper.DeepCopy(EditingWaypointTraffic);
         second.MapEditorObjectId = Guid.NewGuid();
-        second.FeatureId = EditingWaypointTraffic.ReverseFeatureId;
+        second.FeatureId = (int)EditingWaypointTraffic.ReverseFeatureId!;
         second.AlternativeWaypointFromId = SelectedToWaypointId;
         second.AlternativeWaypointToId = SelectedFromWaypointId;
         MapEditorViewModel.WaypointTraffics.Add(second);
@@ -350,7 +402,7 @@ public partial class MapEditor : ComponentBase, IDisposable
           .FindIndex(x => x.AlternativeWaypointFromId == EditingWaypointTraffic.AlternativeWaypointToId && x.AlternativeWaypointToId == EditingWaypointTraffic.AlternativeWaypointFromId);
         second.AlternativeWaypointFromId = EditingWaypointTraffic.AlternativeWaypointToId;
         second.AlternativeWaypointToId = EditingWaypointTraffic.AlternativeWaypointFromId;
-        second.FeatureId = EditingWaypointTraffic.ReverseFeatureId;
+        second.FeatureId = (int)EditingWaypointTraffic.ReverseFeatureId!;
         MapEditorViewModel.WaypointTraffics[index] = second;
       }
     }

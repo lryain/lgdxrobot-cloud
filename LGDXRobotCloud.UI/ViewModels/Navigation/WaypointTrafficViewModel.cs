@@ -9,7 +9,7 @@ public class WaypointTrafficViewModel : FormViewModelBase
   public int? Id { get; set; }
 
   [Required (ErrorMessage = "A feature ID is required.")]
-  public int? FeatureId { get; set; }
+  public int FeatureId { get; set; }
 
   public int? WaypointFromId { get; set; }
 
@@ -56,5 +56,24 @@ public static class WaypointTrafficViewModelExtensions
     WaypointDetailsViewModel.Cost = waypointTrafficDto.Cost; 
     WaypointDetailsViewModel.SpeedLimit = waypointTrafficDto.SpeedLimit; 
     WaypointDetailsViewModel.AbsoluteSpeedLimit = waypointTrafficDto.AbsoluteSpeedLimit; 
+  }
+
+  public static WaypointTrafficUpdateDto ToUpdateDto(this WaypointTrafficViewModel WaypointDetailsViewModel)
+  {
+    return new WaypointTrafficUpdateDto {
+      Id = WaypointDetailsViewModel.Id,
+      FeatureId = WaypointDetailsViewModel.FeatureId,
+      WaypointFromId = WaypointDetailsViewModel.WaypointFromId,
+      WaypointToId = WaypointDetailsViewModel.WaypointToId,
+      Overridable = WaypointDetailsViewModel.Overridable,
+      Cost = WaypointDetailsViewModel.Cost,
+      SpeedLimit = WaypointDetailsViewModel.SpeedLimit,
+      AbsoluteSpeedLimit = WaypointDetailsViewModel.AbsoluteSpeedLimit,
+    };
+  }
+
+  public static IEnumerable<WaypointTrafficUpdateDto> ToUpdateDto(this IEnumerable<WaypointTrafficViewModel> models)
+  { 
+    return models.Select(model => model.ToUpdateDto());
   }
 }
