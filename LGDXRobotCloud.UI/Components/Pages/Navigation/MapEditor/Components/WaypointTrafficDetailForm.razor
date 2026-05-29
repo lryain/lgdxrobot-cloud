@@ -1,0 +1,106 @@
+@using LGDXRobotCloud.UI.ViewModels.Navigation
+
+@if (Id != null)
+{
+  <div class="mb-3 row">
+    <label class="col-4 col-form-label">ID</label>
+    <div class="col">
+      <div class="col form-control-plaintext">@WaypointTrafficViewModel.Id</div>
+    </div>
+  </div>
+}
+<div class="row row-deck row-cards mb-3">
+  <!-- From -->
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body">
+        <h3 class="card-title">From</h3>
+        <div class="datagrid">
+          <div class="datagrid-item">
+            <div class="datagrid-title">Name</div>
+            <div class="datagrid-content">@(WaypointTrafficViewModel.WaypointFromName)</div>
+          </div>
+          <div class="datagrid-item">
+            <div class="datagrid-title">Feature ID</div>
+            <div class="datagrid-content">@(WaypointTrafficViewModel.WaypointFromFeatureId)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- To -->
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body">
+        <h3 class="card-title">To</h3>
+        <div class="datagrid">
+          <div class="datagrid-item">
+            <div class="datagrid-title">Name</div>
+            <div class="datagrid-content">@(WaypointTrafficViewModel.WaypointToName)</div>
+          </div>
+          <div class="datagrid-item">
+            <div class="datagrid-title">Feature ID</div>
+            <div class="datagrid-content">@(WaypointTrafficViewModel.WaypointToFeatureId)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Fields -->
+<div class="mb-3 row">
+  <label class="col-4 col-form-label required" for="@nameof(WaypointTrafficViewModel.FeatureId)">Feature ID</label>
+  <div class="col">
+    <InputNumber id="@nameof(WaypointTrafficViewModel.FeatureId)" type="number" class="form-control" @bind-Value="WaypointTrafficViewModel.FeatureId" />
+    <ValidationMessage class="invalid-feedback" For="@(() => WaypointTrafficViewModel.FeatureId)" />
+  </div>
+</div>
+@if (WaypointTrafficViewModel.IsBothWaysTraffic)
+{
+  <div class="mb-3 row">
+    <label class="col-4 col-form-label required" for="@nameof(WaypointTrafficViewModel.ReverseFeatureId)">Reverse Feature ID</label>
+    <div class="col">
+      <InputNumber id="@nameof(WaypointTrafficViewModel.ReverseFeatureId)" type="number" class="form-control" @bind-Value="WaypointTrafficViewModel.ReverseFeatureId" />
+      <ValidationMessage class="invalid-feedback" For="@(() => WaypointTrafficViewModel.ReverseFeatureId)" />
+    </div>
+  </div>
+}
+<div class="mb-3 row align-items-center">
+  <label class="col-4 col-form-label" for="@nameof(WaypointTrafficViewModel.Overridable)">Overridable</label>
+  <div class="col">
+    <label class="form-check form-check-inline mb-0">
+      <InputCheckbox id="@nameof(WaypointTrafficViewModel.Overridable)" class="form-check-input" @bind-Value=WaypointTrafficViewModel.Overridable />
+      <span class="form-check-label">Yes</span>
+    </label>
+  </div>
+</div>
+<div class="mb-3 row">
+  <label class="col-4 col-form-label" for="@nameof(WaypointTrafficViewModel.Cost)">Cost</label>
+  <div class="col">
+    <InputNumber id="@nameof(WaypointTrafficViewModel.Cost)" type="number" class="form-control" @bind-Value="WaypointTrafficViewModel.Cost" />
+    <ValidationMessage class="invalid-feedback" For="@(() => WaypointTrafficViewModel.Cost)" />
+  </div>
+</div>
+<div class="mb-3 row">
+  <label class="col-4 col-form-label" for="@nameof(WaypointTrafficViewModel.SpeedLimit)">Speed Limit (%)</label>
+  <div class="col">
+    <InputNumber id="@nameof(WaypointTrafficViewModel.SpeedLimit)" type="number" class="form-control" @bind-Value="WaypointTrafficViewModel.SpeedLimit" />
+    <ValidationMessage class="invalid-feedback" For="@(() => WaypointTrafficViewModel.SpeedLimit)" />
+  </div>
+</div>
+<div class="mb-3 row">
+  <label class="col-4 col-form-label" for="@nameof(WaypointTrafficViewModel.AbsoluteSpeedLimit)">Absolute Speed Limit (m/s)</label>
+  <div class="col">
+    <InputNumber id="@nameof(WaypointTrafficViewModel.AbsoluteSpeedLimit)" type="number" class="form-control" @bind-Value="WaypointTrafficViewModel.AbsoluteSpeedLimit" />
+    <ValidationMessage class="invalid-feedback" For="@(() => WaypointTrafficViewModel.AbsoluteSpeedLimit)" />
+  </div>
+</div>
+
+@code
+{
+  [Parameter]
+  public int? Id { get; set; }
+
+  [Parameter]
+  public required WaypointTrafficViewModel WaypointTrafficViewModel { get; set; }
+} 

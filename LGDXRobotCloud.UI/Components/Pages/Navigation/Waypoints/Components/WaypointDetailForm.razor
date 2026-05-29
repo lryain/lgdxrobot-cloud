@@ -32,12 +32,12 @@
     </div>
   </div>
   <div class="mb-3 row">
-  <label class="col-@(FieldNameWidth) col-form-label" for="@nameof(WaypointDetailsViewModel.ClassName)">Class Name</label>
-  <div class="col">
-    <InputText id="@nameof(WaypointDetailsViewModel.ClassName)" type="text" class="form-control" @bind-Value="WaypointDetailsViewModel.ClassName" />
-    <ValidationMessage class="invalid-feedback" For="@(() => WaypointDetailsViewModel.ClassName)" />
+    <label class="col-@(FieldNameWidth) col-form-label" for="@nameof(WaypointDetailsViewModel.ClassName)">Class Name</label>
+    <div class="col">
+      <InputText id="@nameof(WaypointDetailsViewModel.ClassName)" type="text" class="form-control" @bind-Value="WaypointDetailsViewModel.ClassName" />
+      <ValidationMessage class="invalid-feedback" For="@(() => WaypointDetailsViewModel.ClassName)" />
+    </div>
   </div>
-</div>
 }
 <div class="mb-3 row">
   <label class="col-@(FieldNameWidth) col-form-label required" for="@nameof(WaypointDetailsViewModel.X)">X (m)</label>

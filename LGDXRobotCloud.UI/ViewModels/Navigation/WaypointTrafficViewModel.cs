@@ -9,7 +9,7 @@ public class WaypointTrafficViewModel : FormViewModelBase
   public int? Id { get; set; }
 
   [Required (ErrorMessage = "A feature ID is required.")]
-  public int FeatureId { get; set; }
+  public int? FeatureId { get; set; }
 
   public int? WaypointFromId { get; set; }
 
@@ -27,6 +27,21 @@ public class WaypointTrafficViewModel : FormViewModelBase
   public double? SpeedLimit { get; set; }
 
   public double? AbsoluteSpeedLimit { get; set; }
+
+  // Map Editor Only
+  public bool IsBothWaysTraffic { get; set; }
+
+  public int? ReverseFeatureId { get; set; }
+
+  public Guid? MapEditorObjectId { get; set; }
+
+  public string? WaypointFromName { get; set; }
+
+  public string? WaypointToName { get; set; }
+
+  public int? WaypointFromFeatureId { get; set; }
+
+  public int? WaypointToFeatureId { get; set; }
 }
 
 public static class WaypointTrafficViewModelExtensions

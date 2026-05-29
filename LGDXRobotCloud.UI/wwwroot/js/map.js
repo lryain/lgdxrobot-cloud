@@ -545,16 +545,15 @@ function _internalGetConnectorPoints(from, to, isBothWaysTraffic) {
 }
 
 function _internalHandleTrafficSelect(e) {
-  if (MapEditorMode != 5) // DeleteTraffic mode
+  if (MapEditorMode != 0) // Normal mode
   {
     return;
   }
 
   let id = e.target.id();
-  let obj = MapLayer.findOne('#' + id);
-  obj.destroy();
   id = id.substring(2);
-  MapDotNetObject.invokeMethodAsync('HandleDeleteTraffic', id);
+  MapDotNetObject.invokeMethodAsync('HandleSelectTraffic', id);
+  ShowSidebar();
 }
 
 function MapEditorAddTraffics(traffics) {
@@ -570,7 +569,7 @@ function MapEditorAddTraffics(traffics) {
       const line = new Konva.Line({
         stroke: _internalGetCSSVariable('--tblr-blue'),
         strokeWidth: 1,
-        id: 't-' + traffics[i].waypointFromId + '-' + traffics[i].waypointToId,
+        id: 't-' + traffics[i].waypointFromId + '&' + traffics[i].waypointToId,
         points: points,
       });
       line.on('click', _internalHandleTrafficSelect);
@@ -581,7 +580,7 @@ function MapEditorAddTraffics(traffics) {
         stroke: _internalGetCSSVariable('--tblr-blue'),
         fill: _internalGetCSSVariable('--tblr-blue'),
         strokeWidth: 1,
-        id: 't-' + traffics[i].waypointFromId + '-' + traffics[i].waypointToId,
+        id: 't-' + traffics[i].waypointFromId + '&' + traffics[i].waypointToId,
         points: points,
         pointerLength: 1,
         pointerWidth: 1,
@@ -590,6 +589,12 @@ function MapEditorAddTraffics(traffics) {
       MapLayer.add(arrow);
     }
   }
+}
+
+function HandleDeleteTraffic(fromWaypointId, toWaypointId)
+{
+  let obj = MapLayer.findOne('#t-' + fromWaypointId + '&' + toWaypointId);
+  obj.destroy();
 }
 
 /*

@@ -1,5 +1,6 @@
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.Json;
 using LGDXRobotCloud.Utilities.Enums;
 
 namespace LGDXRobotCloud.Utilities.Helpers;
@@ -20,5 +21,14 @@ public static class LgdxHelper
     var inputBytes = Encoding.UTF8.GetBytes(input);
     var inputHash = MD5.HashData(inputBytes);
     return Convert.ToHexString(inputHash);
+  }
+
+  public static T DeepCopy<T>(T source)
+  {
+    if (source == null)
+      return default!;
+
+    var json = JsonSerializer.Serialize(source);
+    return JsonSerializer.Deserialize<T>(json)!;
   }
 }

@@ -2,6 +2,7 @@
 @attribute [Authorize (Policy = Permissions.Navigation.MapEditor.Read)]
 @attribute [Authorize (Policy = Permissions.Navigation.Waypoints.Read)]
 @using LGDXRobotCloud.UI.Components.Pages.Navigation.Waypoints.Components
+@using LGDXRobotCloud.UI.Components.Pages.Navigation.MapEditor.Components
 
 <PageHeader Title="Map Editor">
   <div class="row align-items-center">
@@ -44,8 +45,11 @@
           <a class="btn dropdown-toggle rounded-0" data-bs-toggle="dropdown">Create</a>
           <div class="dropdown-menu">
             <button class="dropdown-item" @onclick="() => HandleMapEditorModeChange(MapEditorMode.AddWaypoint)">Waypoint</button>
-            <button class="dropdown-item" @onclick="() => HandleMapEditorModeChange(MapEditorMode.SingleWayTrafficFrom)">Single-way traffic</button>
-            <button class="dropdown-item" @onclick="() => HandleMapEditorModeChange(MapEditorMode.BothWaysTrafficFrom)">Two-way traffic</button>
+            @if (HasRouteTrafficControl)
+            {
+              <button class="dropdown-item" @onclick="() => HandleMapEditorModeChange(MapEditorMode.SingleWayTrafficFrom)">Single-way traffic</button>
+              <button class="dropdown-item" @onclick="() => HandleMapEditorModeChange(MapEditorMode.BothWaysTrafficFrom)">Two-way traffic</button>
+            }
           </div>
           <button class="btn" disabled="@(MapEditorMode == MapEditorMode.Normal)" @onclick="() => HandleMapEditorModeChange(MapEditorMode.Normal)">Cancel</button>
         </div>
@@ -121,21 +125,37 @@
         <button type="button" class="btn-close text-reset ms-auto" onclick="HideSidebar()"></button>
       </div>
       <div class="card-body">
-        @if (IsEditingWaypoint)
-        {
-          <EditForm EditContext="@_editContext" OnValidSubmit="HandleWaypointSubmit">
-            <DataAnnotationsValidator />
-            <FormValidationErrorAlert Errors="@_editContext.GetValidationMessages()" />
-            <WaypointDetailForm Id="EditingWaypoint.Id" HasRouteTrafficControl="HasRouteTrafficControl" WaypointDetailsViewModel="EditingWaypoint" FieldNameWidth="4" />
-            <div class="d-flex align-items-center">
-              @if (EditingWaypoint.MapEditorObjectId != null)
-              {
-                <button type="button" class="btn btn-ghost-danger" @onclick="HandleWaypointDelete">Delete</button>
-              }
-              <button type="submit" class="btn btn-primary ms-auto">@(EditingWaypoint.Id != null ? "Update" : "Create")</button>
-            </div>
-          </EditForm>
-        }
+      
+          @if (IsEditingWaypoint)
+          {
+            <EditForm EditContext="@_editContextWaypoint" OnValidSubmit="HandleWaypointSubmit">
+              <DataAnnotationsValidator />
+              <FormValidationErrorAlert Errors="@_editContextWaypoint.GetValidationMessages()" />
+              <WaypointDetailForm Id="EditingWaypoint.Id" HasRouteTrafficControl="HasRouteTrafficControl" WaypointDetailsViewModel="EditingWaypoint" FieldNameWidth="4" />
+              <div class="d-flex align-items-center">
+                @if (EditingWaypoint.MapEditorObjectId != null)
+                {
+                  <button type="button" class="btn btn-ghost-danger" @onclick="HandleWaypointDelete">Delete</button>
+                }
+                <button type="submit" class="btn btn-primary ms-auto">@(EditingWaypoint.MapEditorObjectId != null ? "Update" : "Create")</button>
+              </div>
+            </EditForm>
+          }
+          else
+          {
+            <EditForm EditContext="@_editContextTraffic" OnValidSubmit="HandleTrafficSubmit">
+              <DataAnnotationsValidator />
+              <FormValidationErrorAlert Errors="@_editContextTraffic.GetValidationMessages()" />
+              <WaypointTrafficDetailForm Id="EditingWaypointTraffic.Id" WaypointTrafficViewModel="EditingWaypointTraffic" />
+              <div class="d-flex align-items-center">
+                @if (EditingWaypointTraffic.MapEditorObjectId != null)
+                {
+                  <button type="button" class="btn btn-ghost-danger" @onclick="HandleDeleteTraffic">Delete</button>
+                }
+                <button type="submit" class="btn btn-primary ms-auto">@(EditingWaypointTraffic.MapEditorObjectId != null ? "Update" : "Create")</button>
+              </div>
+            </EditForm>
+          }
       </div>
     </div>
   </div>
