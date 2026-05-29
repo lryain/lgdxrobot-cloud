@@ -16,6 +16,10 @@ public record WaypointTrafficUpdateDto
   [Required (ErrorMessage = "A waypoint to ID is required.")]
   public required int WaypointToId { get; set; }
 
+  public Guid? AlternativeWaypointFromId { get; set; }
+
+  public Guid? AlternativeWaypointToId { get; set; }
+
   [Required (ErrorMessage = "Overridable is required.")]
   public bool Overridable { get; set; }
 

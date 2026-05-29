@@ -27,6 +27,8 @@ public record WaypointUpsertDto
   public double Rotation { get; set; } = 0;
 
   public bool IsDocking { get; set; } = false;
+
+  public Guid? AlternativeId { get; set; }
 }
 
 public static class WaypointUpsertDtoExtensions

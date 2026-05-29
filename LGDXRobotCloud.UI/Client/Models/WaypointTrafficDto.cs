@@ -82,6 +82,11 @@ namespace LGDXRobotCloud.UI.Client.Models
             writer.WriteIntValue("waypointToId", WaypointToId);
             writer.WriteAdditionalData(AdditionalData);
         }
+
+    internal object FromDto()
+    {
+      throw new NotImplementedException();
     }
+  }
 }
 #pragma warning restore CS0618

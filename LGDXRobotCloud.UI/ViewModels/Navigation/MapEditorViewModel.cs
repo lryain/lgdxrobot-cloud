@@ -5,8 +5,8 @@ namespace LGDXRobotCloud.UI.ViewModels.Navigation;
 
 public record WaypointTrafficDisplay
 {
-  public int WaypointFromId { get; set; }
-  public int WaypointToId { get; set; }
+  public Guid WaypointFromId { get; set; }
+  public Guid WaypointToId { get; set; }
   public bool IsBothWaysTraffic { get; set; }
 }
 
@@ -14,7 +14,7 @@ public class MapEditorViewModel : FormViewModelBase
 {
   public List<WaypointDetailsViewModel> Waypoints { get; set; } = [];
 
-  public List<WaypointTrafficDto> WaypointTraffics { get; set; } = [];
+  public List<WaypointTrafficViewModel> WaypointTraffics { get; set; } = [];
 
   public List<WaypointTrafficDisplay> WaypointTrafficsDisplay { get; set; } = [];
 }
@@ -23,38 +23,55 @@ public static class MapEditorViewModelExtensions
 {
   public static void FromDto(this MapEditorViewModel mapEditorViewModel, MapEditorDto mapEditorDto)
   {
-    // Waypoints
-    mapEditorViewModel.Waypoints = mapEditorDto.Waypoints?.Select(w => new WaypointDetailsViewModel
+    foreach (var waypoint in mapEditorDto.Waypoints!)
     {
-      Id = w.Id,
-      Name = w.Name!,
-      RealmId = w.Realm!.Id,
-      RealmName = w.Realm.Name,
-      FeatureId = w.FeatureId,
-      ClassName = w.ClassName,
-      X = w.X,
-      Y = w.Y,
-      Rotation = w.Rotation,
-      IsDocking = (bool)w.IsDocking!,
-      MapEditorObjectId = Guid.NewGuid(),
-    }).ToList() ?? [];
+      WaypointDetailsViewModel w = new()
+      {
+        MapEditorObjectId = Guid.NewGuid()
+      };
+      w.FromDto(waypoint);
+      mapEditorViewModel.Waypoints.Add(w);
+    }
 
-    // Waypoint Traffics
-    mapEditorViewModel.WaypointTraffics = mapEditorDto.WaypointTraffics ?? [];
+    // Key: MapEditorObjectId, Value: Id
+    Dictionary<int, Guid> waypointObjectId = [];
+    foreach (var waypoint in mapEditorViewModel.Waypoints)
+    {
+      waypointObjectId.Add((int)waypoint.Id!, (Guid)waypoint.MapEditorObjectId!);
+    }
 
+    foreach (var traffic in mapEditorDto.WaypointTraffics!)
+    {
+      WaypointTrafficViewModel t = new();
+      t.FromDto(traffic);
+      mapEditorViewModel.WaypointTraffics.Add(t);
+    }
+
+    foreach (var traffic in mapEditorViewModel.WaypointTraffics)
+    {
+      if (traffic.WaypointFromId != null)
+      {
+        traffic.AlternativeWaypointFromId = waypointObjectId[(int)traffic.WaypointFromId!];
+      }
+      if (traffic.WaypointToId != null)
+      {
+        traffic.AlternativeWaypointToId = waypointObjectId[(int)traffic.WaypointToId!];
+      }
+    }
+    
     // Key: (WaypointFromId, WaypointToId), Value: IsBothWaysTraffic
-    Dictionary<(int, int), bool> waypointTrafficsDisplayTemp = [];
-    foreach (var Traffic in mapEditorDto.WaypointTraffics!)
+    Dictionary<(Guid, Guid), bool> waypointTrafficsDisplayTemp = [];
+    foreach (var traffic in mapEditorDto.WaypointTraffics!)
     {
       // Display
       // If other way around is exists, then it is both ways traffic
-      if (waypointTrafficsDisplayTemp.ContainsKey(((int)Traffic.WaypointToId!, (int)Traffic.WaypointFromId!)))
+      if (waypointTrafficsDisplayTemp.ContainsKey((waypointObjectId[(int)traffic.WaypointToId!], waypointObjectId[(int)traffic.WaypointFromId!])))
       {
-        waypointTrafficsDisplayTemp[((int)Traffic.WaypointToId!, (int)Traffic.WaypointFromId!)] = true;
+        waypointTrafficsDisplayTemp[(waypointObjectId[(int)traffic.WaypointToId!], waypointObjectId[(int)traffic.WaypointFromId!])] = true;
       }
       else
       {
-        waypointTrafficsDisplayTemp.Add(((int)Traffic.WaypointFromId!, (int)Traffic.WaypointToId!), false);
+        waypointTrafficsDisplayTemp.Add((waypointObjectId[(int)traffic.WaypointFromId!], waypointObjectId[(int)traffic.WaypointToId!]), false);
       }
     }
     // waypointTrafficsDisplayTemp to waypointTrafficsDisplay
@@ -94,4 +111,8 @@ public static class MapEditorViewModelExtensions
       }).ToList()
     };
   }
+}
+
+internal class HashMap<T1, T2>
+{
 }

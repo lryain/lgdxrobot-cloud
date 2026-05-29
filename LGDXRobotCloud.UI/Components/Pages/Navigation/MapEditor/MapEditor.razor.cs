@@ -48,12 +48,6 @@ public partial class MapEditor : ComponentBase, IDisposable
   [Inject]
   public required AuthenticationStateProvider AuthenticationStateProvider { get; set; }
 
-  [SupplyParameterFromQuery]
-  private string? UpdateWaypointId { get; set; }
-
-  [SupplyParameterFromQuery]
-  private string? DeleteWaypointId { get; set; }
-
   private DotNetObjectReference<MapEditor> ObjectReference = null!;
   private string RealmName { get; set; } = string.Empty;
   private RealmDto Realm { get; set; } = null!;
@@ -61,14 +55,15 @@ public partial class MapEditor : ComponentBase, IDisposable
   {
     IsSuccess = false,
   };
-  
+  bool HasRouteTrafficControl { get; set; } = false;
+
+  // Map Editor
   private MapEditorMode MapEditorMode { get; set; } = MapEditorMode.Normal;
   private MapEditorError MapEditorError { get; set; } = MapEditorError.None;
-  private int SelectedFromWaypointId { get; set; } = 0;
-  private int SelectedToWaypointId { get; set; } = 0;
-  bool HasRouteTrafficControl { get; set; } = false;
+  private Guid SelectedFromWaypointId { get; set; } = Guid.Empty;
+  private Guid SelectedToWaypointId { get; set; } = Guid.Empty;
   
-  // Form
+  // Edit Form
   bool IsEditingWaypoint { get; set; } = false;
   private WaypointDetailsViewModel EditingWaypoint { get; set; } = new();
   private readonly CustomFieldClassProvider _customFieldClassProvider = new();
@@ -154,19 +149,12 @@ public partial class MapEditor : ComponentBase, IDisposable
     StateHasChanged();
   }
 
-  public async Task HandleWaypointDelete()
-  {
-    MapEditorViewModel.Waypoints.RemoveAll(w => w.MapEditorObjectId == EditingWaypoint.MapEditorObjectId);
-    await JSRuntime.InvokeVoidAsync("MapEditorDeleteWaypoint", EditingWaypoint.MapEditorObjectId);
-    await JSRuntime.InvokeVoidAsync("HideSidebar");
-  }
-
   public async Task HandleWaypointSubmit()
   {
     if (EditingWaypoint.Id == null)
     {
       // Create
-      EditingWaypoint.MapEditorObjectId = Guid.NewGuid(); // Allow Delete
+      EditingWaypoint.MapEditorObjectId = Guid.NewGuid();
       MapEditorViewModel.Waypoints.Add(EditingWaypoint);
       List<WaypointDetailsViewModel> waypoints = [EditingWaypoint];
       await JSRuntime.InvokeVoidAsync("MapEditorAddWaypoints", waypoints);
@@ -178,6 +166,13 @@ public partial class MapEditor : ComponentBase, IDisposable
       MapEditorViewModel.Waypoints.Add(EditingWaypoint);
       await JSRuntime.InvokeVoidAsync("MapEditorMoveWaypoint", EditingWaypoint);
     }
+    await JSRuntime.InvokeVoidAsync("HideSidebar");
+  }
+
+  public async Task HandleWaypointDelete()
+  {
+    MapEditorViewModel.Waypoints.RemoveAll(w => w.MapEditorObjectId == EditingWaypoint.MapEditorObjectId);
+    await JSRuntime.InvokeVoidAsync("MapEditorDeleteWaypoint", EditingWaypoint.MapEditorObjectId);
     await JSRuntime.InvokeVoidAsync("HideSidebar");
   }
 
@@ -195,8 +190,8 @@ public partial class MapEditor : ComponentBase, IDisposable
       MapEditorError = MapEditorError.SameWaypoint;
     }
     // The two waypoint must not have any traffic
-    if (MapEditorViewModel.WaypointTraffics.Any(x => x.WaypointFromId == SelectedFromWaypointId && x.WaypointToId == SelectedToWaypointId)
-      || MapEditorViewModel.WaypointTraffics.Any(x => x.WaypointFromId == SelectedToWaypointId && x.WaypointToId == SelectedFromWaypointId))
+    if (MapEditorViewModel.WaypointTraffics.Any(x => x.AlternativeWaypointFromId == SelectedFromWaypointId && x.AlternativeWaypointToId == SelectedToWaypointId)
+      || MapEditorViewModel.WaypointTraffics.Any(x => x.AlternativeWaypointFromId == SelectedToWaypointId && x.AlternativeWaypointToId == SelectedFromWaypointId))
     {
       isValid = false;
       MapEditorError = MapEditorError.HasTraffic;
@@ -205,17 +200,17 @@ public partial class MapEditor : ComponentBase, IDisposable
     if (isValid)
     {
       // Update View Model
-      MapEditorViewModel.WaypointTraffics.Add(new WaypointTrafficDto
+      MapEditorViewModel.WaypointTraffics.Add(new WaypointTrafficViewModel
       {
-        WaypointFromId = SelectedFromWaypointId,
-        WaypointToId = SelectedToWaypointId,
+        AlternativeWaypointFromId = SelectedFromWaypointId,
+        AlternativeWaypointToId = SelectedToWaypointId,
       });
       if (isBothWaysTraffic)
       {
-        MapEditorViewModel.WaypointTraffics.Add(new WaypointTrafficDto
+        MapEditorViewModel.WaypointTraffics.Add(new WaypointTrafficViewModel
         {
-          WaypointFromId = SelectedToWaypointId,
-          WaypointToId = SelectedFromWaypointId,
+          AlternativeWaypointFromId = SelectedToWaypointId,
+          AlternativeWaypointToId = SelectedFromWaypointId,
         });
       }
       // Update Map Editor
@@ -237,7 +232,7 @@ public partial class MapEditor : ComponentBase, IDisposable
   [JSInvokable("HandleAddTraffic")]
   public async Task HandleAddTraffic(string waypointId)
   {
-    int id = int.Parse(waypointId);
+    Guid id = Guid.Parse(waypointId);
     switch (MapEditorMode)
     {
       case MapEditorMode.SingleWayTrafficFrom:
@@ -268,12 +263,12 @@ public partial class MapEditor : ComponentBase, IDisposable
   public async Task HandleDeleteTraffic(string waypointIds)
   {
     var ids = waypointIds.Split('-');
-    int fromWaypointId = int.Parse(ids[0]);
-    int toWaypointId = int.Parse(ids[1]);
+    Guid fromWaypointId = Guid.Parse(ids[0]);
+    Guid toWaypointId = Guid.Parse(ids[1]);
 
     // Delete model
-    MapEditorViewModel.WaypointTraffics.RemoveAll(x => x.WaypointFromId == fromWaypointId && x.WaypointToId == toWaypointId);
-    MapEditorViewModel.WaypointTraffics.RemoveAll(x => x.WaypointFromId == toWaypointId && x.WaypointToId == fromWaypointId);
+    MapEditorViewModel.WaypointTraffics.RemoveAll(x => x.AlternativeWaypointFromId == fromWaypointId && x.AlternativeWaypointToId == toWaypointId);
+    MapEditorViewModel.WaypointTraffics.RemoveAll(x => x.AlternativeWaypointFromId == toWaypointId && x.AlternativeWaypointToId == fromWaypointId);
     // Delete display
     MapEditorViewModel.WaypointTrafficsDisplay.RemoveAll(x => x.WaypointFromId == fromWaypointId && x.WaypointToId == toWaypointId);
     MapEditorViewModel.WaypointTrafficsDisplay.RemoveAll(x => x.WaypointFromId == toWaypointId && x.WaypointToId == fromWaypointId);
