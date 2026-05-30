@@ -6,6 +6,7 @@ using LGDXRobotCloud.Data.DbContexts;
 using LGDXRobotCloud.Data.Entities;
 using LGDXRobotCloud.Data.Models.Business.Navigation;
 using LGDXRobotCloud.Utilities.Enums;
+using Microsoft.Extensions.Caching.Memory;
 using Moq;
 
 namespace LGDXRobotCloud.API.UnitTests.Services.Navigation;
@@ -94,6 +95,7 @@ public class WaypointServiceTests
   ];
 
   private readonly Mock<IActivityLogService> mockActivityLogService = new();
+  private readonly Mock<IMemoryCache> mockMemoryCache = new();
   private readonly LgdxContext lgdxContext;
 
   public WaypointServiceTests()
@@ -117,7 +119,7 @@ public class WaypointServiceTests
   {
     // Arrange
     var expected = waypoints.Where(w => realmId == null || w.RealmId == realmId).Where(w => w.Name.Contains(waypointName)).ToList();
-    var waypointService = new WaypointService(mockActivityLogService.Object, lgdxContext);
+    var waypointService = new WaypointService(mockActivityLogService.Object, mockMemoryCache.Object, lgdxContext);
 
     // Act
     var (actual, _) = await waypointService.GetWaypointsAsync(realmId, waypointName, 1, waypoints.Count);
@@ -140,7 +142,7 @@ public class WaypointServiceTests
   {
     // Arrange
     var expected = waypoints.Where(w => w.Id == 1).FirstOrDefault();
-    var waypointService = new WaypointService(mockActivityLogService.Object, lgdxContext);
+    var waypointService = new WaypointService(mockActivityLogService.Object, mockMemoryCache.Object, lgdxContext);
 
     // Act
     var actual = await waypointService.GetWaypointAsync(1);
@@ -159,7 +161,7 @@ public class WaypointServiceTests
   public async Task GetWaypointAsync_CalledWithInvalidId_ShouldThrowsNotFoundException()
   {
     // Arrange
-    var waypointService = new WaypointService(mockActivityLogService.Object, lgdxContext);
+    var waypointService = new WaypointService(mockActivityLogService.Object, mockMemoryCache.Object, lgdxContext);
 
     // Act
     Task act() => waypointService.GetWaypointAsync(waypoints.Count + 1);
@@ -180,7 +182,7 @@ public class WaypointServiceTests
       Rotation = 0.123,
       IsDocking = true,
     };
-    var waypointService = new WaypointService(mockActivityLogService.Object, lgdxContext);
+    var waypointService = new WaypointService(mockActivityLogService.Object, mockMemoryCache.Object, lgdxContext);
 
     // Act
     var actual = await waypointService.CreateWaypointAsync(expected);
@@ -207,7 +209,7 @@ public class WaypointServiceTests
       Rotation = 0.123,
       IsDocking = true,
     };
-    var waypointService = new WaypointService(mockActivityLogService.Object, lgdxContext);
+    var waypointService = new WaypointService(mockActivityLogService.Object, mockMemoryCache.Object, lgdxContext);
 
     // Act
     Task act() => waypointService.CreateWaypointAsync(expected);
@@ -220,7 +222,7 @@ public class WaypointServiceTests
   public async Task TestDeleteWaypointAsync_CalledWithValidId_ShouldReturnsTrue()
   {
     // Arrange
-    var waypointService = new WaypointService(mockActivityLogService.Object, lgdxContext);
+    var waypointService = new WaypointService(mockActivityLogService.Object, mockMemoryCache.Object, lgdxContext);
 
     // Act
     var actual = await waypointService.TestDeleteWaypointAsync(1);
@@ -234,7 +236,7 @@ public class WaypointServiceTests
   {
     // Arrange
     var dependencies = 1;
-    var waypointService = new WaypointService(mockActivityLogService.Object, lgdxContext);
+    var waypointService = new WaypointService(mockActivityLogService.Object, mockMemoryCache.Object, lgdxContext);
 
     // Act
     Task act() => waypointService.TestDeleteWaypointAsync(2);
@@ -253,7 +255,7 @@ public class WaypointServiceTests
   {
     // Arrange
     var expected = waypoints.Where(w => w.Name.Contains(name)).Where(w => w.RealmId == 1);
-    var waypointService = new WaypointService(mockActivityLogService.Object, lgdxContext);
+    var waypointService = new WaypointService(mockActivityLogService.Object, mockMemoryCache.Object, lgdxContext);
 
     // Act
     var actual = await waypointService.SearchWaypointsAsync(1, name);
