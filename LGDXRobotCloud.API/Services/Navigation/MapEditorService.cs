@@ -134,16 +134,12 @@ public class MapEditorService(
       featureIds.Add(waypointTraffic.FeatureId);
     }
 
-    /*
-     * Waypoints
-     */
     var newWaypoints = mapEditorUpdateBusinessModel.Waypoints
       .Where(w => w.Id == null)
       .ToList();
     var existingWaypoints = mapEditorUpdateBusinessModel.Waypoints
       .Where(w => w.Id != null)
       .ToList();
-
     var databaseWaypoints = await _context.Waypoints
       .Where(w => w.RealmId == realmId)
       .OrderBy(w => w.Id)
@@ -155,6 +151,29 @@ public class MapEditorService(
       .Where(w => !existingWaypoints.Any(ew => ew.Id == w.Id))
       .ToList();
 
+    var waypointTraffics = mapEditorUpdateBusinessModel.WaypointTraffics.ToList();
+    var newWaypointTraffics = waypointTraffics
+      .Where(w => w.Id == null)
+      .ToList();
+    var existingWaypointTraffics = waypointTraffics
+      .Where(w => w.Id != null)
+      .ToList();
+    var databaseWaypointTraffics = await _context.WaypointTraffics
+      .Where(w => w.RealmId == realmId)
+      .ToListAsync();
+    var updateWaypointTraffics = databaseWaypointTraffics
+      .Where(w => existingWaypointTraffics.Any(ew => ew.Id == w.Id))
+      .ToList();
+    var deleteWaypointTraffics = databaseWaypointTraffics
+      .Where(w => !existingWaypointTraffics.Any(ew => ew.Id == w.Id))
+      .ToList();
+
+    // Remove old WaypointTraffics to prevent foreign key constraint error
+    _context.WaypointTraffics.RemoveRange(deleteWaypointTraffics);
+
+    /*
+     * Waypoints
+     */
     var addingWaypoints = newWaypoints.Select(w => new Waypoint
     {
       Name = w.Name,
@@ -190,7 +209,6 @@ public class MapEditorService(
     {
       objectIdToId.Add((Guid)waypoint.AlternateId!, waypoint.Id);
     }
-    var waypointTraffics = mapEditorUpdateBusinessModel.WaypointTraffics.ToList();
     foreach (var traffic in waypointTraffics)
     {
       if (traffic.WaypointFromId == null)
@@ -220,23 +238,6 @@ public class MapEditorService(
     /*
      * Traffic
      */
-    var newWaypointTraffics = waypointTraffics
-      .Where(w => w.Id == null)
-      .ToList();
-    var existingWaypointTraffics = waypointTraffics
-      .Where(w => w.Id != null)
-      .ToList();
-
-    var databaseWaypointTraffics = await _context.WaypointTraffics
-      .Where(w => w.RealmId == realmId)
-      .ToListAsync();
-    var updateWaypointTraffics = databaseWaypointTraffics
-      .Where(w => existingWaypointTraffics.Any(ew => ew.Id == w.Id))
-      .ToList();
-    var deleteWaypointTraffics = databaseWaypointTraffics
-      .Where(w => !existingWaypointTraffics.Any(ew => ew.Id == w.Id))
-      .ToList();
-
     await _context.WaypointTraffics.AddRangeAsync(newWaypointTraffics.Select(w => new WaypointTraffic
     {
       FeatureId = w.FeatureId,
@@ -259,7 +260,6 @@ public class MapEditorService(
       waypointTraffic.SpeedLimit = w.SpeedLimit!;
       waypointTraffic.AbsoluteSpeedLimit = w.AbsoluteSpeedLimit!;
     }
-    _context.WaypointTraffics.RemoveRange(deleteWaypointTraffics);
 
     // Save changes
     await _context.SaveChangesAsync();
