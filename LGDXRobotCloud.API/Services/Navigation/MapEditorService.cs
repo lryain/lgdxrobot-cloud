@@ -162,7 +162,7 @@ public class MapEditorService(
     await _context.Waypoints.AddRangeAsync(addingWaypoints);
     foreach (var waypoint in updateWaypoints)
     {
-      var w = updateWaypoints.First(w => w.Id == waypoint.Id);
+      var w = existingWaypoints.First(w => w.Id == waypoint.Id);
       waypoint.Name = w.Name;
       waypoint.FeatureId = w.FeatureId;
       waypoint.ClassName = w.ClassName;
@@ -206,14 +206,14 @@ public class MapEditorService(
     }));
     foreach (var waypointTraffic in updateWaypointTraffics)
     {
-      var w = updateWaypointTraffics.First(w => w.Id == waypointTraffic.Id);
+      var w = existingWaypointTraffics.First(w => w.Id == waypointTraffic.Id);
       waypointTraffic.FeatureId = w.FeatureId;
-      waypointTraffic.WaypointFromId = w.WaypointFromId;
-      waypointTraffic.WaypointToId = w.WaypointToId;
-      waypointTraffic.Overridable = w.Overridable;
-      waypointTraffic.Cost = w.Cost;
-      waypointTraffic.SpeedLimit = w.SpeedLimit;
-      waypointTraffic.AbsoluteSpeedLimit = w.AbsoluteSpeedLimit;
+      waypointTraffic.WaypointFromId = w.WaypointFromId!;
+      waypointTraffic.WaypointToId = w.WaypointToId!;
+      waypointTraffic.Overridable = w.Overridable!;
+      waypointTraffic.Cost = w.Cost!;
+      waypointTraffic.SpeedLimit = w.SpeedLimit!;
+      waypointTraffic.AbsoluteSpeedLimit = w.AbsoluteSpeedLimit!;
     }
     _context.WaypointTraffics.RemoveRange(deleteWaypointTraffics);
 
