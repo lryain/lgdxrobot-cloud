@@ -185,16 +185,6 @@ public partial class MapEditor : ComponentBase, IDisposable
     }
   }
 
-  public bool IsDuplicatingFeatureId(int? featureId)
-  {
-    if (featureId == null)
-    {
-      return true;
-    }
-    return MapEditorViewModel.Waypoints.Any(w => w.FeatureId == featureId)
-      || MapEditorViewModel.WaypointTraffics.Any(w => w.FeatureId == featureId);
-  }
-
   /*
   ** Waypoints
   */
@@ -221,11 +211,10 @@ public partial class MapEditor : ComponentBase, IDisposable
   {
     IsEditingWaypoint = true;
     Guid id = Guid.Parse(waypointId);
-
     CanDeleteWaypoint = !MapEditorViewModel.WaypointTraffics.Any(w => w.AlternativeWaypointFromId == id || w.AlternativeWaypointToId == id);
-
     var waypoint = MapEditorViewModel.Waypoints.FirstOrDefault(w => w.MapEditorObjectId == id)!;
     EditingWaypoint = LgdxHelper.DeepCopy(waypoint);
+    EditingWaypoint.Errors = null;
     _editContextWaypoint = new EditContext(EditingWaypoint);
     _editContextWaypoint.SetFieldCssClassProvider(_customFieldClassProvider);
     StateHasChanged();
@@ -237,12 +226,6 @@ public partial class MapEditor : ComponentBase, IDisposable
     {
       EditingWaypoint.Errors = [];
       EditingWaypoint.Errors.Add(nameof(EditingWaypoint.FeatureId), "Feature ID is required when Route Control is enabled.");
-      return;
-    }
-    if (IsDuplicatingFeatureId(EditingWaypoint.FeatureId))
-    {
-      EditingWaypoint.Errors = [];
-      EditingWaypoint.Errors.Add(nameof(EditingWaypoint.FeatureId), "Feature ID is duplicated.");
       return;
     }
 
@@ -260,6 +243,12 @@ public partial class MapEditor : ComponentBase, IDisposable
       int index = MapEditorViewModel.Waypoints.FindIndex(w => w.MapEditorObjectId == EditingWaypoint.MapEditorObjectId);
       MapEditorViewModel.Waypoints[index] = EditingWaypoint;
       await JSRuntime.InvokeVoidAsync("MapEditorMoveWaypoint", EditingWaypoint);
+
+      // Update Traffics
+      var traffics = MapEditorViewModel.WaypointTrafficsDisplay
+        .Where(w => w.WaypointFromId == EditingWaypoint.MapEditorObjectId || w.WaypointToId == EditingWaypoint.MapEditorObjectId)
+        .ToList();
+      await JSRuntime.InvokeVoidAsync("MapEditorMoveTraffics", traffics);
     }
     await JSRuntime.InvokeVoidAsync("HideSidebar");
     SaveMapEditorViewModel();
@@ -405,12 +394,6 @@ public partial class MapEditor : ComponentBase, IDisposable
         EditingWaypointTraffic.Errors.Add(nameof(EditingWaypointTraffic.ReverseFeatureId), "Reverse Feature ID is required when Route Control is enabled.");
         return;
       }
-    }
-    if (IsDuplicatingFeatureId(EditingWaypointTraffic.FeatureId))
-    {
-      EditingWaypointTraffic.Errors = [];
-      EditingWaypointTraffic.Errors.Add(nameof(EditingWaypointTraffic.FeatureId), "Feature ID is duplicated.");
-      return;
     }
 
     if (EditingWaypointTraffic.MapEditorObjectId == null)

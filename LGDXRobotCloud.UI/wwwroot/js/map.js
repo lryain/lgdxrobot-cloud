@@ -591,6 +591,26 @@ function MapEditorAddTraffics(traffics) {
   }
 }
 
+function MapEditorMoveTraffics(traffics) {
+  for (var i = 0; i < traffics.length; i++) {
+    console.log(traffics[i]);
+    const fromNode = MapLayer.findOne('#w-' + traffics[i].waypointFromId);
+    console.log(fromNode);
+    const toNode = MapLayer.findOne('#w-' + traffics[i].waypointToId);
+    console.log(toNode);
+    const points = _internalGetConnectorPoints(
+      fromNode.position(),
+      toNode.position(),
+      traffics[i].isBothWaysTraffic
+    );
+    const line = MapLayer.findOne('#t-' + traffics[i].waypointFromId + '&' + traffics[i].waypointToId);
+    if (line != undefined)
+    {
+      line.points(points);
+    }
+  }
+}
+
 function HandleDeleteTraffic(fromWaypointId, toWaypointId)
 {
   let obj = MapLayer.findOne('#t-' + fromWaypointId + '&' + toWaypointId);
