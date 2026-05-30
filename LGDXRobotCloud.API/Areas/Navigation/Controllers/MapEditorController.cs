@@ -42,4 +42,11 @@ public class MapEditorController(
     }
     return NoContent();
   }
+
+  [AllowAnonymous]
+  [HttpGet("{realmId}/geojson")]
+  public async Task<ActionResult<string>> GetGeoJson(int realmId)
+  {
+    return Ok(await _mapEditService.GetGeoJsonAsync(realmId));
+  }
 }

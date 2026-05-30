@@ -1,3 +1,5 @@
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using ImTools;
 using LGDXRobotCloud.API.Exceptions;
 using LGDXRobotCloud.API.Services.Administration;
@@ -23,6 +25,8 @@ public interface IMapEditorService
   Task<bool> UpdateMapAsync(int realmId, MapEditorUpdateBusinessModel MapEditUpdateBusinessModel);
 
   Task<WaypointsTraffic> GetWaypointTrafficAsync(int realmId);
+
+  Task<string> GetGeoJsonAsync(int realmId);
 }
 
 public class MapEditorService(
@@ -334,5 +338,127 @@ public class MapEditorService(
     };
     _memoryCache.Set($"MapEditorService_InternalWaypointsTraffic_{realmId}", internalWaypointsTraffic);
     return internalWaypointsTraffic;
+  }
+
+  public async Task<string> GetGeoJsonAsync(int realmId)
+  {
+    // Get Map
+    // Check if realm exists
+    var realm = await _context.Realms.AsNoTracking()
+      .Where(r => r.Id == realmId)
+      .FirstOrDefaultAsync()
+        ?? throw new LgdxNotFound404Exception();
+
+    var waypoints = await _context.Waypoints.AsNoTracking()
+      .Where(w => w.RealmId == realmId)
+      .Select(w => new WaypointBusinessModel
+      {
+        Id = w.Id,
+        Name = w.Name,
+        RealmId = w.RealmId,
+        RealmName = w.Realm.Name,
+        FeatureId = w.FeatureId,
+        ClassName = w.ClassName,
+        X = w.X,
+        Y = w.Y,
+        Rotation = w.Rotation,
+        IsDocking = w.IsDocking,
+      })
+      .ToListAsync();
+    var waypointTraffics = await _context.WaypointTraffics.AsNoTracking()
+      .Where(w => w.RealmId == realmId)
+      .Select(w => new WaypointTrafficBusinessModel
+      {
+        Id = w.Id,
+        FeatureId = w.FeatureId,
+        WaypointFromId = w.WaypointFromId,
+        WaypointToId = w.WaypointToId,
+        Overridable = w.Overridable,
+        Cost = w.Cost,
+        SpeedLimit = w.SpeedLimit,
+        AbsoluteSpeedLimit = w.AbsoluteSpeedLimit,
+      })
+      .ToListAsync();
+
+    // Build GeoJson
+    Dictionary<int, int> waypointIdToFeatureId = [];
+    foreach (var waypoint in waypoints)
+    {
+      waypointIdToFeatureId.Add(waypoint.Id!, (int)waypoint.FeatureId!);
+    }
+
+    GeoJsonFeature[] waypointFeature = new GeoJsonFeature[waypoints.Count];
+    for (int i = 0; i < waypoints.Count; i++)
+    {
+      double[] coordinates = [waypoints[i].X, waypoints[i].Y];
+      waypointFeature[i] = new GeoJsonFeature
+      {
+        Properties = new GeoJsonFeatureProperties
+        {
+          Id = (int)waypoints[i].FeatureId!,
+        },
+        Geometry = new GeoJsonFeatureGeometry
+        {
+          Type = "Point",
+          Coordinates = coordinates
+        }
+      };
+    }
+
+    Dictionary<int, (double, double)> featureIdToCoordinates = [];
+    foreach (var waypoint in waypoints)
+    {
+      featureIdToCoordinates.Add(waypoint.Id, (waypoint.X, waypoint.Y));
+    }
+    GeoJsonFeature[] trafficFeature = new GeoJsonFeature[waypointTraffics.Count];
+    for (int i = 0; i < waypointTraffics.Count; i++)
+    {
+      var from = featureIdToCoordinates[waypointTraffics[i].WaypointFromId];
+      var to = featureIdToCoordinates[waypointTraffics[i].WaypointToId];
+      double[][] coordinates = [
+        [from.Item1, from.Item2],
+        [to.Item1, to.Item2]
+      ];
+      trafficFeature[i] = new GeoJsonFeature
+      {
+        Properties = new GeoJsonFeatureProperties
+        {
+          Id = waypointTraffics[i].FeatureId,
+          Startid = waypointIdToFeatureId[waypointTraffics[i].WaypointFromId],
+          Endid = waypointIdToFeatureId[waypointTraffics[i].WaypointToId],
+          Overridable = waypointTraffics[i].Overridable,
+          Cost = waypointTraffics[i].Cost,
+          Metadata = new GeoJsonFeaturePropertiesMetadata
+          {
+            SpeedLimit = waypointTraffics[i].SpeedLimit,
+            AbsSpeedLimit = waypointTraffics[i].AbsoluteSpeedLimit,
+          }
+        },
+        Geometry = new GeoJsonFeatureGeometry
+        {
+          Type = "LineString",
+          Coordinates = coordinates
+        }
+      };
+    }
+
+    GeoJsonFeature[] features = new GeoJsonFeature[waypointFeature.Length + trafficFeature.Length];
+    Array.Copy(waypointFeature, features, waypointFeature.Length);
+    Array.Copy(trafficFeature, 0, features, waypointFeature.Length, trafficFeature.Length);
+    var geoJson = new GeoJsonBusinessModel
+    {
+      Name = realm.Name,
+      Crs = new GeoJsonCrs
+      {
+        Properties = new GeoJsonCrsProperties(),
+      },
+      Features = features,
+    };
+
+    return JsonSerializer.Serialize(geoJson, new JsonSerializerOptions
+    {
+      DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
+      PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower
+    });
   }
 }
