@@ -7,6 +7,7 @@ using LGDXRobotCloud.Data.Models.Business.Navigation;
 using LGDXRobotCloud.Utilities.Enums;
 using LGDXRobotCloud.Utilities.Helpers;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace LGDXRobotCloud.API.Services.Navigation;
 
@@ -26,10 +27,12 @@ public interface IRealmService
 
 public class RealmService(
     IActivityLogService activityLogService,
+    IMemoryCache memoryCache,
     LgdxContext context
   ) : IRealmService
 {
   private readonly IActivityLogService _activityLogService = activityLogService ?? throw new ArgumentNullException(nameof(activityLogService));
+  private readonly IMemoryCache _memoryCache = memoryCache ?? throw new ArgumentNullException(nameof(memoryCache));
   private readonly LgdxContext _context = context ?? throw new ArgumentNullException(nameof(context));
 
   public async Task<(IEnumerable<RealmListBusinessModel>, PaginationHelper)> GetRealmsAsync(string? name, int pageNumber, int pageSize)
@@ -149,6 +152,8 @@ public class RealmService(
 
   public async Task<bool> UpdateRealmAsync(int id, RealmUpdateBusinessModel updateModel)
   {
+    _memoryCache.Remove($"MapEditorService_InternalTraffic_{id}");
+
     bool result = await _context.Realms
       .Where(m => m.Id == id)
       .ExecuteUpdateAsync(setters => setters
@@ -181,6 +186,8 @@ public class RealmService(
   // For SLAM
   public async Task<bool> UpdateRealmMapAsync(int id, RealmMapUpdateBusinessModel updateModel)
   {
+    _memoryCache.Remove($"MapEditorService_InternalTraffic_{id}");
+
     bool result = await _context.Realms
       .Where(m => m.Id == id)
       .ExecuteUpdateAsync(setters => setters
@@ -232,6 +239,8 @@ public class RealmService(
 
   public async Task<bool> DeleteRealmAsync(int id)
   {
+    _memoryCache.Remove($"MapEditorService_InternalTraffic_{id}");
+
     bool result = await _context.Realms.Where(m => m.Id == id)
       .ExecuteDeleteAsync() == 1;
 

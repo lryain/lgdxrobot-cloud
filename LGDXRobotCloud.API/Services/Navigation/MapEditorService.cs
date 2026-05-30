@@ -1,6 +1,5 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using ImTools;
 using LGDXRobotCloud.API.Exceptions;
 using LGDXRobotCloud.API.Services.Administration;
 using LGDXRobotCloud.Data.DbContexts;
@@ -23,9 +22,6 @@ public interface IMapEditorService
 {
   Task<MapEditorBusinessModel> GetMapAsync(int realmId);
   Task<bool> UpdateMapAsync(int realmId, MapEditorUpdateBusinessModel MapEditUpdateBusinessModel);
-
-  Task<WaypointsTraffic> GetWaypointTrafficAsync(int realmId);
-
   Task<string> GetGeoJsonAsync(int realmId);
 }
 
@@ -302,39 +298,6 @@ public class MapEditorService(
     return true;
   }
 
-  public async Task<WaypointsTraffic> GetWaypointTrafficAsync(int realmId)
-  {
-
-    var waypoints = await _context.Waypoints.AsNoTracking()
-      .Where(w => w.RealmId == realmId)
-      .ToListAsync();
-    var waypointTraffics = await _context.WaypointTraffics.AsNoTracking()
-      .Where(w => w.RealmId == realmId)
-      .ToListAsync();
-
-    var waypointsDict = waypoints.ToDictionary(w => w.Id);
-    var waypointTrafficsDict = new Dictionary<int, HashSet<int>>();
-    foreach (var traffic in waypointTraffics)
-    {
-      if (waypointTrafficsDict.TryGetValue(traffic.WaypointFromId, out HashSet<int>? neighbors))
-      {
-        neighbors.Add(traffic.WaypointToId);
-        waypointTrafficsDict[traffic.WaypointFromId] = neighbors;
-      }
-      else
-      {
-        waypointTrafficsDict[traffic.WaypointFromId] = [traffic.WaypointToId];
-      }
-    }
-
-    var internalWaypointsTraffic = new WaypointsTraffic
-    {
-      Waypoints = waypointsDict,
-      WaypointTraffics = waypointTrafficsDict,
-    };
-    return internalWaypointsTraffic;
-  }
-
   public async Task<string> GetGeoJsonAsync(int realmId)
   {
     if (_memoryCache.TryGetValue($"MapEditorService_InternalTraffic_{realmId}", out string? t))
@@ -351,6 +314,11 @@ public class MapEditorService(
       .Where(r => r.Id == realmId)
       .FirstOrDefaultAsync()
         ?? throw new LgdxNotFound404Exception();
+
+    if (!realm.HasRouteControl)
+    {
+      return string.Empty;
+    }
 
     var waypoints = await _context.Waypoints.AsNoTracking()
       .Where(w => w.RealmId == realmId)

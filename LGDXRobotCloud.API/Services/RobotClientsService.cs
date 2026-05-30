@@ -23,6 +23,7 @@ public partial class RobotClientsService(
     IAutoTaskSchedulerService autoTaskSchedulerService,
     IConnectionMultiplexer redisConnection,
     ILogger<RobotClientsService> logger,
+    IMapEditorService mapEditorService,
     IOnlineRobotsService OnlineRobotsService,
     IOptionsSnapshot<LgdxRobotCloudSecretConfiguration> lgdxRobotCloudSecretConfiguration,
     IRobotService robotService,
@@ -31,6 +32,7 @@ public partial class RobotClientsService(
 {
   private readonly IAutoTaskSchedulerService _autoTaskSchedulerService = autoTaskSchedulerService ?? throw new ArgumentNullException(nameof(autoTaskSchedulerService));
   private readonly IConnectionMultiplexer _redisConnection = redisConnection ?? throw new ArgumentNullException(nameof(redisConnection));
+  private readonly IMapEditorService _mapEditorService = mapEditorService ?? throw new ArgumentNullException(nameof(mapEditorService));
   private readonly IOnlineRobotsService _onlineRobotsService = OnlineRobotsService ?? throw new ArgumentNullException(nameof(OnlineRobotsService));
   private readonly LgdxRobotCloudSecretConfiguration _lgdxRobotCloudSecretConfiguration = lgdxRobotCloudSecretConfiguration.Value ?? throw new ArgumentNullException(nameof(lgdxRobotCloudSecretConfiguration));
   private readonly IRobotService _robotService = robotService ?? throw new ArgumentNullException(nameof(robotService));
@@ -110,6 +112,7 @@ public partial class RobotClientsService(
     }
 
     var chassisInfo = await _robotService.GetRobotChassisInfoAsync(robotIdGuid);
+    var route = await _mapEditorService.GetGeoJsonAsync(robot.RealmId);
 
     // Generate Access Token
     var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_lgdxRobotCloudSecretConfiguration.RobotClientsJwtSecret));
@@ -137,6 +140,10 @@ public partial class RobotClientsService(
         BatteryCount = chassisInfo.BatteryCount,
         BatteryMaxVoltage = chassisInfo.BatteryMaxVoltage,
         BatteryMinVoltage = chassisInfo.BatteryMinVoltage,
+      },
+      MapInfo = new RobotClientsMapInfo
+      {
+        Route = route,
       }
     };
   }
