@@ -42,7 +42,10 @@ public static class MapEditorViewModelExtensions
 
     foreach (var traffic in mapEditorDto.WaypointTraffics!)
     {
-      WaypointTrafficViewModel t = new();
+      WaypointTrafficViewModel t = new()
+      {
+        MapEditorObjectId = Guid.NewGuid()
+      };
       t.FromDto(traffic);
       mapEditorViewModel.WaypointTraffics.Add(t);
     }

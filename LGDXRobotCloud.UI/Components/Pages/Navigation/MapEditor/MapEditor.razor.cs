@@ -66,6 +66,7 @@ public partial class MapEditor : ComponentBase, IDisposable
   
   // Edit Form
   bool IsEditingWaypoint { get; set; } = false;
+  bool CanDeleteWaypoint { get; set; } = false;
   private WaypointDetailsViewModel EditingWaypoint { get; set; } = new();
   private WaypointTrafficViewModel EditingWaypointTraffic { get; set; } = new();
   private readonly CustomFieldClassProvider _customFieldClassProvider = new();
@@ -220,6 +221,9 @@ public partial class MapEditor : ComponentBase, IDisposable
   {
     IsEditingWaypoint = true;
     Guid id = Guid.Parse(waypointId);
+
+    CanDeleteWaypoint = !MapEditorViewModel.WaypointTraffics.Any(w => w.AlternativeWaypointFromId == id || w.AlternativeWaypointToId == id);
+
     var waypoint = MapEditorViewModel.Waypoints.FirstOrDefault(w => w.MapEditorObjectId == id)!;
     EditingWaypoint = LgdxHelper.DeepCopy(waypoint);
     _editContextWaypoint = new EditContext(EditingWaypoint);

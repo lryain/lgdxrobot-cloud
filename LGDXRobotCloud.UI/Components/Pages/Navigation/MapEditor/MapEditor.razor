@@ -134,7 +134,7 @@
               <FormValidationErrorAlert Errors="@_editContextWaypoint.GetValidationMessages()" />
               <WaypointDetailForm Id="EditingWaypoint.Id" HasRouteTrafficControl="HasRouteTrafficControl" WaypointDetailsViewModel="EditingWaypoint" FieldNameWidth="4" />
               <div class="d-flex align-items-center">
-                @if (EditingWaypoint.MapEditorObjectId != null)
+                @if (EditingWaypoint.MapEditorObjectId != null && CanDeleteWaypoint)
                 {
                   <button type="button" class="btn btn-ghost-danger" @onclick="HandleWaypointDelete">Delete</button>
                 }
