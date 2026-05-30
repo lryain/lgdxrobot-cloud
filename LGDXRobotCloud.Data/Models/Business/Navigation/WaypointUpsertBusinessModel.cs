@@ -19,4 +19,6 @@ public record WaypointUpsertBusinessModel
   public double Rotation { get; set; } = 0;
 
   public required bool IsDocking { get; set; }
+
+  public Guid? AlternateId { get; set; }
 }

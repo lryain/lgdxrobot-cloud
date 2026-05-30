@@ -101,13 +101,16 @@ public partial class MapEditor : ComponentBase, IDisposable
     TokenService.UpdateSessionSettings(user, settings);
   }
 
-  public void HandelResetMapEditor()
+  public void HandelResetMapEditor(bool refresh = true)
   {
     var user = AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User;
     var settings = TokenService.GetSessionSettings(user);
     settings.MapEditorData = null;
     TokenService.UpdateSessionSettings(user, settings);
-    NavigationManager.Refresh(true);
+    if (refresh)
+    {
+      NavigationManager.Refresh(true);
+    }
   }
 
   public async Task HandelSubmit()
@@ -137,13 +140,35 @@ public partial class MapEditor : ComponentBase, IDisposable
     }
     foreach (var traffic in MapEditorViewModel.WaypointTraffics)
     {
-      if (featureIds.Contains(traffic.FeatureId))
+      if (featureIds.Contains((int)traffic.FeatureId!))
       {
         MapEditorViewModel.Errors = [];
         MapEditorViewModel.Errors.Add(nameof(MapEditorViewModel.WaypointTraffics), "Feature ID cannot duplicate.");
         return;
       }
-      featureIds.Add(traffic.FeatureId);
+      featureIds.Add((int)traffic.FeatureId);
+    }
+
+    Dictionary<Guid, int> objectIdToId = [];
+    foreach (var waypoint in MapEditorViewModel.Waypoints)
+    {
+      if (waypoint.Id != null)
+      {
+        objectIdToId.Add((Guid)waypoint.MapEditorObjectId!, (int)waypoint.Id!);
+      }
+    }
+    foreach (var traffic in MapEditorViewModel.WaypointTraffics)
+    {
+      var fromWaypoint = traffic.AlternativeWaypointFromId;
+      if (objectIdToId.TryGetValue((Guid)fromWaypoint!, out var fromWaypointId))
+      {
+        traffic.WaypointFromId = fromWaypointId;
+      }
+      var toWaypoint = traffic.AlternativeWaypointToId;
+      if (objectIdToId.TryGetValue((Guid)toWaypoint!, out var toWaypointId))
+      {
+        traffic.WaypointToId = toWaypointId;
+      }
     }
 
     try
@@ -151,11 +176,22 @@ public partial class MapEditor : ComponentBase, IDisposable
       var realmId = Realm.Id ?? 0;
       await LgdxApiClient.Navigation.MapEditor[realmId].PostAsync(MapEditorViewModel.ToUpdateDto());
       MapEditorViewModel.IsSuccess = true;
+      HandelResetMapEditor(false);
     }
     catch (ApiException ex)
     {
       MapEditorViewModel.Errors = ApiHelper.GenerateErrorDictionary(ex);
     }
+  }
+
+  public bool IsDuplicatingFeatureId(int? featureId)
+  {
+    if (featureId == null)
+    {
+      return true;
+    }
+    return MapEditorViewModel.Waypoints.Any(w => w.FeatureId == featureId)
+      || MapEditorViewModel.WaypointTraffics.Any(w => w.FeatureId == featureId);
   }
 
   /*
@@ -197,6 +233,12 @@ public partial class MapEditor : ComponentBase, IDisposable
     {
       EditingWaypoint.Errors = [];
       EditingWaypoint.Errors.Add(nameof(EditingWaypoint.FeatureId), "Feature ID is required when Route Control is enabled.");
+      return;
+    }
+    if (IsDuplicatingFeatureId(EditingWaypoint.FeatureId))
+    {
+      EditingWaypoint.Errors = [];
+      EditingWaypoint.Errors.Add(nameof(EditingWaypoint.FeatureId), "Feature ID is duplicated.");
       return;
     }
 
@@ -359,6 +401,12 @@ public partial class MapEditor : ComponentBase, IDisposable
         EditingWaypointTraffic.Errors.Add(nameof(EditingWaypointTraffic.ReverseFeatureId), "Reverse Feature ID is required when Route Control is enabled.");
         return;
       }
+    }
+    if (IsDuplicatingFeatureId(EditingWaypointTraffic.FeatureId))
+    {
+      EditingWaypointTraffic.Errors = [];
+      EditingWaypointTraffic.Errors.Add(nameof(EditingWaypointTraffic.FeatureId), "Feature ID is duplicated.");
+      return;
     }
 
     if (EditingWaypointTraffic.MapEditorObjectId == null)

@@ -44,6 +44,7 @@ public static class WaypointUpsertDtoExtensions
       Y = model.Y,
       Rotation = model.Rotation,
       IsDocking = model.IsDocking,
+      AlternateId = model.AlternativeId,
     };
   }
 }

@@ -3,18 +3,16 @@ using LGDXRobotCloud.Data.Models.Business.Navigation;
 
 namespace LGDXRobotCloud.Data.Models.DTOs.V1.Commands;
 
-public record WaypointTrafficUpdateDto
+public record WaypointTrafficUpdateDto : IValidatableObject
 {
   public int? Id { get; set; }
 
   [Required (ErrorMessage = "A feature ID is required.")]
   public int FeatureId { get; set; }
 
-  [Required (ErrorMessage = "A waypoint from ID is required.")]
-  public required int WaypointFromId { get; set; }
+  public int? WaypointFromId { get; set; }
 
-  [Required (ErrorMessage = "A waypoint to ID is required.")]
-  public required int WaypointToId { get; set; }
+  public int? WaypointToId { get; set; }
 
   public Guid? AlternativeWaypointFromId { get; set; }
 
@@ -29,6 +27,18 @@ public record WaypointTrafficUpdateDto
   public double? SpeedLimit { get; set; }
 
   public double? AbsoluteSpeedLimit { get; set; }
+
+  public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+  {
+    if (WaypointFromId == null && AlternativeWaypointFromId == null)
+    {
+      yield return new ValidationResult("WaypointFromId or AlternativeWaypointFromId is required.", [nameof(WaypointFromId), nameof(AlternativeWaypointFromId)]);
+    }
+    if (WaypointToId == null && AlternativeWaypointToId == null)
+    {
+      yield return new ValidationResult("WaypointToId or AlternativeWaypointToId is required.", [nameof(WaypointToId), nameof(AlternativeWaypointToId)]);
+    }
+  }
 }
 
 public static class WaypointTrafficUpdateDtoExtensions
@@ -41,6 +51,8 @@ public static class WaypointTrafficUpdateDtoExtensions
       FeatureId = model.FeatureId,
       WaypointFromId = model.WaypointFromId,
       WaypointToId = model.WaypointToId,
+      AlternativeWaypointFromId = model.AlternativeWaypointFromId,
+      AlternativeWaypointToId = model.AlternativeWaypointToId,
       Overridable = model.Overridable,
       Cost = model.Cost,
       SpeedLimit = model.SpeedLimit,

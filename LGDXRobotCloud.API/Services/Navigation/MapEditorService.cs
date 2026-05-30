@@ -85,6 +85,9 @@ public class MapEditorService(
   {
     _memoryCache.Remove($"MapEditorService_InternalWaypointsTraffic_{realmId}");
 
+    /*
+     * Validation
+     */
     // Check Waypoints
     var inputWaypoints = mapEditorUpdateBusinessModel.Waypoints
       .ToList();
@@ -158,7 +161,8 @@ public class MapEditorService(
       Y = w.Y,
       Rotation = w.Rotation,
       IsDocking = w.IsDocking,
-    });
+      AlternateId = w.AlternateId,
+    }).ToList();
     await _context.Waypoints.AddRangeAsync(addingWaypoints);
     foreach (var waypoint in updateWaypoints)
     {
@@ -173,13 +177,49 @@ public class MapEditorService(
     }
     _context.Waypoints.RemoveRange(deleteWaypoints);
 
+    // Save changes
+    await _context.SaveChangesAsync();
+
+    // Extracting new Waypoint IDs to WaypointTraffics
+    Dictionary<Guid, int> objectIdToId = [];
+    foreach (var waypoint in addingWaypoints)
+    {
+      objectIdToId.Add((Guid)waypoint.AlternateId!, waypoint.Id);
+    }
+    var waypointTraffics = mapEditorUpdateBusinessModel.WaypointTraffics.ToList();
+    foreach (var traffic in waypointTraffics)
+    {
+      if (traffic.WaypointFromId == null)
+      {
+        if (objectIdToId.TryGetValue((Guid)traffic.AlternativeWaypointFromId!, out var fromWaypointId))
+        {
+          traffic.WaypointFromId = fromWaypointId;
+        }
+        else
+        {
+          throw new LgdxValidation400Expection(nameof(traffic.AlternativeWaypointFromId), "Alternative WaypointFromId is invalid.");
+        }
+      }
+      if (traffic.WaypointToId == null)
+      {
+        if (objectIdToId.TryGetValue((Guid)traffic.AlternativeWaypointToId!, out var toWaypointId))
+        {
+          traffic.WaypointToId = toWaypointId;
+        }
+        else
+        {
+          throw new LgdxValidation400Expection(nameof(traffic.AlternativeWaypointToId), "Alternative WaypointToId is invalid.");
+        }
+      }
+    }
+
     /*
      * Traffic
      */
-    var newWaypointTraffics = mapEditorUpdateBusinessModel.WaypointTraffics
+    var newWaypointTraffics = waypointTraffics
       .Where(w => w.Id == null)
       .ToList();
-    var existingWaypointTraffics = mapEditorUpdateBusinessModel.WaypointTraffics
+    var existingWaypointTraffics = waypointTraffics
       .Where(w => w.Id != null)
       .ToList();
 
@@ -197,8 +237,8 @@ public class MapEditorService(
     {
       FeatureId = w.FeatureId,
       RealmId = realmId,
-      WaypointFromId = w.WaypointFromId,
-      WaypointToId = w.WaypointToId,
+      WaypointFromId = (int)w.WaypointFromId!,
+      WaypointToId = (int)w.WaypointToId!,
       Overridable = w.Overridable,
       Cost = w.Cost,
       SpeedLimit = w.SpeedLimit,
@@ -208,8 +248,8 @@ public class MapEditorService(
     {
       var w = existingWaypointTraffics.First(w => w.Id == waypointTraffic.Id);
       waypointTraffic.FeatureId = w.FeatureId;
-      waypointTraffic.WaypointFromId = w.WaypointFromId!;
-      waypointTraffic.WaypointToId = w.WaypointToId!;
+      waypointTraffic.WaypointFromId = (int)w.WaypointFromId!;
+      waypointTraffic.WaypointToId = (int)w.WaypointToId!;
       waypointTraffic.Overridable = w.Overridable!;
       waypointTraffic.Cost = w.Cost!;
       waypointTraffic.SpeedLimit = w.SpeedLimit!;

@@ -35,4 +35,7 @@ public class Waypoint
 
   [Required]
   public bool IsDocking { get; set; }
+
+  [NotMapped]
+  public Guid? AlternateId { get; set; }
 }

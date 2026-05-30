@@ -16,6 +16,10 @@ namespace LGDXRobotCloud.UI.Client.Models
         public double? AbsoluteSpeedLimit { get; set; }
         /// <summary>Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.</summary>
         public IDictionary<string, object> AdditionalData { get; set; }
+        /// <summary>The alternativeWaypointFromId property</summary>
+        public Guid? AlternativeWaypointFromId { get; set; }
+        /// <summary>The alternativeWaypointToId property</summary>
+        public Guid? AlternativeWaypointToId { get; set; }
         /// <summary>The cost property</summary>
         public double? Cost { get; set; }
         /// <summary>The featureId property</summary>
@@ -56,6 +60,8 @@ namespace LGDXRobotCloud.UI.Client.Models
             return new Dictionary<string, Action<IParseNode>>
             {
                 { "absoluteSpeedLimit", n => { AbsoluteSpeedLimit = n.GetDoubleValue(); } },
+                { "alternativeWaypointFromId", n => { AlternativeWaypointFromId = n.GetGuidValue(); } },
+                { "alternativeWaypointToId", n => { AlternativeWaypointToId = n.GetGuidValue(); } },
                 { "cost", n => { Cost = n.GetDoubleValue(); } },
                 { "featureId", n => { FeatureId = n.GetIntValue(); } },
                 { "id", n => { Id = n.GetIntValue(); } },
@@ -73,6 +79,8 @@ namespace LGDXRobotCloud.UI.Client.Models
         {
             if(ReferenceEquals(writer, null)) throw new ArgumentNullException(nameof(writer));
             writer.WriteDoubleValue("absoluteSpeedLimit", AbsoluteSpeedLimit);
+            writer.WriteGuidValue("alternativeWaypointFromId", AlternativeWaypointFromId);
+            writer.WriteGuidValue("alternativeWaypointToId", AlternativeWaypointToId);
             writer.WriteDoubleValue("cost", Cost);
             writer.WriteIntValue("featureId", FeatureId);
             writer.WriteIntValue("id", Id);

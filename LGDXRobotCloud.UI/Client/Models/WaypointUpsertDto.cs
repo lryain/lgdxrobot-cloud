@@ -14,6 +14,8 @@ namespace LGDXRobotCloud.UI.Client.Models
     {
         /// <summary>Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.</summary>
         public IDictionary<string, object> AdditionalData { get; set; }
+        /// <summary>The alternativeId property</summary>
+        public Guid? AlternativeId { get; set; }
         /// <summary>The className property</summary>
 #if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
 #nullable enable
@@ -36,8 +38,6 @@ namespace LGDXRobotCloud.UI.Client.Models
 #else
         public string Name { get; set; }
 #endif
-        /// <summary>The realmId property</summary>
-        public int? RealmId { get; set; }
         /// <summary>The rotation property</summary>
         public double? Rotation { get; set; }
         /// <summary>The x property</summary>
@@ -69,12 +69,12 @@ namespace LGDXRobotCloud.UI.Client.Models
         {
             return new Dictionary<string, Action<IParseNode>>
             {
+                { "alternativeId", n => { AlternativeId = n.GetGuidValue(); } },
                 { "className", n => { ClassName = n.GetStringValue(); } },
                 { "featureId", n => { FeatureId = n.GetIntValue(); } },
                 { "id", n => { Id = n.GetIntValue(); } },
                 { "isDocking", n => { IsDocking = n.GetBoolValue(); } },
                 { "name", n => { Name = n.GetStringValue(); } },
-                { "realmId", n => { RealmId = n.GetIntValue(); } },
                 { "rotation", n => { Rotation = n.GetDoubleValue(); } },
                 { "x", n => { X = n.GetDoubleValue(); } },
                 { "y", n => { Y = n.GetDoubleValue(); } },
@@ -87,12 +87,12 @@ namespace LGDXRobotCloud.UI.Client.Models
         public virtual void Serialize(ISerializationWriter writer)
         {
             if(ReferenceEquals(writer, null)) throw new ArgumentNullException(nameof(writer));
+            writer.WriteGuidValue("alternativeId", AlternativeId);
             writer.WriteStringValue("className", ClassName);
             writer.WriteIntValue("featureId", FeatureId);
             writer.WriteIntValue("id", Id);
             writer.WriteBoolValue("isDocking", IsDocking);
             writer.WriteStringValue("name", Name);
-            writer.WriteIntValue("realmId", RealmId);
             writer.WriteDoubleValue("rotation", Rotation);
             writer.WriteDoubleValue("x", X);
             writer.WriteDoubleValue("y", Y);

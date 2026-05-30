@@ -9,7 +9,7 @@ public class WaypointTrafficViewModel : FormViewModelBase
   public int? Id { get; set; }
 
   [Required (ErrorMessage = "A feature ID is required.")]
-  public int FeatureId { get; set; }
+  public int? FeatureId { get; set; }
 
   public int? WaypointFromId { get; set; }
 
@@ -65,6 +65,8 @@ public static class WaypointTrafficViewModelExtensions
       FeatureId = WaypointDetailsViewModel.FeatureId,
       WaypointFromId = WaypointDetailsViewModel.WaypointFromId,
       WaypointToId = WaypointDetailsViewModel.WaypointToId,
+      AlternativeWaypointFromId = WaypointDetailsViewModel.AlternativeWaypointFromId,
+      AlternativeWaypointToId = WaypointDetailsViewModel.AlternativeWaypointToId,
       Overridable = WaypointDetailsViewModel.Overridable,
       Cost = WaypointDetailsViewModel.Cost,
       SpeedLimit = WaypointDetailsViewModel.SpeedLimit,

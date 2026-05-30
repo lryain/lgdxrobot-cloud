@@ -75,6 +75,7 @@ public static class WaypointDetailsViewModelExtensions
       Y = WaypointDetailsViewModel.Y,
       Rotation = WaypointDetailsViewModel.Rotation,
       IsDocking = WaypointDetailsViewModel.IsDocking,
+      AlternativeId = WaypointDetailsViewModel.MapEditorObjectId,
     };
   }
 
