@@ -87,7 +87,7 @@ public class MapEditorService(
 
   public async Task<bool> UpdateMapAsync(int realmId, MapEditorUpdateBusinessModel mapEditorUpdateBusinessModel)
   {
-    _memoryCache.Remove($"MapEditorService_InternalWaypointsTraffic_{realmId}");
+    _memoryCache.Remove($"MapEditorService_InternalTraffic_{realmId}");
 
     /*
      * Validation
@@ -304,11 +304,7 @@ public class MapEditorService(
 
   public async Task<WaypointsTraffic> GetWaypointTrafficAsync(int realmId)
   {
-    if (_memoryCache.TryGetValue($"MapEditorService_InternalWaypointsTraffic_{realmId}", out WaypointsTraffic? t))
-    {
-      return t ?? new();
-    }
-    
+
     var waypoints = await _context.Waypoints.AsNoTracking()
       .Where(w => w.RealmId == realmId)
       .ToListAsync();
@@ -336,12 +332,19 @@ public class MapEditorService(
       Waypoints = waypointsDict,
       WaypointTraffics = waypointTrafficsDict,
     };
-    _memoryCache.Set($"MapEditorService_InternalWaypointsTraffic_{realmId}", internalWaypointsTraffic);
     return internalWaypointsTraffic;
   }
 
   public async Task<string> GetGeoJsonAsync(int realmId)
   {
+    if (_memoryCache.TryGetValue($"MapEditorService_InternalTraffic_{realmId}", out string? t))
+    {
+      if (!string.IsNullOrWhiteSpace(t))
+      {
+        return t;
+      }
+    }
+
     // Get Map
     // Check if realm exists
     var realm = await _context.Realms.AsNoTracking()
@@ -455,10 +458,13 @@ public class MapEditorService(
       Features = features,
     };
 
-    return JsonSerializer.Serialize(geoJson, new JsonSerializerOptions
+    string json = JsonSerializer.Serialize(geoJson, new JsonSerializerOptions
     {
       DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
       PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower
     });
+
+    _memoryCache.Set($"MapEditorService_InternalTraffic_{realmId}", json, TimeSpan.FromMinutes(5));
+    return json;
   }
 }

@@ -7,6 +7,7 @@ using LGDXRobotCloud.Data.Models.Business.Navigation;
 using LGDXRobotCloud.Utilities.Enums;
 using LGDXRobotCloud.Utilities.Helpers;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace LGDXRobotCloud.API.Services.Navigation;
 
@@ -24,10 +25,12 @@ public interface IWaypointService
 
 public class WaypointService(
     IActivityLogService activityLogService,
+    IMemoryCache memoryCache,
     LgdxContext context
   ) : IWaypointService
 {
   private readonly IActivityLogService _activityLogService = activityLogService ?? throw new ArgumentNullException(nameof(activityLogService));
+  private readonly IMemoryCache _memoryCache = memoryCache ?? throw new ArgumentNullException(nameof(memoryCache));
   private readonly LgdxContext _context = context ?? throw new ArgumentNullException(nameof(context));
 
   public async Task<(IEnumerable<WaypointListBusinessModel>, PaginationHelper)> GetWaypointsAsync(int? realmId, string? name, int pageNumber, int pageSize)
@@ -156,6 +159,9 @@ public class WaypointService(
       .Where(r => r.Id == waypoint.RealmId)
       .FirstOrDefaultAsync() 
         ?? throw new LgdxValidation400Expection(nameof(waypoint.RealmId), "Realm does not exist.");
+
+    // Ensure getting up-to-date traffic
+    _memoryCache.Remove($"MapEditorService_InternalTraffic_{realm.Id}");
 
     if (realm.HasRouteControl)
     {
