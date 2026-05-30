@@ -59,7 +59,7 @@ function InitNavigationMap(dotNetObject)
       } 
       else 
       {
-        p.innerHTML = 'Move the mouse on the map to see the coordinates.';
+        p.innerHTML = '';
       }
     });
   }

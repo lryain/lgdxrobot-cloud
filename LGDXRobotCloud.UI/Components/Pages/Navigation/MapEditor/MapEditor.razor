@@ -91,7 +91,9 @@
                 break;
             }
           </p>
-          <p class="col-auto m-0">
+          @if (MapEditorError != MapEditorError.None)
+          {
+            <p class="col-auto m-0">
             @switch (MapEditorError) {
               default:
               case MapEditorError.None:
@@ -104,7 +106,8 @@
                 <text> Error: The waypoints have traffic rules defined.</text>
                 break;
             }
-          </p>
+            </p>
+          }
           <p id="navigation-map-coordinate" class="col-auto m-0"></p>
         </div>
       </div>

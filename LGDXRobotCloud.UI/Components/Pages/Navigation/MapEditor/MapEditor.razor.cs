@@ -84,7 +84,7 @@ public partial class MapEditor : ComponentBase, IDisposable
       MapEditorError = MapEditorError.None;
     }
 
-    if (mode == MapEditorMode.SingleWayTrafficFrom || mode == MapEditorMode.SingleWayTrafficTo)
+    if (mode == MapEditorMode.AddWaypoint || mode == MapEditorMode.SingleWayTrafficFrom || mode == MapEditorMode.SingleWayTrafficTo)
     {
       // Avoid conflict with current editing
       await JSRuntime.InvokeVoidAsync("HideSidebar");
