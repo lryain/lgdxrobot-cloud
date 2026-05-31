@@ -35,7 +35,7 @@ public record GeoJsonFeatureProperties
 
   public bool? Overridable { get; set; }
 
-  public double? Cost { get; set; }
+  public double Cost { get; set; } = 1;
 
   public GeoJsonFeaturePropertiesMetadata? Metadata { get; set; }
 }

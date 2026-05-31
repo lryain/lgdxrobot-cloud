@@ -81,15 +81,17 @@ public partial class AutoTaskPathPlannerService(
       return [];
     }
     
-    // No waypoints traffic control, just return the waypoints
+    // Return the waypoints
+    List<RobotClientsDof> waypoints = [];
     foreach (var t in taskDetails)
     {
-      paths.Add(new RobotClientsPath
-      {
-        Waypoints = { GenerateWaypoint(t) }
-      });
-
+      waypoints.Add(GenerateWaypoint(t));
     }
+    paths.Add(new RobotClientsPath
+    {
+      Waypoints = {waypoints}
+    });
+
     return paths;
   }
 }

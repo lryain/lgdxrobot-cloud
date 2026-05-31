@@ -398,7 +398,7 @@ public class MapEditorService(
           Startid = waypointIdToFeatureId[waypointTraffics[i].WaypointFromId],
           Endid = waypointIdToFeatureId[waypointTraffics[i].WaypointToId],
           Overridable = waypointTraffics[i].Overridable,
-          Cost = waypointTraffics[i].Cost,
+          Cost = waypointTraffics[i].Cost ?? 1,
           Metadata = new GeoJsonFeaturePropertiesMetadata
           {
             SpeedLimit = waypointTraffics[i].SpeedLimit,
