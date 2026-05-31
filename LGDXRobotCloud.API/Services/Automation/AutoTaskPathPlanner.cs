@@ -14,13 +14,9 @@ public interface IAutoTaskPathPlannerService
 }
 
 public partial class AutoTaskPathPlannerService(
-    IMapEditorService mapEditorService,
-    IRobotDataRepository robotDataRepository,
     LgdxContext context
   ) : IAutoTaskPathPlannerService
 {
-  private readonly IMapEditorService _mapEditorService = mapEditorService ?? throw new ArgumentNullException(nameof(mapEditorService));
-  private readonly IRobotDataRepository _robotDataRepository = robotDataRepository ?? throw new ArgumentNullException(nameof(robotDataRepository));
   private readonly LgdxContext _context = context ?? throw new ArgumentNullException(nameof(context));
   
   private static RobotClientsDof GenerateWaypoint(AutoTaskDetail taskDetail)
