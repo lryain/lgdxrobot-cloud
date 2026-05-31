@@ -378,7 +378,7 @@ public class AutoTaskSchedulerServiceTests
     lgdxContext.Set<Waypoint>().AddRange(waypoints);
     lgdxContext.SaveChanges();
   }
-
+/*
   private List<RobotClientsPath> GeneratePath(AutoTask autoTask)
   {
     var id = autoTask.Id;
@@ -403,5 +403,5 @@ public class AutoTaskSchedulerServiceTests
     }
     return result;
   }
-
+*/
 }

@@ -10,7 +10,7 @@ namespace LGDXRobotCloud.API.Services.Automation;
 
 public interface IAutoTaskPathPlannerService
 {
-  Task<List<RobotClientsPath>> GeneratePath(AutoTask autoTask);
+  Task<List<RobotClientsDof>> GeneratePath(AutoTask autoTask);
 }
 
 public partial class AutoTaskPathPlannerService(
@@ -48,7 +48,7 @@ public partial class AutoTaskPathPlannerService(
     }
   }
 
-  public async Task<List<RobotClientsPath>> GeneratePath(AutoTask autoTask)
+  public async Task<List<RobotClientsDof>> GeneratePath(AutoTask autoTask)
   {
     var realmId = autoTask.RealmId;
     var hasRouteControl = _context.Realms.AsNoTracking()
@@ -56,7 +56,6 @@ public partial class AutoTaskPathPlannerService(
       .Select(r => r.HasRouteControl)
       .FirstOrDefault();
 
-    List<RobotClientsPath> paths = [];
     List<AutoTaskDetail> taskDetails = [];
     if (autoTask.CurrentProgressId == (int)ProgressState.PreMoving)
     {
@@ -82,16 +81,11 @@ public partial class AutoTaskPathPlannerService(
     }
     
     // Return the waypoints
-    List<RobotClientsDof> waypoints = [];
+    List<RobotClientsDof> paths = [];
     foreach (var t in taskDetails)
     {
-      waypoints.Add(GenerateWaypoint(t));
+      paths.Add(GenerateWaypoint(t));
     }
-    paths.Add(new RobotClientsPath
-    {
-      Waypoints = {waypoints}
-    });
-
     return paths;
   }
 }

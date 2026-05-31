@@ -116,19 +116,6 @@ public class AutoTaskSchedulerService(
       await _triggerService.InitialiseTriggerAsync(task, flowDetail);
     }
 
-    List<RobotClientsPath> paths = [];
-    try
-    {
-      paths = await _autoTaskPathPlanner.GeneratePath(task);
-    }
-    catch (Exception)
-    {
-      await AutoTaskAbortSqlAsync(task.Id);
-      await _emailService.SendAutoTaskAbortEmailAsync(task.Id, AutoTaskAbortReason.PathPlanner);
-      await AddAutoTaskJourney(task);
-      return null;
-    }
-
     string nextToken = task.NextToken ?? string.Empty;
     if (flowDetail?.AutoTaskNextControllerId != (int)AutoTaskNextController.Robot)
     {
@@ -142,7 +129,7 @@ public class AutoTaskSchedulerService(
       TaskName = task.Name ?? string.Empty,
       TaskProgressId = task.CurrentProgressId,
       TaskProgressName = progress!.Name ?? string.Empty,
-      Paths = { paths },
+      Paths = { await _autoTaskPathPlanner.GeneratePath(task) },
       NextToken = nextToken,
     };
   }
