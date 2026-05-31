@@ -284,7 +284,7 @@ public class RealmService(
     }
 
     var realm = await _context.Realms.AsNoTracking()
-      .Where(m => m.HasRouteControl)
+      .Where(m => m.Id == id)
       .Select(m => new RealmRobotClientBusinessModel {
         Map = m.Map,
         MapWidth = m.MapWidth,
