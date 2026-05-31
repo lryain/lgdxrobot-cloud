@@ -23,6 +23,7 @@ public interface IRealmService
   Task<bool> DeleteRealmAsync(int id);
 
   Task<IEnumerable<RealmSearchBusinessModel>> SearchRealmsAsync(string? name);
+  Task<RealmRobotClientBusinessModel> GetRealmForRobotAsync(int id);
 }
 
 public class RealmService(
@@ -153,6 +154,7 @@ public class RealmService(
   public async Task<bool> UpdateRealmAsync(int id, RealmUpdateBusinessModel updateModel)
   {
     _memoryCache.Remove($"MapEditorService_InternalTraffic_{id}");
+    _memoryCache.Remove($"RealmService_GetRealmForRobotAsync_{id}");
 
     bool result = await _context.Realms
       .Where(m => m.Id == id)
@@ -187,6 +189,7 @@ public class RealmService(
   public async Task<bool> UpdateRealmMapAsync(int id, RealmMapUpdateBusinessModel updateModel)
   {
     _memoryCache.Remove($"MapEditorService_InternalTraffic_{id}");
+    _memoryCache.Remove($"RealmService_GetRealmForRobotAsync_{id}");
 
     bool result = await _context.Realms
       .Where(m => m.Id == id)
@@ -240,6 +243,7 @@ public class RealmService(
   public async Task<bool> DeleteRealmAsync(int id)
   {
     _memoryCache.Remove($"MapEditorService_InternalTraffic_{id}");
+    _memoryCache.Remove($"RealmService_GetRealmForRobotAsync_{id}");
 
     bool result = await _context.Realms.Where(m => m.Id == id)
       .ExecuteDeleteAsync() == 1;
@@ -267,5 +271,35 @@ public class RealmService(
         Name = m.Name,
       })
       .ToListAsync();
+  }
+
+  public async Task<RealmRobotClientBusinessModel> GetRealmForRobotAsync(int id)
+  {
+    if (_memoryCache.TryGetValue($"RealmService_GetRealmForRobotAsync_{id}", out RealmRobotClientBusinessModel? t))
+    {
+      if (t != null)
+      {
+        return t;
+      }
+    }
+
+    var realm = await _context.Realms.AsNoTracking()
+      .Where(m => m.HasRouteControl)
+      .Select(m => new RealmRobotClientBusinessModel {
+        Map = m.Map,
+        MapWidth = m.MapWidth,
+        MapHeight = m.MapHeight,
+        KeepoutMask = m.KeepoutMask,
+        SpeedMask = m.SpeedMask,
+        Resolution = m.Resolution,
+        OriginX = m.OriginX,
+        OriginY = m.OriginY,
+        OriginRotation = m.OriginRotation,
+      })
+      .FirstOrDefaultAsync()
+        ?? new RealmRobotClientBusinessModel();
+
+    _memoryCache.Set($"RealmService_GetRealmForRobotAsync_{id}", realm, TimeSpan.FromMinutes(5));
+    return realm;
   }
 }

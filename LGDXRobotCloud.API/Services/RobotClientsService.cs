@@ -15,6 +15,7 @@ using LGDXRobotCloud.API.Services.Automation;
 using StackExchange.Redis;
 using static StackExchange.Redis.RedisChannel;
 using LGDXRobotCloud.Utilities.Helpers;
+using Google.Protobuf;
 
 namespace LGDXRobotCloud.API.Services;
 
@@ -26,6 +27,7 @@ public partial class RobotClientsService(
     IMapEditorService mapEditorService,
     IOnlineRobotsService OnlineRobotsService,
     IOptionsSnapshot<LgdxRobotCloudSecretConfiguration> lgdxRobotCloudSecretConfiguration,
+    IRealmService realmService,
     IRobotService robotService,
     ISlamService slamService
   ) : RobotClientsServiceBase
@@ -35,6 +37,7 @@ public partial class RobotClientsService(
   private readonly IMapEditorService _mapEditorService = mapEditorService ?? throw new ArgumentNullException(nameof(mapEditorService));
   private readonly IOnlineRobotsService _onlineRobotsService = OnlineRobotsService ?? throw new ArgumentNullException(nameof(OnlineRobotsService));
   private readonly LgdxRobotCloudSecretConfiguration _lgdxRobotCloudSecretConfiguration = lgdxRobotCloudSecretConfiguration.Value ?? throw new ArgumentNullException(nameof(lgdxRobotCloudSecretConfiguration));
+  private readonly IRealmService _realmService = realmService ?? throw new ArgumentNullException(nameof(realmService));
   private readonly IRobotService _robotService = robotService ?? throw new ArgumentNullException(nameof(robotService));
   private readonly ISlamService _slamService = slamService ?? throw new ArgumentNullException(nameof(slamService));
 
@@ -113,6 +116,7 @@ public partial class RobotClientsService(
 
     var chassisInfo = await _robotService.GetRobotChassisInfoAsync(robotIdGuid);
     var route = await _mapEditorService.GetGeoJsonAsync(robot.RealmId);
+    var realm = await _realmService.GetRealmForRobotAsync(robot.RealmId);
 
     // Generate Access Token
     var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_lgdxRobotCloudSecretConfiguration.RobotClientsJwtSecret));
@@ -144,6 +148,15 @@ public partial class RobotClientsService(
       MapInfo = new RobotClientsMapInfo
       {
         Route = route,
+        MapWidth = realm.MapWidth,
+        MapHeight = realm.MapHeight,
+        Resolution = realm.Resolution,
+        OriginX = realm.OriginX,
+        OriginY = realm.OriginY,
+        OriginRotation = realm.OriginRotation,
+        Map = ByteString.CopyFrom(realm.Map),
+        KeepoutMask = ByteString.CopyFrom(realm.KeepoutMask),
+        SpeedMask = ByteString.CopyFrom(realm.SpeedMask),
       }
     };
   }
