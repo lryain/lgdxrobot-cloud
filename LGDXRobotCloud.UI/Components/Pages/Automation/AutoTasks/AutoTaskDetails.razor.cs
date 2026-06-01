@@ -45,8 +45,10 @@ public partial class AutoTaskDetails : ComponentBase, IDisposable
   private EditContext _editContext = null!;
   private readonly CustomFieldClassProvider _customFieldClassProvider = new();
 
-  bool HasRouteTrafficControl { get; set; } = false;
-  TimeZoneInfo TimeZone { get; set; } = TimeZoneInfo.Utc;
+  private bool HasRouteTrafficControl { get; set; } = false;
+  private TimeZoneInfo TimeZone { get; set; } = TimeZoneInfo.Utc;
+  private bool HasDeletedWaypoint { get; set; } = false;
+
 
   // Form helping variables
   private readonly string[] AdvanceSelectElements = [$"{nameof(AutoTaskDetailsViewModel.FlowId)}-", $"{nameof(AutoTaskDetailsViewModel.AssignedRobotId)}-", $"{nameof(TaskDetailBody.WaypointId)}-"];
@@ -257,6 +259,29 @@ public partial class AutoTaskDetails : ComponentBase, IDisposable
       {
         AutoTaskDetailsViewModel.IsClone = bool.Parse(param[0] ?? string.Empty);
         Id = null;
+      }
+
+      if (_id != null)
+      {
+        for (int i = AutoTaskDetailsViewModel.AutoTaskDetails.Count - 1; i >= 0; i--)
+        {
+          if (AutoTaskDetailsViewModel.AutoTaskDetails[i].WaypointId == null 
+                && AutoTaskDetailsViewModel.AutoTaskDetails[i].CustomX == null 
+                && AutoTaskDetailsViewModel.AutoTaskDetails[i].CustomY == null 
+                && AutoTaskDetailsViewModel.AutoTaskDetails[i].CustomRotation == null)
+          {
+            if (AutoTaskDetailsViewModel.IsClone)
+            {
+              AutoTaskDetailsViewModel.AutoTaskDetails.RemoveAt(i);
+              HasDeletedWaypoint = true;
+            }
+            else
+            {
+              AutoTaskDetailsViewModel.AutoTaskDetails[i].WaypointName = "Deleted Waypoint";
+            }
+            
+          }
+        }
       }
     }
     await base.SetParametersAsync(ParameterView.Empty);

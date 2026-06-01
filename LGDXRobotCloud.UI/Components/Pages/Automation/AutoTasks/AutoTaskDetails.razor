@@ -138,7 +138,13 @@
                 @if (HasRouteTrafficControl)
                 {
                   <InformationAlert>
-                    Waypoints is required when Route Control is enabled.
+                    Waypoints are required when Route Control is enabled. Any custom coordinates will be ignored in path planning.
+                  </InformationAlert>
+                }
+                @if (HasDeletedWaypoint)
+                {
+                  <InformationAlert>
+                    The task contains deleted waypoints.
                   </InformationAlert>
                 }
                 <table class="table table-vcenter text-nowrap datatable">

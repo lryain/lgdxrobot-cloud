@@ -19,18 +19,22 @@ public partial class AutoTaskPathPlannerService(
 {
   private readonly LgdxContext _context = context ?? throw new ArgumentNullException(nameof(context));
   
-  private static RobotClientsDof GenerateWaypoint(AutoTaskDetail taskDetail)
+  private static RobotClientsDof GenerateWaypoint(AutoTaskDetail taskDetail, bool hasRouteControl = false)
   {
     if (taskDetail.Waypoint != null)
     {
       var waypoint = new RobotClientsDof
       { X = taskDetail.Waypoint.X, Y = taskDetail.Waypoint.Y, Rotation = taskDetail.Waypoint.Rotation };
-      if (taskDetail.CustomX != null)
-        waypoint.X = (double)taskDetail.CustomX;
-      if (taskDetail.CustomY != null)
-        waypoint.X = (double)taskDetail.CustomY;
-      if (taskDetail.CustomRotation != null)
-        waypoint.X = (double)taskDetail.CustomRotation;
+      if (!hasRouteControl)
+      {
+        // If the realm has route control, the custom coordinates are ignored
+        if (taskDetail.CustomX != null)
+          waypoint.X = (double)taskDetail.CustomX;
+        if (taskDetail.CustomY != null)
+          waypoint.X = (double)taskDetail.CustomY;
+        if (taskDetail.CustomRotation != null)
+          waypoint.X = (double)taskDetail.CustomRotation;
+      }
       return waypoint;
     }
     else
