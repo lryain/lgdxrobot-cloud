@@ -132,8 +132,8 @@ public static class TriggerDetailsViewModelExtensions
     TriggerDetailsViewModel.ApiKeyRequired = triggerDto.ApiKey != null;
     TriggerDetailsViewModel.ApiKeyInsertLocationId = triggerDto.ApiKeyInsertLocationId;
     TriggerDetailsViewModel.ApiKeyFieldName = triggerDto.ApiKeyFieldName;
-    TriggerDetailsViewModel.ApiKeyId = triggerDto.ApiKey?.ApiKeySearchDto?.Id;
-    TriggerDetailsViewModel.ApiKeyName = triggerDto.ApiKey?.ApiKeySearchDto?.Name;
+    TriggerDetailsViewModel.ApiKeyId = triggerDto.ApiKey?.Id;
+    TriggerDetailsViewModel.ApiKeyName = triggerDto.ApiKey?.Name;
   }
 
   public static TriggerUpdateDto ToUpdateDto(this TriggerDetailsViewModel TriggerDetailsViewModel)

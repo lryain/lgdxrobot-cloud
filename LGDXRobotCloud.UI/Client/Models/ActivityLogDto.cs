@@ -9,20 +9,18 @@ namespace LGDXRobotCloud.UI.Client.Models
 {
     [global::System.CodeDom.Compiler.GeneratedCode("Kiota", "1.0.0")]
     #pragma warning disable CS1591
-    public partial class ActivityLogDto : IAdditionalDataHolder, IParsable
+    public partial class ActivityLogDto : IParsable
     #pragma warning restore CS1591
     {
         /// <summary>The action property</summary>
         public int? Action { get; set; }
-        /// <summary>Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.</summary>
-        public IDictionary<string, object> AdditionalData { get; set; }
         /// <summary>The apiKey property</summary>
 #if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
 #nullable enable
-        public global::LGDXRobotCloud.UI.Client.Models.ActivityLogDto.ActivityLogDto_apiKey? ApiKey { get; set; }
+        public global::LGDXRobotCloud.UI.Client.Models.ApiKeySearchDto? ApiKey { get; set; }
 #nullable restore
 #else
-        public global::LGDXRobotCloud.UI.Client.Models.ActivityLogDto.ActivityLogDto_apiKey ApiKey { get; set; }
+        public global::LGDXRobotCloud.UI.Client.Models.ApiKeySearchDto ApiKey { get; set; }
 #endif
         /// <summary>The createdAt property</summary>
         public DateTimeOffset? CreatedAt { get; set; }
@@ -55,18 +53,11 @@ namespace LGDXRobotCloud.UI.Client.Models
         /// <summary>The user property</summary>
 #if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
 #nullable enable
-        public global::LGDXRobotCloud.UI.Client.Models.ActivityLogDto.ActivityLogDto_user? User { get; set; }
+        public global::LGDXRobotCloud.UI.Client.Models.LgdxUserSearchDto? User { get; set; }
 #nullable restore
 #else
-        public global::LGDXRobotCloud.UI.Client.Models.ActivityLogDto.ActivityLogDto_user User { get; set; }
+        public global::LGDXRobotCloud.UI.Client.Models.LgdxUserSearchDto User { get; set; }
 #endif
-        /// <summary>
-        /// Instantiates a new <see cref="global::LGDXRobotCloud.UI.Client.Models.ActivityLogDto"/> and sets the default values.
-        /// </summary>
-        public ActivityLogDto()
-        {
-            AdditionalData = new Dictionary<string, object>();
-        }
         /// <summary>
         /// Creates a new instance of the appropriate class based on discriminator value
         /// </summary>
@@ -86,13 +77,13 @@ namespace LGDXRobotCloud.UI.Client.Models
             return new Dictionary<string, Action<IParseNode>>
             {
                 { "action", n => { Action = n.GetIntValue(); } },
-                { "apiKey", n => { ApiKey = n.GetObjectValue<global::LGDXRobotCloud.UI.Client.Models.ActivityLogDto.ActivityLogDto_apiKey>(global::LGDXRobotCloud.UI.Client.Models.ActivityLogDto.ActivityLogDto_apiKey.CreateFromDiscriminatorValue); } },
+                { "apiKey", n => { ApiKey = n.GetObjectValue<global::LGDXRobotCloud.UI.Client.Models.ApiKeySearchDto>(global::LGDXRobotCloud.UI.Client.Models.ApiKeySearchDto.CreateFromDiscriminatorValue); } },
                 { "createdAt", n => { CreatedAt = n.GetDateTimeOffsetValue(); } },
                 { "entityId", n => { EntityId = n.GetStringValue(); } },
                 { "entityName", n => { EntityName = n.GetStringValue(); } },
                 { "id", n => { Id = n.GetIntValue(); } },
                 { "note", n => { Note = n.GetStringValue(); } },
-                { "user", n => { User = n.GetObjectValue<global::LGDXRobotCloud.UI.Client.Models.ActivityLogDto.ActivityLogDto_user>(global::LGDXRobotCloud.UI.Client.Models.ActivityLogDto.ActivityLogDto_user.CreateFromDiscriminatorValue); } },
+                { "user", n => { User = n.GetObjectValue<global::LGDXRobotCloud.UI.Client.Models.LgdxUserSearchDto>(global::LGDXRobotCloud.UI.Client.Models.LgdxUserSearchDto.CreateFromDiscriminatorValue); } },
             };
         }
         /// <summary>
@@ -103,164 +94,13 @@ namespace LGDXRobotCloud.UI.Client.Models
         {
             if(ReferenceEquals(writer, null)) throw new ArgumentNullException(nameof(writer));
             writer.WriteIntValue("action", Action);
-            writer.WriteObjectValue<global::LGDXRobotCloud.UI.Client.Models.ActivityLogDto.ActivityLogDto_apiKey>("apiKey", ApiKey);
+            writer.WriteObjectValue<global::LGDXRobotCloud.UI.Client.Models.ApiKeySearchDto>("apiKey", ApiKey);
             writer.WriteDateTimeOffsetValue("createdAt", CreatedAt);
             writer.WriteStringValue("entityId", EntityId);
             writer.WriteStringValue("entityName", EntityName);
             writer.WriteIntValue("id", Id);
             writer.WriteStringValue("note", Note);
-            writer.WriteObjectValue<global::LGDXRobotCloud.UI.Client.Models.ActivityLogDto.ActivityLogDto_user>("user", User);
-            writer.WriteAdditionalData(AdditionalData);
-        }
-        /// <summary>
-        /// Composed type wrapper for classes <see cref="global::LGDXRobotCloud.UI.Client.Models.ActivityLogDto_apiKeyMember1"/>, <see cref="global::LGDXRobotCloud.UI.Client.Models.ApiKeySearchDto"/>
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCode("Kiota", "1.0.0")]
-        public partial class ActivityLogDto_apiKey : IComposedTypeWrapper, IParsable
-        {
-            /// <summary>Composed type representation for type <see cref="global::LGDXRobotCloud.UI.Client.Models.ActivityLogDto_apiKeyMember1"/></summary>
-#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
-#nullable enable
-            public global::LGDXRobotCloud.UI.Client.Models.ActivityLogDto_apiKeyMember1? ActivityLogDtoApiKeyMember1 { get; set; }
-#nullable restore
-#else
-            public global::LGDXRobotCloud.UI.Client.Models.ActivityLogDto_apiKeyMember1 ActivityLogDtoApiKeyMember1 { get; set; }
-#endif
-            /// <summary>Composed type representation for type <see cref="global::LGDXRobotCloud.UI.Client.Models.ApiKeySearchDto"/></summary>
-#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
-#nullable enable
-            public global::LGDXRobotCloud.UI.Client.Models.ApiKeySearchDto? ApiKeySearchDto { get; set; }
-#nullable restore
-#else
-            public global::LGDXRobotCloud.UI.Client.Models.ApiKeySearchDto ApiKeySearchDto { get; set; }
-#endif
-            /// <summary>
-            /// Creates a new instance of the appropriate class based on discriminator value
-            /// </summary>
-            /// <returns>A <see cref="global::LGDXRobotCloud.UI.Client.Models.ActivityLogDto.ActivityLogDto_apiKey"/></returns>
-            /// <param name="parseNode">The parse node to use to read the discriminator value and create the object</param>
-            public static global::LGDXRobotCloud.UI.Client.Models.ActivityLogDto.ActivityLogDto_apiKey CreateFromDiscriminatorValue(IParseNode parseNode)
-            {
-                if(ReferenceEquals(parseNode, null)) throw new ArgumentNullException(nameof(parseNode));
-                var mappingValue = parseNode.GetChildNode("")?.GetStringValue();
-                var result = new global::LGDXRobotCloud.UI.Client.Models.ActivityLogDto.ActivityLogDto_apiKey();
-                if("".Equals(mappingValue, StringComparison.OrdinalIgnoreCase))
-                {
-                    result.ActivityLogDtoApiKeyMember1 = new global::LGDXRobotCloud.UI.Client.Models.ActivityLogDto_apiKeyMember1();
-                }
-                else if("ApiKeySearchDto".Equals(mappingValue, StringComparison.OrdinalIgnoreCase))
-                {
-                    result.ApiKeySearchDto = new global::LGDXRobotCloud.UI.Client.Models.ApiKeySearchDto();
-                }
-                return result;
-            }
-            /// <summary>
-            /// The deserialization information for the current model
-            /// </summary>
-            /// <returns>A IDictionary&lt;string, Action&lt;IParseNode&gt;&gt;</returns>
-            public virtual IDictionary<string, Action<IParseNode>> GetFieldDeserializers()
-            {
-                if(ActivityLogDtoApiKeyMember1 != null)
-                {
-                    return ActivityLogDtoApiKeyMember1.GetFieldDeserializers();
-                }
-                else if(ApiKeySearchDto != null)
-                {
-                    return ApiKeySearchDto.GetFieldDeserializers();
-                }
-                return new Dictionary<string, Action<IParseNode>>();
-            }
-            /// <summary>
-            /// Serializes information the current object
-            /// </summary>
-            /// <param name="writer">Serialization writer to use to serialize this model</param>
-            public virtual void Serialize(ISerializationWriter writer)
-            {
-                if(ReferenceEquals(writer, null)) throw new ArgumentNullException(nameof(writer));
-                if(ActivityLogDtoApiKeyMember1 != null)
-                {
-                    writer.WriteObjectValue<global::LGDXRobotCloud.UI.Client.Models.ActivityLogDto_apiKeyMember1>(null, ActivityLogDtoApiKeyMember1);
-                }
-                else if(ApiKeySearchDto != null)
-                {
-                    writer.WriteObjectValue<global::LGDXRobotCloud.UI.Client.Models.ApiKeySearchDto>(null, ApiKeySearchDto);
-                }
-            }
-        }
-        /// <summary>
-        /// Composed type wrapper for classes <see cref="global::LGDXRobotCloud.UI.Client.Models.ActivityLogDto_userMember1"/>, <see cref="global::LGDXRobotCloud.UI.Client.Models.LgdxUserSearchDto"/>
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCode("Kiota", "1.0.0")]
-        public partial class ActivityLogDto_user : IComposedTypeWrapper, IParsable
-        {
-            /// <summary>Composed type representation for type <see cref="global::LGDXRobotCloud.UI.Client.Models.ActivityLogDto_userMember1"/></summary>
-#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
-#nullable enable
-            public global::LGDXRobotCloud.UI.Client.Models.ActivityLogDto_userMember1? ActivityLogDtoUserMember1 { get; set; }
-#nullable restore
-#else
-            public global::LGDXRobotCloud.UI.Client.Models.ActivityLogDto_userMember1 ActivityLogDtoUserMember1 { get; set; }
-#endif
-            /// <summary>Composed type representation for type <see cref="global::LGDXRobotCloud.UI.Client.Models.LgdxUserSearchDto"/></summary>
-#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
-#nullable enable
-            public global::LGDXRobotCloud.UI.Client.Models.LgdxUserSearchDto? LgdxUserSearchDto { get; set; }
-#nullable restore
-#else
-            public global::LGDXRobotCloud.UI.Client.Models.LgdxUserSearchDto LgdxUserSearchDto { get; set; }
-#endif
-            /// <summary>
-            /// Creates a new instance of the appropriate class based on discriminator value
-            /// </summary>
-            /// <returns>A <see cref="global::LGDXRobotCloud.UI.Client.Models.ActivityLogDto.ActivityLogDto_user"/></returns>
-            /// <param name="parseNode">The parse node to use to read the discriminator value and create the object</param>
-            public static global::LGDXRobotCloud.UI.Client.Models.ActivityLogDto.ActivityLogDto_user CreateFromDiscriminatorValue(IParseNode parseNode)
-            {
-                if(ReferenceEquals(parseNode, null)) throw new ArgumentNullException(nameof(parseNode));
-                var mappingValue = parseNode.GetChildNode("")?.GetStringValue();
-                var result = new global::LGDXRobotCloud.UI.Client.Models.ActivityLogDto.ActivityLogDto_user();
-                if("".Equals(mappingValue, StringComparison.OrdinalIgnoreCase))
-                {
-                    result.ActivityLogDtoUserMember1 = new global::LGDXRobotCloud.UI.Client.Models.ActivityLogDto_userMember1();
-                }
-                else if("LgdxUserSearchDto".Equals(mappingValue, StringComparison.OrdinalIgnoreCase))
-                {
-                    result.LgdxUserSearchDto = new global::LGDXRobotCloud.UI.Client.Models.LgdxUserSearchDto();
-                }
-                return result;
-            }
-            /// <summary>
-            /// The deserialization information for the current model
-            /// </summary>
-            /// <returns>A IDictionary&lt;string, Action&lt;IParseNode&gt;&gt;</returns>
-            public virtual IDictionary<string, Action<IParseNode>> GetFieldDeserializers()
-            {
-                if(ActivityLogDtoUserMember1 != null)
-                {
-                    return ActivityLogDtoUserMember1.GetFieldDeserializers();
-                }
-                else if(LgdxUserSearchDto != null)
-                {
-                    return LgdxUserSearchDto.GetFieldDeserializers();
-                }
-                return new Dictionary<string, Action<IParseNode>>();
-            }
-            /// <summary>
-            /// Serializes information the current object
-            /// </summary>
-            /// <param name="writer">Serialization writer to use to serialize this model</param>
-            public virtual void Serialize(ISerializationWriter writer)
-            {
-                if(ReferenceEquals(writer, null)) throw new ArgumentNullException(nameof(writer));
-                if(ActivityLogDtoUserMember1 != null)
-                {
-                    writer.WriteObjectValue<global::LGDXRobotCloud.UI.Client.Models.ActivityLogDto_userMember1>(null, ActivityLogDtoUserMember1);
-                }
-                else if(LgdxUserSearchDto != null)
-                {
-                    writer.WriteObjectValue<global::LGDXRobotCloud.UI.Client.Models.LgdxUserSearchDto>(null, LgdxUserSearchDto);
-                }
-            }
+            writer.WriteObjectValue<global::LGDXRobotCloud.UI.Client.Models.LgdxUserSearchDto>("user", User);
         }
     }
 }

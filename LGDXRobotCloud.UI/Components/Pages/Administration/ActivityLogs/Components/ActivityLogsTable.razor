@@ -64,7 +64,7 @@
               <td>@log.Id</td>
               <td>@log.EntityName</td>
               <td>@DisplaEntityId(l)</td>
-              <td>@(DisplayUser(log.User?.LgdxUserSearchDto))</td>
+              <td>@(DisplayUser(log.User))</td>
               <td>@(((ActivityAction)log.Action!.Value).ToEnumMember())</td>
               <td>@UiHelper.TimeToString(TimeZone, log.CreatedAt)</td>
               <td class="text-end">

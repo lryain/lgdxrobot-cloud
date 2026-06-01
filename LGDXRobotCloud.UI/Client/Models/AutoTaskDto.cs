@@ -9,18 +9,16 @@ namespace LGDXRobotCloud.UI.Client.Models
 {
     [global::System.CodeDom.Compiler.GeneratedCode("Kiota", "1.0.0")]
     #pragma warning disable CS1591
-    public partial class AutoTaskDto : IAdditionalDataHolder, IParsable
+    public partial class AutoTaskDto : IParsable
     #pragma warning restore CS1591
     {
-        /// <summary>Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.</summary>
-        public IDictionary<string, object> AdditionalData { get; set; }
         /// <summary>The assignedRobot property</summary>
 #if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
 #nullable enable
-        public global::LGDXRobotCloud.UI.Client.Models.AutoTaskDto.AutoTaskDto_assignedRobot? AssignedRobot { get; set; }
+        public global::LGDXRobotCloud.UI.Client.Models.RobotSearchDto? AssignedRobot { get; set; }
 #nullable restore
 #else
-        public global::LGDXRobotCloud.UI.Client.Models.AutoTaskDto.AutoTaskDto_assignedRobot AssignedRobot { get; set; }
+        public global::LGDXRobotCloud.UI.Client.Models.RobotSearchDto AssignedRobot { get; set; }
 #endif
         /// <summary>The autoTaskDetails property</summary>
 #if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
@@ -75,13 +73,6 @@ namespace LGDXRobotCloud.UI.Client.Models
         public global::LGDXRobotCloud.UI.Client.Models.RealmSearchDto Realm { get; set; }
 #endif
         /// <summary>
-        /// Instantiates a new <see cref="global::LGDXRobotCloud.UI.Client.Models.AutoTaskDto"/> and sets the default values.
-        /// </summary>
-        public AutoTaskDto()
-        {
-            AdditionalData = new Dictionary<string, object>();
-        }
-        /// <summary>
         /// Creates a new instance of the appropriate class based on discriminator value
         /// </summary>
         /// <returns>A <see cref="global::LGDXRobotCloud.UI.Client.Models.AutoTaskDto"/></returns>
@@ -99,7 +90,7 @@ namespace LGDXRobotCloud.UI.Client.Models
         {
             return new Dictionary<string, Action<IParseNode>>
             {
-                { "assignedRobot", n => { AssignedRobot = n.GetObjectValue<global::LGDXRobotCloud.UI.Client.Models.AutoTaskDto.AutoTaskDto_assignedRobot>(global::LGDXRobotCloud.UI.Client.Models.AutoTaskDto.AutoTaskDto_assignedRobot.CreateFromDiscriminatorValue); } },
+                { "assignedRobot", n => { AssignedRobot = n.GetObjectValue<global::LGDXRobotCloud.UI.Client.Models.RobotSearchDto>(global::LGDXRobotCloud.UI.Client.Models.RobotSearchDto.CreateFromDiscriminatorValue); } },
                 { "autoTaskDetails", n => { AutoTaskDetails = n.GetCollectionOfObjectValues<global::LGDXRobotCloud.UI.Client.Models.AutoTaskDetailDto>(global::LGDXRobotCloud.UI.Client.Models.AutoTaskDetailDto.CreateFromDiscriminatorValue)?.AsList(); } },
                 { "autoTaskJourneys", n => { AutoTaskJourneys = n.GetCollectionOfObjectValues<global::LGDXRobotCloud.UI.Client.Models.AutoTaskJourneyDto>(global::LGDXRobotCloud.UI.Client.Models.AutoTaskJourneyDto.CreateFromDiscriminatorValue)?.AsList(); } },
                 { "currentProgress", n => { CurrentProgress = n.GetObjectValue<global::LGDXRobotCloud.UI.Client.Models.ProgressSearchDto>(global::LGDXRobotCloud.UI.Client.Models.ProgressSearchDto.CreateFromDiscriminatorValue); } },
@@ -117,7 +108,7 @@ namespace LGDXRobotCloud.UI.Client.Models
         public virtual void Serialize(ISerializationWriter writer)
         {
             if(ReferenceEquals(writer, null)) throw new ArgumentNullException(nameof(writer));
-            writer.WriteObjectValue<global::LGDXRobotCloud.UI.Client.Models.AutoTaskDto.AutoTaskDto_assignedRobot>("assignedRobot", AssignedRobot);
+            writer.WriteObjectValue<global::LGDXRobotCloud.UI.Client.Models.RobotSearchDto>("assignedRobot", AssignedRobot);
             writer.WriteCollectionOfObjectValues<global::LGDXRobotCloud.UI.Client.Models.AutoTaskDetailDto>("autoTaskDetails", AutoTaskDetails);
             writer.WriteCollectionOfObjectValues<global::LGDXRobotCloud.UI.Client.Models.AutoTaskJourneyDto>("autoTaskJourneys", AutoTaskJourneys);
             writer.WriteObjectValue<global::LGDXRobotCloud.UI.Client.Models.ProgressSearchDto>("currentProgress", CurrentProgress);
@@ -126,82 +117,6 @@ namespace LGDXRobotCloud.UI.Client.Models
             writer.WriteStringValue("name", Name);
             writer.WriteIntValue("priority", Priority);
             writer.WriteObjectValue<global::LGDXRobotCloud.UI.Client.Models.RealmSearchDto>("realm", Realm);
-            writer.WriteAdditionalData(AdditionalData);
-        }
-        /// <summary>
-        /// Composed type wrapper for classes <see cref="global::LGDXRobotCloud.UI.Client.Models.AutoTaskDto_assignedRobotMember1"/>, <see cref="global::LGDXRobotCloud.UI.Client.Models.RobotSearchDto"/>
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCode("Kiota", "1.0.0")]
-        public partial class AutoTaskDto_assignedRobot : IComposedTypeWrapper, IParsable
-        {
-            /// <summary>Composed type representation for type <see cref="global::LGDXRobotCloud.UI.Client.Models.AutoTaskDto_assignedRobotMember1"/></summary>
-#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
-#nullable enable
-            public global::LGDXRobotCloud.UI.Client.Models.AutoTaskDto_assignedRobotMember1? AutoTaskDtoAssignedRobotMember1 { get; set; }
-#nullable restore
-#else
-            public global::LGDXRobotCloud.UI.Client.Models.AutoTaskDto_assignedRobotMember1 AutoTaskDtoAssignedRobotMember1 { get; set; }
-#endif
-            /// <summary>Composed type representation for type <see cref="global::LGDXRobotCloud.UI.Client.Models.RobotSearchDto"/></summary>
-#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
-#nullable enable
-            public global::LGDXRobotCloud.UI.Client.Models.RobotSearchDto? RobotSearchDto { get; set; }
-#nullable restore
-#else
-            public global::LGDXRobotCloud.UI.Client.Models.RobotSearchDto RobotSearchDto { get; set; }
-#endif
-            /// <summary>
-            /// Creates a new instance of the appropriate class based on discriminator value
-            /// </summary>
-            /// <returns>A <see cref="global::LGDXRobotCloud.UI.Client.Models.AutoTaskDto.AutoTaskDto_assignedRobot"/></returns>
-            /// <param name="parseNode">The parse node to use to read the discriminator value and create the object</param>
-            public static global::LGDXRobotCloud.UI.Client.Models.AutoTaskDto.AutoTaskDto_assignedRobot CreateFromDiscriminatorValue(IParseNode parseNode)
-            {
-                if(ReferenceEquals(parseNode, null)) throw new ArgumentNullException(nameof(parseNode));
-                var mappingValue = parseNode.GetChildNode("")?.GetStringValue();
-                var result = new global::LGDXRobotCloud.UI.Client.Models.AutoTaskDto.AutoTaskDto_assignedRobot();
-                if("".Equals(mappingValue, StringComparison.OrdinalIgnoreCase))
-                {
-                    result.AutoTaskDtoAssignedRobotMember1 = new global::LGDXRobotCloud.UI.Client.Models.AutoTaskDto_assignedRobotMember1();
-                }
-                else if("RobotSearchDto".Equals(mappingValue, StringComparison.OrdinalIgnoreCase))
-                {
-                    result.RobotSearchDto = new global::LGDXRobotCloud.UI.Client.Models.RobotSearchDto();
-                }
-                return result;
-            }
-            /// <summary>
-            /// The deserialization information for the current model
-            /// </summary>
-            /// <returns>A IDictionary&lt;string, Action&lt;IParseNode&gt;&gt;</returns>
-            public virtual IDictionary<string, Action<IParseNode>> GetFieldDeserializers()
-            {
-                if(AutoTaskDtoAssignedRobotMember1 != null)
-                {
-                    return AutoTaskDtoAssignedRobotMember1.GetFieldDeserializers();
-                }
-                else if(RobotSearchDto != null)
-                {
-                    return RobotSearchDto.GetFieldDeserializers();
-                }
-                return new Dictionary<string, Action<IParseNode>>();
-            }
-            /// <summary>
-            /// Serializes information the current object
-            /// </summary>
-            /// <param name="writer">Serialization writer to use to serialize this model</param>
-            public virtual void Serialize(ISerializationWriter writer)
-            {
-                if(ReferenceEquals(writer, null)) throw new ArgumentNullException(nameof(writer));
-                if(AutoTaskDtoAssignedRobotMember1 != null)
-                {
-                    writer.WriteObjectValue<global::LGDXRobotCloud.UI.Client.Models.AutoTaskDto_assignedRobotMember1>(null, AutoTaskDtoAssignedRobotMember1);
-                }
-                else if(RobotSearchDto != null)
-                {
-                    writer.WriteObjectValue<global::LGDXRobotCloud.UI.Client.Models.RobotSearchDto>(null, RobotSearchDto);
-                }
-            }
         }
     }
 }

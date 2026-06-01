@@ -20,13 +20,10 @@ public static class ConvertHelper
         Id = autoTaskUpdate.RealmId,
         Name = RealmName
       },
-      AssignedRobot = new AutoTaskListDto_assignedRobot
+      AssignedRobot = new RobotSearchDto
       {
-        RobotSearchDto = new RobotSearchDto
-        {
-          Id = autoTaskUpdate.AssignedRobotId,
-          Name = autoTaskUpdate.AssignedRobotName
-        }
+        Id = autoTaskUpdate.AssignedRobotId,
+        Name = autoTaskUpdate.AssignedRobotName
       },
       CurrentProgress = new ProgressSearchDto {
         Id = autoTaskUpdate.CurrentProgressId,

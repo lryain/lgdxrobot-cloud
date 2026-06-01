@@ -198,8 +198,8 @@ public partial class RobotDetails : ComponentBase, IAsyncDisposable
       var robot = await LgdxApiClient.Navigation.Robots[_id].GetAsync();
       RobotDetailsViewModel.FromDto(robot!);
       RobotCertificate = robot!.RobotCertificate;
-      RobotSystemInfoDto = robot!.RobotSystemInfo?.RobotSystemInfoDto;
-      RobotChassisInfoViewModel.FromDto(robot!.RobotChassisInfo!.RobotChassisInfoDto!);
+      RobotSystemInfoDto = robot!.RobotSystemInfo;
+      RobotChassisInfoViewModel.FromDto(robot!.RobotChassisInfo!);
       AutoTasks = robot.AssignedTasks;
       IdGuid = _id;
     }

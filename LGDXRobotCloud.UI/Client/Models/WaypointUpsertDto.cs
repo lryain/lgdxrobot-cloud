@@ -9,11 +9,9 @@ namespace LGDXRobotCloud.UI.Client.Models
 {
     [global::System.CodeDom.Compiler.GeneratedCode("Kiota", "1.0.0")]
     #pragma warning disable CS1591
-    public partial class WaypointUpsertDto : IAdditionalDataHolder, IParsable
+    public partial class WaypointUpsertDto : IParsable
     #pragma warning restore CS1591
     {
-        /// <summary>Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.</summary>
-        public IDictionary<string, object> AdditionalData { get; set; }
         /// <summary>The alternativeId property</summary>
         public Guid? AlternativeId { get; set; }
         /// <summary>The className property</summary>
@@ -44,13 +42,6 @@ namespace LGDXRobotCloud.UI.Client.Models
         public double? X { get; set; }
         /// <summary>The y property</summary>
         public double? Y { get; set; }
-        /// <summary>
-        /// Instantiates a new <see cref="global::LGDXRobotCloud.UI.Client.Models.WaypointUpsertDto"/> and sets the default values.
-        /// </summary>
-        public WaypointUpsertDto()
-        {
-            AdditionalData = new Dictionary<string, object>();
-        }
         /// <summary>
         /// Creates a new instance of the appropriate class based on discriminator value
         /// </summary>
@@ -96,7 +87,6 @@ namespace LGDXRobotCloud.UI.Client.Models
             writer.WriteDoubleValue("rotation", Rotation);
             writer.WriteDoubleValue("x", X);
             writer.WriteDoubleValue("y", Y);
-            writer.WriteAdditionalData(AdditionalData);
         }
     }
 }

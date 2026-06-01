@@ -9,7 +9,7 @@ namespace LGDXRobotCloud.UI.Client.Models
 {
     [global::System.CodeDom.Compiler.GeneratedCode("Kiota", "1.0.0")]
     #pragma warning disable CS1591
-    public partial class LoginResponseDto : IAdditionalDataHolder, IParsable
+    public partial class LoginResponseDto : IParsable
     #pragma warning restore CS1591
     {
         /// <summary>The accessToken property</summary>
@@ -20,8 +20,6 @@ namespace LGDXRobotCloud.UI.Client.Models
 #else
         public string AccessToken { get; set; }
 #endif
-        /// <summary>Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.</summary>
-        public IDictionary<string, object> AdditionalData { get; set; }
         /// <summary>The expiresMins property</summary>
         public int? ExpiresMins { get; set; }
         /// <summary>The refreshToken property</summary>
@@ -34,13 +32,6 @@ namespace LGDXRobotCloud.UI.Client.Models
 #endif
         /// <summary>The requiresTwoFactor property</summary>
         public bool? RequiresTwoFactor { get; set; }
-        /// <summary>
-        /// Instantiates a new <see cref="global::LGDXRobotCloud.UI.Client.Models.LoginResponseDto"/> and sets the default values.
-        /// </summary>
-        public LoginResponseDto()
-        {
-            AdditionalData = new Dictionary<string, object>();
-        }
         /// <summary>
         /// Creates a new instance of the appropriate class based on discriminator value
         /// </summary>
@@ -76,7 +67,6 @@ namespace LGDXRobotCloud.UI.Client.Models
             writer.WriteIntValue("expiresMins", ExpiresMins);
             writer.WriteStringValue("refreshToken", RefreshToken);
             writer.WriteBoolValue("requiresTwoFactor", RequiresTwoFactor);
-            writer.WriteAdditionalData(AdditionalData);
         }
     }
 }

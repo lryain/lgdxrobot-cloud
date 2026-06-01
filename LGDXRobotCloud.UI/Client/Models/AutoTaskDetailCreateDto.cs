@@ -9,11 +9,9 @@ namespace LGDXRobotCloud.UI.Client.Models
 {
     [global::System.CodeDom.Compiler.GeneratedCode("Kiota", "1.0.0")]
     #pragma warning disable CS1591
-    public partial class AutoTaskDetailCreateDto : IAdditionalDataHolder, IParsable
+    public partial class AutoTaskDetailCreateDto : IParsable
     #pragma warning restore CS1591
     {
-        /// <summary>Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.</summary>
-        public IDictionary<string, object> AdditionalData { get; set; }
         /// <summary>The customRotation property</summary>
         public double? CustomRotation { get; set; }
         /// <summary>The customX property</summary>
@@ -24,13 +22,6 @@ namespace LGDXRobotCloud.UI.Client.Models
         public int? Order { get; set; }
         /// <summary>The waypointId property</summary>
         public int? WaypointId { get; set; }
-        /// <summary>
-        /// Instantiates a new <see cref="global::LGDXRobotCloud.UI.Client.Models.AutoTaskDetailCreateDto"/> and sets the default values.
-        /// </summary>
-        public AutoTaskDetailCreateDto()
-        {
-            AdditionalData = new Dictionary<string, object>();
-        }
         /// <summary>
         /// Creates a new instance of the appropriate class based on discriminator value
         /// </summary>
@@ -68,7 +59,6 @@ namespace LGDXRobotCloud.UI.Client.Models
             writer.WriteDoubleValue("customY", CustomY);
             writer.WriteIntValue("order", Order);
             writer.WriteIntValue("waypointId", WaypointId);
-            writer.WriteAdditionalData(AdditionalData);
         }
     }
 }

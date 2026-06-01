@@ -9,13 +9,11 @@ namespace LGDXRobotCloud.UI.Client.Models
 {
     [global::System.CodeDom.Compiler.GeneratedCode("Kiota", "1.0.0")]
     #pragma warning disable CS1591
-    public partial class WaypointTrafficDto : IAdditionalDataHolder, IParsable
+    public partial class WaypointTrafficDto : IParsable
     #pragma warning restore CS1591
     {
         /// <summary>The absoluteSpeedLimit property</summary>
         public double? AbsoluteSpeedLimit { get; set; }
-        /// <summary>Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.</summary>
-        public IDictionary<string, object> AdditionalData { get; set; }
         /// <summary>The cost property</summary>
         public double? Cost { get; set; }
         /// <summary>The featureId property</summary>
@@ -30,13 +28,6 @@ namespace LGDXRobotCloud.UI.Client.Models
         public int? WaypointFromId { get; set; }
         /// <summary>The waypointToId property</summary>
         public int? WaypointToId { get; set; }
-        /// <summary>
-        /// Instantiates a new <see cref="global::LGDXRobotCloud.UI.Client.Models.WaypointTrafficDto"/> and sets the default values.
-        /// </summary>
-        public WaypointTrafficDto()
-        {
-            AdditionalData = new Dictionary<string, object>();
-        }
         /// <summary>
         /// Creates a new instance of the appropriate class based on discriminator value
         /// </summary>
@@ -80,7 +71,6 @@ namespace LGDXRobotCloud.UI.Client.Models
             writer.WriteDoubleValue("speedLimit", SpeedLimit);
             writer.WriteIntValue("waypointFromId", WaypointFromId);
             writer.WriteIntValue("waypointToId", WaypointToId);
-            writer.WriteAdditionalData(AdditionalData);
         }
     }
 }
