@@ -55,6 +55,8 @@ public partial class RobotDetails : ComponentBase, IAsyncDisposable
   private Timer? Timer = null;
   private DetailsRobotDataCard? RobotDataCard;
   private DetailsHeader? Header;
+  private SoftwareEmergencyStopModel? SoftwareEmergencyStop;
+  private PauseTaskAssignmentModel? PauseTaskAssignment;
 
   private Guid IdGuid { get; set; }
   private int RealmId { get; set; }
@@ -147,6 +149,8 @@ public partial class RobotDetails : ComponentBase, IAsyncDisposable
       RobotData = rd;
       await Header!.Refresh(rd);
       await RobotDataCard!.Refresh(rd);
+      await SoftwareEmergencyStop!.Refresh(rd.CriticalStatus.SoftwareEmergencyStop);
+      await PauseTaskAssignment!.Refresh(rd.PauseTaskAssignment);
       TimerStart();
     }
     else

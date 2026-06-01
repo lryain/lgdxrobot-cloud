@@ -97,8 +97,10 @@
 <AuthorizeView Policy="@Permissions.Navigation.Robots.Write" Context="ControlModel">
   <PauseTaskAssignmentModel 
     Enabled="RobotData == null ? false : RobotData.PauseTaskAssignment"
-    OnConfirm="HandlePauseTaskAssignment" />
+    OnConfirm="HandlePauseTaskAssignment"
+    @ref="PauseTaskAssignment" />
   <SoftwareEmergencyStopModel
     Enabled="RobotData == null ? false : RobotData.CriticalStatus.SoftwareEmergencyStop"
-    OnConfirm="HandleEmergencyStop" />
+    OnConfirm="HandleEmergencyStop"
+    @ref="SoftwareEmergencyStop" />
 </AuthorizeView>

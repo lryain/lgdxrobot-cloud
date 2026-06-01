@@ -47,6 +47,12 @@
   [Parameter]
   public EventCallback OnConfirm { get; set; }
 
+  public async Task  Refresh(bool enabled)
+  {
+    Enabled = enabled;
+    await InvokeAsync(StateHasChanged);
+  }
+
   public async Task HandleRequest()
   {
     await JSRuntime.InvokeVoidAsync("CloseModal", "#pauseTaskAssignment");
