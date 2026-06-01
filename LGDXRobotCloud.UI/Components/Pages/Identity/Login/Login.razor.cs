@@ -30,6 +30,9 @@ public partial class Login : ComponentBase
   [CascadingParameter]
   private HttpContext HttpContext { get; set; } = default!;
 
+  [CascadingParameter]
+  private bool DarkMode { get; set; }
+
   [SupplyParameterFromQuery]
   private string? ReturnUrl { get; set; }
 
@@ -102,7 +105,8 @@ public partial class Login : ComponentBase
       TokenService.UpdateSessionSettings(user, new SessionSettings
       {
         CurrentRealmId = realm.Id ?? 0,
-        TimeZone = TimeZoneInfo.FindSystemTimeZoneById(LoginViewModel.TimeZone ?? "UTC")
+        TimeZone = TimeZoneInfo.FindSystemTimeZoneById(LoginViewModel.TimeZone ?? "UTC"),
+        DarkMode = (bool)loginResponse.DarkMode!
       });
 
       NavigationManager.NavigateTo(string.IsNullOrWhiteSpace(ReturnUrl) ? "/" : ReturnUrl);

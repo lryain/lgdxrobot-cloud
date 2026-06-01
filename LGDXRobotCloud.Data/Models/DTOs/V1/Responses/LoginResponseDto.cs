@@ -9,4 +9,6 @@ public record LoginResponseDto
   public required int ExpiresMins { get; set; }
 
   public required bool RequiresTwoFactor { get; set; }
+
+  public required bool DarkMode { get; set; }
 }

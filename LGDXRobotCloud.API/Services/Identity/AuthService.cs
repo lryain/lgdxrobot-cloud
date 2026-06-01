@@ -133,7 +133,8 @@ public class AuthService(
           AccessToken = string.Empty,
           RefreshToken = string.Empty,
           ExpiresMins = 0,
-          RequiresTwoFactor = true
+          RequiresTwoFactor = true,
+          DarkMode = user.DarkMode
         };
       }
     }
@@ -185,7 +186,8 @@ public class AuthService(
       AccessToken = accessToken,
       RefreshToken = refreshToken,
       ExpiresMins = _lgdxRobotCloudSecretConfiguration.LgdxUserAccessTokenExpiresMins,
-      RequiresTwoFactor = false
+      RequiresTwoFactor = false,
+      DarkMode = user.DarkMode
     };
   }
 

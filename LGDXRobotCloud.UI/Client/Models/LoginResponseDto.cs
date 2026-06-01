@@ -20,6 +20,8 @@ namespace LGDXRobotCloud.UI.Client.Models
 #else
         public string AccessToken { get; set; }
 #endif
+        /// <summary>The darkMode property</summary>
+        public bool? DarkMode { get; set; }
         /// <summary>The expiresMins property</summary>
         public int? ExpiresMins { get; set; }
         /// <summary>The refreshToken property</summary>
@@ -51,6 +53,7 @@ namespace LGDXRobotCloud.UI.Client.Models
             return new Dictionary<string, Action<IParseNode>>
             {
                 { "accessToken", n => { AccessToken = n.GetStringValue(); } },
+                { "darkMode", n => { DarkMode = n.GetBoolValue(); } },
                 { "expiresMins", n => { ExpiresMins = n.GetIntValue(); } },
                 { "refreshToken", n => { RefreshToken = n.GetStringValue(); } },
                 { "requiresTwoFactor", n => { RequiresTwoFactor = n.GetBoolValue(); } },
@@ -64,6 +67,7 @@ namespace LGDXRobotCloud.UI.Client.Models
         {
             if(ReferenceEquals(writer, null)) throw new ArgumentNullException(nameof(writer));
             writer.WriteStringValue("accessToken", AccessToken);
+            writer.WriteBoolValue("darkMode", DarkMode);
             writer.WriteIntValue("expiresMins", ExpiresMins);
             writer.WriteStringValue("refreshToken", RefreshToken);
             writer.WriteBoolValue("requiresTwoFactor", RequiresTwoFactor);

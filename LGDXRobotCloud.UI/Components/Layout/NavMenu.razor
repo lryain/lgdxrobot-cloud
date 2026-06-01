@@ -1,4 +1,5 @@
 ﻿@using LGDXRobotCloud.UI.Constants;
+@using LGDXRobotCloud.UI.Services
 
 <aside class="navbar navbar-vertical navbar-expand-lg" style="z-index: 999;">
 	<div class="container-fluid">
@@ -9,7 +10,7 @@
 		</button>
 		<h1 class="navbar-brand navbar-brand-autodark sidebar-logo sidebar-item">
 			<a href="">
-				<img class="navbar-brand-image" src="/img/logo.png" height="32" alt="LGDXRobot Cloud">
+				<img class="navbar-brand-image" src="/img/logo@(IsDarkMode ? "-dark" : "").png" height="32" alt="LGDXRobot Cloud">
 			</a>
 		</h1>
 		<div class="nav-item sidebar-item">
@@ -116,3 +117,20 @@
 		</div>
 	</div>
 </aside>
+
+@code {
+  [Inject]
+	private ITokenService TokenService { get; set; } = default!;
+	
+	[Inject]
+  public required AuthenticationStateProvider AuthenticationStateProvider { get; set; }
+	
+  public bool IsDarkMode { get; set; }
+
+	protected override void OnInitialized()
+	{
+		var user = AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User;
+		var settings = TokenService.GetSessionSettings(user);
+		IsDarkMode = settings.DarkMode;
+	}
+}

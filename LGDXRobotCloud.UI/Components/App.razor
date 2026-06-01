@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using LGDXRobotCloud.UI.Services
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -25,7 +26,7 @@
 	}
 </head>
 
-<body>
+<body data-bs-theme="@(IsDarkMode ? "dark" : "")">
 	@if (IsStatic)
 	{
 		<Routes />
@@ -49,7 +50,15 @@
 	[Inject]
 	private NavigationManager NavigationManager { get; set; } = default!;
 
+	[Inject]
+	private ITokenService TokenService { get; set; } = default!;
+	
+	[Inject]
+  public required AuthenticationStateProvider AuthenticationStateProvider { get; set; }
+
 	private bool IsStatic { get; set; } = false;
+
+	public bool IsDarkMode { get; set; }
 
 	private static readonly List<string> ExcludePaths = [AppRoutes.Identity.Login, AppRoutes.Identity.ForgotPassword, AppRoutes.Identity.ResetPassword];
 
@@ -65,5 +74,9 @@
 		{
 			IsStatic = true;
 		}
+
+		var user = AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User;
+		var settings = TokenService.GetSessionSettings(user);
+		IsDarkMode = settings.DarkMode;
 	}
 }

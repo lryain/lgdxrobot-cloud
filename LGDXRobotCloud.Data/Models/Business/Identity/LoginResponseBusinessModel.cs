@@ -11,6 +11,8 @@ public record LoginResponseBusinessModel
   public required int ExpiresMins { get; set; }
 
   public required bool RequiresTwoFactor { get; set; }
+
+  public required bool DarkMode { get; set; }
 }
 
 public static class LoginResponseBusinessModelExtensions
@@ -21,7 +23,8 @@ public static class LoginResponseBusinessModelExtensions
       AccessToken = loginResponseBusinessModel.AccessToken,
       RefreshToken = loginResponseBusinessModel.RefreshToken,
       ExpiresMins = loginResponseBusinessModel.ExpiresMins,
-      RequiresTwoFactor = loginResponseBusinessModel.RequiresTwoFactor
+      RequiresTwoFactor = loginResponseBusinessModel.RequiresTwoFactor,
+      DarkMode = loginResponseBusinessModel.DarkMode
     };
   }
 }
