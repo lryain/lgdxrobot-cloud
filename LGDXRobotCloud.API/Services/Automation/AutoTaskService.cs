@@ -209,6 +209,16 @@ public class AutoTaskService(
 
   public async Task<AutoTaskBusinessModel> CreateAutoTaskAsync(AutoTaskCreateBusinessModel autoTaskCreateBusinessModel)
   {
+    // Waypoints required when Route Control is enabled
+    bool hasRouteControl = await _context.Realms.AsNoTracking()
+      .Where(r => r.Id == autoTaskCreateBusinessModel.RealmId)
+      .Select(r => r.HasRouteControl)
+      .FirstOrDefaultAsync();
+    if (hasRouteControl && !autoTaskCreateBusinessModel.AutoTaskDetails.Any(d => d.WaypointId != null))
+    {
+      throw new LgdxValidation400Expection(nameof(autoTaskCreateBusinessModel.AutoTaskDetails), "Waypoints are required when Route Control is enabled.");
+    }
+
     HashSet<int> waypointIds = autoTaskCreateBusinessModel.AutoTaskDetails
       .Where(d => d.WaypointId != null)
       .Select(d => d.WaypointId!.Value)

@@ -45,7 +45,6 @@ public partial class AutoTaskDetails : ComponentBase, IDisposable
   private EditContext _editContext = null!;
   private readonly CustomFieldClassProvider _customFieldClassProvider = new();
 
-  private bool HasRouteTrafficControl { get; set; } = false;
   private TimeZoneInfo TimeZone { get; set; } = TimeZoneInfo.Utc;
   private bool HasDeletedWaypoint { get; set; } = false;
 
@@ -229,7 +228,7 @@ public partial class AutoTaskDetails : ComponentBase, IDisposable
     TimeZone = settings.TimeZone;
     AutoTaskDetailsViewModel.RealmId = settings.CurrentRealmId;
     AutoTaskDetailsViewModel.RealmName = await CachedRealmService.GetRealmName(settings.CurrentRealmId);
-    HasRouteTrafficControl = await CachedRealmService.GetHasRouteTrafficControlAsync(settings.CurrentRealmId);
+    AutoTaskDetailsViewModel.HasRouteTrafficControl = await CachedRealmService.GetHasRouteTrafficControlAsync(settings.CurrentRealmId);
     await base.OnInitializedAsync();
   }
 

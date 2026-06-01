@@ -76,6 +76,8 @@ public class AutoTaskDetailsViewModel : FormViewModelBase, IValidatableObject
 
   public bool IsClone { get; set; } = false;
 
+  public bool HasRouteTrafficControl { get; set; } = false;
+
   public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
   {
     foreach (var autoTaskDetail in AutoTaskDetails)
@@ -87,6 +89,10 @@ public class AutoTaskDetailsViewModel : FormViewModelBase, IValidatableObject
       {
         yield return validationResult;
       }
+    }
+    if (HasRouteTrafficControl && !AutoTaskDetails.Any(x => x.WaypointId != null))
+    {
+      yield return new ValidationResult("Please add at least one waypoint.", [nameof(AutoTaskDetails)]);
     }
   }
 }

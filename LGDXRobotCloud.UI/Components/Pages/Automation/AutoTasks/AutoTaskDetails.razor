@@ -135,7 +135,7 @@
             <div class="mb-3 row">
               <label class="col-2 col-form-label">Waypoints</label>
               <div class="col d-flex flex-column">
-                @if (HasRouteTrafficControl)
+                @if (AutoTaskDetailsViewModel.HasRouteTrafficControl)
                 {
                   <InformationAlert>
                     Waypoints are required when Route Control is enabled. Any custom coordinates will be ignored in path planning.
@@ -210,7 +210,7 @@
                         <td>
                           @if (IsEditable())
                           {
-                            <input type="text" class="form-control" @bind="AutoTaskDetailsViewModel.AutoTaskDetails[index].CustomX">
+                            <input type="text" class="form-control" @bind="AutoTaskDetailsViewModel.AutoTaskDetails[index].CustomX" disabled="@(AutoTaskDetailsViewModel.HasRouteTrafficControl)">
                           }
                           else
                           {
@@ -220,7 +220,7 @@
                         <td>
                           @if (IsEditable())
                           {
-                            <input type="text" class="form-control" @bind="AutoTaskDetailsViewModel.AutoTaskDetails[index].CustomY">
+                            <input type="text" class="form-control" @bind="AutoTaskDetailsViewModel.AutoTaskDetails[index].CustomY" disabled="@(AutoTaskDetailsViewModel.HasRouteTrafficControl)">
                           }
                           else
                           {
@@ -230,7 +230,7 @@
                         <td>
                           @if (IsEditable())
                           {
-                            <input type="text" class="form-control" @bind="AutoTaskDetailsViewModel.AutoTaskDetails[index].CustomRotation">
+                            <input type="text" class="form-control" @bind="AutoTaskDetailsViewModel.AutoTaskDetails[index].CustomRotation" disabled="@(AutoTaskDetailsViewModel.HasRouteTrafficControl)">
                           }
                           else
                           {
