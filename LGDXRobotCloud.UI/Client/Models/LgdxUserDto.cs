@@ -14,6 +14,8 @@ namespace LGDXRobotCloud.UI.Client.Models
     {
         /// <summary>The accessFailedCount property</summary>
         public int? AccessFailedCount { get; set; }
+        /// <summary>The darkMode property</summary>
+        public bool? DarkMode { get; set; }
         /// <summary>The email property</summary>
 #if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
 #nullable enable
@@ -71,6 +73,7 @@ namespace LGDXRobotCloud.UI.Client.Models
             return new Dictionary<string, Action<IParseNode>>
             {
                 { "accessFailedCount", n => { AccessFailedCount = n.GetIntValue(); } },
+                { "darkMode", n => { DarkMode = n.GetBoolValue(); } },
                 { "email", n => { Email = n.GetStringValue(); } },
                 { "id", n => { Id = n.GetGuidValue(); } },
                 { "lockoutEnd", n => { LockoutEnd = n.GetDateTimeOffsetValue(); } },
@@ -88,6 +91,7 @@ namespace LGDXRobotCloud.UI.Client.Models
         {
             if(ReferenceEquals(writer, null)) throw new ArgumentNullException(nameof(writer));
             writer.WriteIntValue("accessFailedCount", AccessFailedCount);
+            writer.WriteBoolValue("darkMode", DarkMode);
             writer.WriteStringValue("email", Email);
             writer.WriteGuidValue("id", Id);
             writer.WriteDateTimeOffsetValue("lockoutEnd", LockoutEnd);

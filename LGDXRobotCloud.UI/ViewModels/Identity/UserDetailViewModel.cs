@@ -20,6 +20,8 @@ public class UserDetailViewModel : FormViewModelBase
   public List<string> Roles { get; set; } = [];
 
   public bool TwoFactorEnabled { get; set; } = false;
+
+  public bool DarkMode { get; set; } = false;
 }
 
 public static class UserDetailViewModelExtensions
@@ -32,6 +34,7 @@ public static class UserDetailViewModelExtensions
     userDetailViewModel.Email = lgdxUserDto.Email!;
     userDetailViewModel.Roles = lgdxUserDto.Roles!;
     userDetailViewModel.TwoFactorEnabled = (bool)lgdxUserDto.TwoFactorEnabled!;
+    userDetailViewModel.DarkMode = (bool)lgdxUserDto.DarkMode!;
   }
 
   public static LgdxUserUpdateDto ToUpdateDto(this UserDetailViewModel userDetailViewModel)
@@ -39,6 +42,7 @@ public static class UserDetailViewModelExtensions
     return new LgdxUserUpdateDto {
       Name = userDetailViewModel.Name,
       Email = userDetailViewModel.Email,
+      DarkMode = userDetailViewModel.DarkMode
     };
   }
 }

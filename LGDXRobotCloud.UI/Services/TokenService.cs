@@ -25,6 +25,7 @@ public record SessionSettings
   public int CurrentRealmId { get; set; } = 0;
   public MapEditorViewModel? MapEditorData { get; set; }
   public TimeZoneInfo TimeZone { get; set; } = TimeZoneInfo.Utc;
+  public bool DarkMode { get; set; } = false;
 }
 
 public class TokenService : ITokenService

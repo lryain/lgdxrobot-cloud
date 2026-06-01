@@ -19,6 +19,8 @@ public record LgdxUserBusinessModel
   public required int AccessFailedCount { get; set; }
 
   public DateTime? LockoutEnd { get; set; }
+
+  public bool DarkMode { get; set; }
 }
 
 public static class LgdxUserBusinessModelExtensions
@@ -33,7 +35,8 @@ public static class LgdxUserBusinessModelExtensions
       Roles = model.Roles,
       TwoFactorEnabled = model.TwoFactorEnabled,
       AccessFailedCount = model.AccessFailedCount,
-      LockoutEnd = model.LockoutEnd
+      LockoutEnd = model.LockoutEnd,
+      DarkMode = model.DarkMode,
     };
   }
 }

@@ -17,4 +17,6 @@ public record LgdxUserDto
   public required int AccessFailedCount { get; set; }
 
   public DateTime? LockoutEnd { get; set; }
+
+  public bool DarkMode { get; set; }
 }

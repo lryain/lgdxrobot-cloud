@@ -12,6 +12,8 @@ namespace LGDXRobotCloud.UI.Client.Models
     public partial class LgdxUserUpdateDto : IParsable
     #pragma warning restore CS1591
     {
+        /// <summary>The darkMode property</summary>
+        public bool? DarkMode { get; set; }
         /// <summary>The email property</summary>
 #if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
 #nullable enable
@@ -46,6 +48,7 @@ namespace LGDXRobotCloud.UI.Client.Models
         {
             return new Dictionary<string, Action<IParseNode>>
             {
+                { "darkMode", n => { DarkMode = n.GetBoolValue(); } },
                 { "email", n => { Email = n.GetStringValue(); } },
                 { "name", n => { Name = n.GetStringValue(); } },
             };
@@ -57,6 +60,7 @@ namespace LGDXRobotCloud.UI.Client.Models
         public virtual void Serialize(ISerializationWriter writer)
         {
             if(ReferenceEquals(writer, null)) throw new ArgumentNullException(nameof(writer));
+            writer.WriteBoolValue("darkMode", DarkMode);
             writer.WriteStringValue("email", Email);
             writer.WriteStringValue("name", Name);
         }

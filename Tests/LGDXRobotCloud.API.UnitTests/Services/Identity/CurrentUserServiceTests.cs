@@ -82,7 +82,8 @@ public class CurrentUserServiceTests
     mockUserManager.Setup(m => m.UpdateAsync(It.IsAny<LgdxUser>())).ReturnsAsync(IdentityResult.Success);
     var lgdxUserUpdateBusinessModel = new LgdxUserUpdateBusinessModel {
       Name = "test",
-      Email = "test@example.com"
+      Email = "test@example.com",
+      DarkMode = false
     };
     var currentUserService = new CurrentUserService(mockActivityLogService.Object, mockUserManager.Object);
 
@@ -101,7 +102,8 @@ public class CurrentUserServiceTests
     // Arrange
     var lgdxUserUpdateBusinessModel = new LgdxUserUpdateBusinessModel {
       Name = "test",
-      Email = "test@example.com"
+      Email = "test@example.com",
+      DarkMode = false
     };
     var currentUserService = new CurrentUserService(mockActivityLogService.Object, mockUserManager.Object);
 
@@ -122,7 +124,8 @@ public class CurrentUserServiceTests
     mockUserManager.Setup(m => m.UpdateAsync(It.IsAny<LgdxUser>())).ReturnsAsync(IdentityResult.Failed());
     var lgdxUserUpdateBusinessModel = new LgdxUserUpdateBusinessModel {
       Name = "test",
-      Email = "test@example.com"
+      Email = "test@example.com",
+      DarkMode = false
     };
     var currentUserService = new CurrentUserService(mockActivityLogService.Object, mockUserManager.Object);
 

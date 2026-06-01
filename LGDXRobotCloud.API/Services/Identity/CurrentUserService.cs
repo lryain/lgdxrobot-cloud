@@ -39,7 +39,8 @@ public class CurrentUserService(
       Email = user.Email ?? string.Empty,
       Roles = await _userManager.GetRolesAsync(user),
       TwoFactorEnabled = user.TwoFactorEnabled,
-      AccessFailedCount = user.AccessFailedCount
+      AccessFailedCount = user.AccessFailedCount,
+      DarkMode = user.DarkMode
     };
   }
 
@@ -50,6 +51,7 @@ public class CurrentUserService(
 
     user.Name = lgdxUserBusinessModel.Name;
     user.Email = lgdxUserBusinessModel.Email;
+    user.DarkMode = lgdxUserBusinessModel.DarkMode;
     var result = await _userManager.UpdateAsync(user);
     if (!result.Succeeded)
     {

@@ -10,4 +10,6 @@ public class LgdxUser : IdentityUser
 
   [MaxLength(64)]
   public string? RefreshTokenHash { get; set; }
+
+  public bool DarkMode { get; set; } = false;
 }

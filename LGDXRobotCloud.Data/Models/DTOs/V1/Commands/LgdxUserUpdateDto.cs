@@ -11,6 +11,8 @@ public record LgdxUserUpdateDto
   [Required (ErrorMessage = "Please enter an email.")]
   [EmailAddress (ErrorMessage = "Please enter a valid email.")]
   public required string Email { get; set; }
+
+  public required bool DarkMode { get; set; }
 }
 
 public static class LgdxUserUpdateDtoExtensions
@@ -20,6 +22,7 @@ public static class LgdxUserUpdateDtoExtensions
     return new LgdxUserUpdateBusinessModel {
       Name = model.Name,
       Email = model.Email,
+      DarkMode = model.DarkMode
     };
   }
 }
