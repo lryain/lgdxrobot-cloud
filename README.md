@@ -6,10 +6,25 @@
 
 [Demo Video](https://drive.google.com/file/d/1Z3UxccWAUE5JONlDExDTq4RY2RHEnSls/view?usp=drive_link)
 
+## Note
+
+I am currently working on integrating new Nav2 features. Please refer to the `nav2-route-branch` branch for the latest source code. For the LGDXRobot Cloud Adapter, please refer to the `routedemo` branch.
+
+I have also prepared a Docker image for testing in Webots, which is based on ROS 2 Kilted:
+
+```bash
+docker run -d \
+  --name lgdxrobot2 \
+  -e PUID=1000 \
+  -e PGID=1000 \
+  -p 3000:3000 \
+  -p 3001:3001 \
+  lgdxrobot/lgdxrobot2-desktop:routedemo
+```
 
 ## Overview
 
-LGDXRobot Cloud is a robot management system for Automated Guided Vehicles (AGVs), designed with a focus on flexibility and security. It can monitor the status of robots in real-time and manage automated tasks for transportation and logistics. The system is also designed to support easy integration with third-party services and workflows. It integrates seamlessly with the [LGDXRobot2](https://lgdxrobot.lgdxrobot.uk/lgdxrobot2/) robot, as well as open integrations with any ROS 2-compatible robot with `LGDXRobot Cloud Adapter`.
+LGDXRobot Cloud is a fleet management system for Autonomous Mobile Robot (AMRs), designed with a focus on flexibility and security. It can monitor the status of robots in real-time and manage automated tasks for transportation and logistics. The system is also designed to support easy integration with third-party services and workflows. It integrates seamlessly with the [LGDXRobot2](https://lgdxrobot.uk/lgdxrobot2/) robot, as well as open integrations with any ROS 2 compatible robot with **LGDXRobot Cloud Adapter**.
 
 - LGDXRobot Cloud: ([GitLab](https://gitlab.com/lgdxrobotics/lgdxrobot-cloud) | [GitHub](https://github.com/yukaitung/lgdxrobot-cloud))
 - LGDXRobot Cloud Adapter: ([GitLab](https://gitlab.com/lgdxrobotics/lgdxrobot-cloud-adapter) | [GitHub](https://github.com/yukaitung/lgdxrobot-cloud-adapter))
@@ -23,11 +38,13 @@ LGDXRobot Cloud is a robot management system for Automated Guided Vehicles (AGVs
 ## Features
 
 - **Real-Time Management**: Manage robot statuses and task processes through a real-time web interface.
-- **United Solution Setup**: Generate maps with SLAM, register robots, and manage operations using the same system.
-- **Multi-Fleet Management**: Manage multiple fleets of robots with waypoint navigation and traffic control.
-- **Email Notifications**: Receive notifications for incidents and alerts, with customisable recipients.
+- **One-Stop Fleet Setup**: Set up robots, generate maps using SLAM and manage operations within the same web interface.
+- **(V2) Custom Navigation Rules**: Define routes, speed limits and keep-out zones in the web interface and deploy them to robots automatically. The robot navigates according to the route.
+- **Multi-Fleet Management**: Manage multiple fleets of robots.
+- **Flexible Task Management**: Create tasks with priorities and assign them to specific robots.
+- **Email Notifications**: Receive notifications for incidents and alerts with customisable recipients.
 - **Seamless Integration**: Customisable workflows allow integration with third-party web services and hardware.
-- **User Management**: Create users and define permissions based on roles or fine-grained access control.
+- **User Management**: Create users and define permissions based on roles or fine-grained access control. (V2) Users can also enable dark mode.
 - **Security Features**:
   - Two-factor authentication with a mobile app for user login.
   - Certificate-based authentication for robots.
