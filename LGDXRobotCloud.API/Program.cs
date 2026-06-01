@@ -17,10 +17,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Certificate;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Hosting.Server;
-using Microsoft.AspNetCore.Hosting.Server.Features;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.OpenApi;
 using Microsoft.AspNetCore.Server.Kestrel.Https;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -112,9 +109,38 @@ builder.Host.UseWolverine(cfg =>
 });
 builder.Services.AddMemoryCache();
 builder.Services.AddControllers();
-builder.Services.AddOpenApi(options =>
+// Swagger generator
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(options =>
 {
-	options.AddDocumentTransformer<BearerSecuritySchemeTransformer>();
+	options.SwaggerDoc("v1", new()
+	{
+		Title = "LGDXRobot Cloud API",
+		Version = "v1",
+		Description = "Core API for the LGDXRobot Cloud.",
+		Contact = new OpenApiContact
+		{
+			Name = "LGDXRobot",
+			Url = new Uri("https://lgdxrobot.uk"),
+		},
+		License = new OpenApiLicense
+		{
+			Name = "The MIT License",
+			Url = new Uri("https://opensource.org/license/MIT")
+		}
+	});
+	options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+	{
+		Description = "JWT Authorization header using the Bearer scheme.",
+		Name = "Authorization",
+		In = ParameterLocation.Header,
+		Type = SecuritySchemeType.ApiKey,
+		Scheme = "Bearer"
+	});
+	options.AddSecurityRequirement((document) => new OpenApiSecurityRequirement()
+	{
+		[new OpenApiSecuritySchemeReference("Bearer", document)] = []
+	});
 });
 builder.Services.AddGrpc(cfg => cfg.EnableDetailedErrors = true);
 if (builder.Environment.IsDevelopment())
@@ -285,7 +311,7 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-	app.MapOpenApi();
+	app.MapSwagger("/openapi/{documentName}.json");
 	app.MapScalarApiReference();
 }
 
@@ -323,57 +349,5 @@ async Task WaitForRabbitMq()
 			Console.WriteLine("Waiting for RabbitMQ...");
 			await Task.Delay(delay);
 		}
-	}
-}
-
-internal class BearerSecuritySchemeTransformer(
-	IAuthenticationSchemeProvider authenticationSchemeProvider,
-	IServer server
-) : IOpenApiDocumentTransformer
-{
-	public async Task TransformAsync(OpenApiDocument document, OpenApiDocumentTransformerContext context, CancellationToken cancellationToken)
-	{
-		var authenticationSchemes = await authenticationSchemeProvider.GetAllSchemesAsync();
-		if (authenticationSchemes.Any(authScheme => authScheme.Name == JwtBearerDefaults.AuthenticationScheme))
-		{
-			var requirements = new Dictionary<string, IOpenApiSecurityScheme>
-			{
-				["Bearer"] = new OpenApiSecurityScheme
-				{
-					Type = SecuritySchemeType.Http,
-					Scheme = "bearer", // "bearer" refers to the header name here
-					In = ParameterLocation.Header,
-					BearerFormat = "Json Web Token"
-				}
-			};
-			document.Components ??= new OpenApiComponents();
-			document.Components.SecuritySchemes = (IDictionary<string, IOpenApiSecurityScheme>?)requirements;
-		}
-		document.Info = new()
-		{
-			Title = "LGDXRobot Cloud API",
-			Version = "v1",
-			Description = "Core API for the LGDXRobot Cloud.",
-			Contact = new OpenApiContact
-			{
-				Name = "LGDXRobot",
-				Url = new Uri("https://lgdxrobot.bristolgram.uk"),
-			},
-			License = new OpenApiLicense
-			{
-				Name = "The MIT License",
-				Url = new Uri("https://opensource.org/license/MIT")
-			}
-		};
-		var address = server.Features.Get<IServerAddressesFeature>()!.Addresses.LastOrDefault(); // HTTPS port must higher
-		address = address!.Replace("[::]", "localhost");
-		document.Servers =
-		[
-			new()
-			{
-				Url = address,
-				Description = "Default Server"
-			}
-		];
 	}
 }
