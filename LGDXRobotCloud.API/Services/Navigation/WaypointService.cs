@@ -169,13 +169,9 @@ public class WaypointService(
       {
         throw new LgdxValidation400Expection(nameof(waypointUpdateBusinessModel.FeatureId), "Feature ID is required when the realm has route control.");
       }
-      if (_context.Waypoints.Any(w => w.FeatureId == waypointUpdateBusinessModel.FeatureId
-        && w.RealmId == realm.Id))
-      {
-        throw new LgdxValidation400Expection(nameof(waypointUpdateBusinessModel.FeatureId), "Feature ID is already taken.");
-      }
-      if (_context.WaypointTraffics.Any(w => w.WaypointFromId == waypointUpdateBusinessModel.FeatureId
-        && w.WaypointToId == realm.Id))
+      if (_context.Waypoints.Any(w => w.RealmId == realm.Id
+        && w.Id != waypointId
+        && w.FeatureId == waypointUpdateBusinessModel.FeatureId))
       {
         throw new LgdxValidation400Expection(nameof(waypointUpdateBusinessModel.FeatureId), "Feature ID is already taken.");
       }

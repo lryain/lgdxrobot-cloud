@@ -11,7 +11,7 @@ public interface ICachedRealmService
 {
   Task<RealmDto> GetDefaultRealmAsync();
   Task<RealmDto> GetCurrrentRealmAsync(int realmId);
-  void ClearCache(int realmId);
+  Task ClearCache(int realmId);
 
   Task<string> GetRealmName(int realmId);
   Task<bool> GetHasRouteTrafficControlAsync(int realmId);
@@ -114,7 +114,7 @@ public class CachedRealmService (
     return curremtRealm?.HasRouteControl ?? false;
   }
 
-  public void ClearCache(int realmId)
+  public async Task ClearCache(int realmId)
   {
     _memoryCache.Remove($"RealmService_GetCurrrentRealmAsync_{realmId}");
     var defaultRealm = _memoryCache.Get<RealmDto?>($"RealmService_GetDefaultRealm");
@@ -122,5 +122,6 @@ public class CachedRealmService (
     {
       _memoryCache.Remove($"RealmService_GetDefaultRealm");
     }
+    await GetCurrrentRealmAsync(realmId);
   }
 }

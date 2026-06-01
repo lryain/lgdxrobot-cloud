@@ -151,7 +151,7 @@ public partial class Slam : ComponentBase, IDisposable
       MapWidth = SlamMapMetadata.MapWidth,
       MapHeight = SlamMapMetadata.MapHeight,
     });
-    CachedRealmService.ClearCache(Id!.Value);
+    await CachedRealmService.ClearCache(Id!.Value);
     NavigationManager.NavigateTo(AppRoutes.Navigation.Realms.Index + $"/{Id}");
   }
 

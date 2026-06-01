@@ -448,16 +448,16 @@ public partial class MapEditor : ComponentBase, IDisposable
 
   protected override async Task OnInitializedAsync()
   {
-    // Get Realm
+    _editContextWaypoint = new EditContext(EditingWaypoint);
+    _editContextWaypoint.SetFieldCssClassProvider(_customFieldClassProvider);
+    _editContextTraffic = new EditContext(EditingWaypointTraffic);
+    _editContextTraffic.SetFieldCssClassProvider(_customFieldClassProvider);
+        // Get Realm
     var user = AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User;
     var settings = TokenService.GetSessionSettings(user);
     Realm = await CachedRealmService.GetCurrrentRealmAsync(settings.CurrentRealmId);
     RealmName = Realm.Name ?? string.Empty;
     HasRouteTrafficControl = await CachedRealmService.GetHasRouteTrafficControlAsync(settings.CurrentRealmId);
-    _editContextWaypoint = new EditContext(EditingWaypoint);
-    _editContextWaypoint.SetFieldCssClassProvider(_customFieldClassProvider);
-    _editContextTraffic = new EditContext(EditingWaypointTraffic);
-    _editContextTraffic.SetFieldCssClassProvider(_customFieldClassProvider);
     await base.OnInitializedAsync();
   }
 

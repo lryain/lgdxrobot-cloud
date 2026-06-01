@@ -195,7 +195,7 @@ public partial class RealmDetails : ComponentBase
       {
         // Update
         await LgdxApiClient.Navigation.Realms[(int)Id].PutAsync(RealmDetailsViewModel.ToUpdateDto());
-        CachedRealmService.ClearCache((int)Id);
+        await CachedRealmService.ClearCache((int)Id);
       }
       else
       {
