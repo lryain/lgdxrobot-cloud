@@ -3,8 +3,10 @@ using System.Text.Encodings.Web;
 using LGDXRobotCloud.UI.Client;
 using LGDXRobotCloud.UI.Client.Models;
 using LGDXRobotCloud.UI.Helpers;
+using LGDXRobotCloud.UI.Services;
 using LGDXRobotCloud.UI.ViewModels.Identity;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.Kiota.Abstractions;
 using Net.Codecrete.QrCodeGenerator;
@@ -18,6 +20,12 @@ public partial class UserDetails : ComponentBase
 
   [Inject]
   public required UrlEncoder UrlEncoder { get; set; }
+
+  [Inject]
+	private ITokenService TokenService { get; set; } = default!;
+	
+	[Inject]
+  public required AuthenticationStateProvider AuthenticationStateProvider { get; set; }
 
   [SupplyParameterFromQuery]
   private string? ReturnUrl { get; set; }
@@ -48,6 +56,10 @@ public partial class UserDetails : ComponentBase
     try
     {
       await LgdxApiClient.Identity.User.PutAsync(UserDetailViewModel.ToUpdateDto());
+      var user = AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User;
+      var settings = TokenService.GetSessionSettings(user);
+      settings.DarkMode = UserDetailViewModel.DarkMode;
+      TokenService.UpdateSessionSettings(user, settings);
     }
     catch (ApiException ex)
     {
