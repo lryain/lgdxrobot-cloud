@@ -131,15 +131,12 @@ builder.Services.AddSwaggerGen(options =>
 	});
 	options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
 	{
-		Description = "JWT Authorization header using the Bearer scheme.",
+		Description = "JWT Authorisation header using the Bearer scheme.",
 		Name = "Authorization",
 		In = ParameterLocation.Header,
-		Type = SecuritySchemeType.ApiKey,
-		Scheme = "Bearer"
-	});
-	options.AddSecurityRequirement((document) => new OpenApiSecurityRequirement()
-	{
-		[new OpenApiSecuritySchemeReference("Bearer", document)] = []
+		Type = SecuritySchemeType.Http,
+		Scheme = "bearer",
+    BearerFormat = "JWT"
 	});
 });
 builder.Services.AddGrpc(cfg => cfg.EnableDetailedErrors = true);
