@@ -3,6 +3,13 @@
 ##
 ## Get latest from `dotnet new gitignore`
 
+deps
+docs
+scripts
+Docker/docker-compose/certs/
+**/appsettings.Development.json
+
+*.bk
 # dotenv files
 .env
 

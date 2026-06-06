@@ -11,11 +11,12 @@ namespace LGDXRobotCloud.UI;
 public class LgdxApiClientFactory(
     AuthenticationStateProvider authenticationStateProvider,
     HttpClient httpClient,
-    ITokenService tokenService
+    ITokenService tokenService,
+    ILogger<LgdxAccessTokenProvider> logger
   )
 {
   private readonly IAuthenticationProvider _authenticationProvider = new BaseBearerTokenAuthenticationProvider(
-      new LgdxAccessTokenProvider(authenticationStateProvider, tokenService)
+      new LgdxAccessTokenProvider(authenticationStateProvider, tokenService, logger)
     );
   private readonly HttpClient _httpClient = httpClient;
 

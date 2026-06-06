@@ -22,32 +22,57 @@ builder.Services.AddRazorComponents()
 var store = new X509Store(StoreName.My, StoreLocation.CurrentUser);
 store.Open(OpenFlags.ReadOnly);
 var redisOptions = ConfigurationOptions.Parse(builder.Configuration["Redis:ConnectionString"]!);
-redisOptions.Ssl = true;
-redisOptions.SslProtocols = System.Security.Authentication.SslProtocols.Tls12;
-redisOptions.AbortOnConnectFail = false;
-redisOptions.CertificateSelection += delegate
+
+// Check if SSL is enabled
+var useSsl = builder.Configuration.GetValue<bool>("Redis:UseSsl", false);
+redisOptions.Ssl = useSsl;
+
+if (useSsl)
 {
-	return store.Certificates.First(cert => cert.SerialNumber.Contains(builder.Configuration["Redis:CertificateSN"]!));
-};
-redisOptions.CertificateValidation += (sender, cert, chain, errors) =>
-{
-	if (cert == null)
+	redisOptions.SslProtocols = System.Security.Authentication.SslProtocols.Tls12;
+	redisOptions.CertificateSelection += delegate
 	{
+		var certSN = builder.Configuration["Redis:CertificateSN"];
+		if (!string.IsNullOrEmpty(certSN))
+		{
+			return store.Certificates.FirstOrDefault(cert => cert.SerialNumber.Contains(certSN));
+		}
+		return null;
+	};
+	redisOptions.CertificateValidation += (sender, cert, chain, errors) =>
+	{
+		if (cert == null)
+		{
+			return false;
+		}
+		var certSN = builder.Configuration["Redis:CertificateSN"];
+		if (!string.IsNullOrEmpty(certSN))
+		{
+			var myCert = store.Certificates.FirstOrDefault(cert => cert.SerialNumber.Contains(certSN));
+			if (myCert != null && myCert.Issuer == cert.Issuer)
+			{
+				return true;
+			}
+		}
 		return false;
-	}
-	var myCert = store.Certificates.First(cert => cert.SerialNumber.Contains(builder.Configuration["Redis:CertificateSN"]!));
-	if (myCert.Issuer == cert.Issuer)
-	{
-		return true;
-	}
-	return false;
-};
+	};
+}
+else
+{
+	redisOptions.AbortOnConnectFail = false;
+}
 var redis = ConnectionMultiplexer.Connect(redisOptions);
 builder.Services.AddSingleton<IConnectionMultiplexer>(redis);
 
 // Add API
-var certificate = store.Certificates.First(cert => cert.SerialNumber.Contains(builder.Configuration["LGDXRobotCloudAPI:CertificateSN"]!));
+var apiCertThumbprint = builder.Configuration["LGDXRobotCloudAPI:CertificateThumbprint"];
 var url = new Uri(builder.Configuration["LGDXRobotCloudAPI:Url"]!);
+
+X509Certificate2? certificate = null;
+if (!string.IsNullOrEmpty(apiCertThumbprint))
+{
+	certificate = store.Certificates.FirstOrDefault(cert => cert.Thumbprint.Equals(apiCertThumbprint, StringComparison.OrdinalIgnoreCase));
+}
 
 builder.Services.AddKiotaHandlers();
 builder.Services.AddScoped<LgdxApiClientFactory>();
@@ -62,7 +87,10 @@ builder.Services.AddHttpClient<LgdxApiClientFactory>((sp, client) =>
 				AllowAutoRedirect = true,
 				UseDefaultCredentials = true
 			};
-			handler.ClientCertificates.Add(certificate);
+			if (certificate != null)
+			{
+				handler.ClientCertificates.Add(certificate);
+			}
 			return handler;
 	})
 	.AttachKiotaHandlers();
@@ -77,7 +105,10 @@ builder.Services.AddHttpClient<IRefreshTokenService, RefreshTokenService>(client
 				AllowAutoRedirect = true,
 				UseDefaultCredentials = true
 			};
-			handler.ClientCertificates.Add(certificate);
+			if (certificate != null)
+			{
+				handler.ClientCertificates.Add(certificate);
+			}
 			return handler;
 	});
 builder.Services.AddScoped<ICachedRealmService, CachedRealmService>();

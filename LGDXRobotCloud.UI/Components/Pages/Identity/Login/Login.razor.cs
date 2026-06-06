@@ -26,6 +26,9 @@ public partial class Login : ComponentBase
 
   [Inject]
   public required NavigationManager NavigationManager { get; set; } = default!;
+  
+  [Inject]
+  public required ILogger<Login> Logger { get; set; }
 
   [CascadingParameter]
   private HttpContext HttpContext { get; set; } = default!;
@@ -88,6 +91,11 @@ public partial class Login : ComponentBase
       var refreshToken = new JwtSecurityTokenHandler().ReadJwtToken(loginResponse!.RefreshToken);
       var identity = new ClaimsIdentity(accessToken.Claims, CookieAuthenticationDefaults.AuthenticationScheme);
       var user = new ClaimsPrincipal(identity);
+      
+      // Debug logging
+      var userId = user.Claims.FirstOrDefault(c => c.Type == "sub")?.Value;
+      Logger.LogInformation("Login successful for user ID: {UserId}, storing token", userId);
+      
       await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
         user,
         new AuthenticationProperties
@@ -95,6 +103,8 @@ public partial class Login : ComponentBase
           IsPersistent = false
         });
       TokenService.Login(user, loginResponse!.AccessToken!, loginResponse!.RefreshToken!, accessToken.ValidTo, refreshToken.ValidTo);
+      
+      Logger.LogInformation("Token stored, expires at: {ExpiresAt}", accessToken.ValidTo);
 
       // Setup session data
       var sessionSettings = TokenService.GetSessionSettings(user);
