@@ -14,7 +14,5 @@ public record RobotDto
 
   public RobotSystemInfoDto? RobotSystemInfo { get; set; }
 
-  public RobotChassisInfoDto? RobotChassisInfo { get; set; }
-
   public required IEnumerable<AutoTaskListDto> AssignedTasks { get; set; } = [];
 }

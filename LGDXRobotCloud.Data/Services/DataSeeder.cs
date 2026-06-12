@@ -75,32 +75,6 @@ public class DataSeeder(LgdxContext context)
       }
     };
 
-    var robotChassisInfo = new List<RobotChassisInfo> 
-    {
-      new (){
-        RobotTypeId = (int)LgdxRobotType.LGDXRobot2Classic,
-        BatteryCount = 2,
-        BatteryMaxVoltage = 12.0,
-        BatteryMinVoltage = 10.0,
-        ChassisLengthX = 1.0,
-        ChassisLengthY = 1.0,
-        ChassisWheelCount = 4,
-        ChassisWheelRadius = 0.1,
-      },
-      new (){
-        RobotTypeId = (int)LgdxRobotType.LGDXRobot2Classic,
-        BatteryCount = 2,
-        BatteryMaxVoltage = 12.0,
-        BatteryMinVoltage = 10.0,
-        ChassisLengthX = 1.0,
-        ChassisLengthY = 1.0,
-        ChassisWheelCount = 4,
-        ChassisWheelRadius = 0.1,
-      }
-    };
-    robots[0].RobotChassisInfo = robotChassisInfo[0];
-    robots[1].RobotChassisInfo = robotChassisInfo[1];
-
     var robotCertificate = new List<RobotCertificate> {
       new() {
         Thumbprint = "DD53D5856E815B10B9B04B0D85B3BA5A622C184A",

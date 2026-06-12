@@ -7,6 +7,4 @@ public record RobotCreateBusinessModel
   public required int RealmId { get; set; }
 
   public required bool IsProtectingHardwareSerialNumber { get; set; }
-  
-  public required RobotChassisInfoCreateBusinessModel RobotChassisInfo { get; set; }
 }

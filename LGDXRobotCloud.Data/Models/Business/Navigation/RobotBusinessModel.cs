@@ -20,8 +20,6 @@ public record RobotBusinessModel
 
   public RobotSystemInfoBusinessModel? RobotSystemInfo { get; set; }
 
-  public RobotChassisInfoBusinessModel? RobotChassisInfo { get; set; }
-
   public required IEnumerable<AutoTaskListBusinessModel> AssignedTasks { get; set; } = [];
 }
 
@@ -39,7 +37,6 @@ public static class RobotBusinessModelExtensions
       IsProtectingHardwareSerialNumber = robot.IsProtectingHardwareSerialNumber,
       RobotCertificate = robot.RobotCertificate.ToDto(),
       RobotSystemInfo = robot.RobotSystemInfo?.ToDto(),
-      RobotChassisInfo = robot.RobotChassisInfo?.ToDto(),
       AssignedTasks = robot.AssignedTasks.Select(a => a.ToDto()).ToList(),
     };
   }

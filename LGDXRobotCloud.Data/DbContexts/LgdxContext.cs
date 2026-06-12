@@ -25,7 +25,6 @@ public class LgdxContext(DbContextOptions<LgdxContext> options) : IdentityDbCont
   public virtual DbSet<Realm> Realms { get; set; }
   public virtual DbSet<Robot> Robots { get; set; }
   public virtual DbSet<RobotCertificate> RobotCertificates { get; set; }
-  public virtual DbSet<RobotChassisInfo> RobotChassisInfos { get; set; }
   public virtual DbSet<RobotSystemInfo> RobotSystemInfos { get; set; }
   public virtual DbSet<Waypoint> Waypoints { get; set; }
   public virtual DbSet<WaypointTraffic> WaypointTraffics { get; set; }
@@ -113,12 +112,6 @@ public class LgdxContext(DbContextOptions<LgdxContext> options) : IdentityDbCont
       .HasOne(e => e.RobotSystemInfo)
       .WithOne(e => e.Robot)
       .HasForeignKey<RobotSystemInfo>(e => e.RobotId)
-      .IsRequired(false)
-      .OnDelete(DeleteBehavior.Cascade);
-    modelBuilder.Entity<Robot>()
-      .HasOne(e => e.RobotChassisInfo)
-      .WithOne(e => e.Robot)
-      .HasForeignKey<RobotChassisInfo>(e => e.RobotId)
       .IsRequired(false)
       .OnDelete(DeleteBehavior.Cascade);
     modelBuilder.Entity<Robot>()

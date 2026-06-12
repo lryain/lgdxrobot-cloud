@@ -26,7 +26,5 @@ public class Robot
 
   public RobotSystemInfo? RobotSystemInfo { get; set; }
 
-  public RobotChassisInfo? RobotChassisInfo { get; set; }
-
   public ICollection<AutoTask> AssignedTasks { get; set; } = [];
 }
