@@ -42,13 +42,9 @@
       }
       else if (CurrentTab == 2)
       {
-        <DetailsChassisInfoCard Robot="RobotDetailsViewModel" RobotChassisInfo="RobotChassisInfoViewModel" />
-      }
-      else if (CurrentTab == 3)
-      {
         <DetailsRobotCertificateCard RobotCertificate="RobotCertificate" />
       }
-      else if (CurrentTab == 4)
+      else if (CurrentTab == 3)
       {
         <AuthorizeView Policy=@Permissions.Administration.ActivityLogs.Read Context="ActivityLogs">
           <Authorized>
@@ -64,7 +60,7 @@
           </NotAuthorized>
         </AuthorizeView>
       }
-      else if (CurrentTab == 5)
+      else if (CurrentTab == 4)
       {
         <div class="card">
           <div class="card-header">

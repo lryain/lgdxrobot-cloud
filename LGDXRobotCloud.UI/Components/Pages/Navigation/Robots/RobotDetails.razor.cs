@@ -48,7 +48,6 @@ public partial class RobotDetails : ComponentBase, IAsyncDisposable
   private RobotDetailsViewModel RobotDetailsViewModel { get; set; } = new();
   private RobotCertificateDto? RobotCertificate { get; set; } = null!;
   private RobotSystemInfoDto? RobotSystemInfoDto { get; set; } = null!;
-  private RobotChassisInfoViewModel RobotChassisInfoViewModel { get; set; } = new();
   private List<AutoTaskListDto>? AutoTasks { get; set; }
   private RobotData? RobotData { get; set; }
 
@@ -62,7 +61,7 @@ public partial class RobotDetails : ComponentBase, IAsyncDisposable
   private int RealmId { get; set; }
   private string RealmName { get; set; } = string.Empty;
   private int CurrentTab { get; set; } = 0;
-  private readonly List<string> Tabs = ["Robot", "System", "Chassis", "Certificate", "Activity Logs", "Delete Robot"];
+  private readonly List<string> Tabs = ["Robot", "System", "Certificate", "Activity Logs", "Delete Robot"];
 
   public void HandleTabChange(int index)
   {
@@ -203,7 +202,6 @@ public partial class RobotDetails : ComponentBase, IAsyncDisposable
       RobotDetailsViewModel.FromDto(robot!);
       RobotCertificate = robot!.RobotCertificate;
       RobotSystemInfoDto = robot!.RobotSystemInfo;
-      RobotChassisInfoViewModel.FromDto(robot!.RobotChassisInfo!);
       AutoTasks = robot.AssignedTasks;
       IdGuid = _id;
     }

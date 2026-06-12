@@ -48,14 +48,6 @@ namespace LGDXRobotCloud.UI.Client.Models
 #else
         public global::LGDXRobotCloud.UI.Client.Models.RobotCertificateDto RobotCertificate { get; set; }
 #endif
-        /// <summary>The robotChassisInfo property</summary>
-#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
-#nullable enable
-        public global::LGDXRobotCloud.UI.Client.Models.RobotChassisInfoDto? RobotChassisInfo { get; set; }
-#nullable restore
-#else
-        public global::LGDXRobotCloud.UI.Client.Models.RobotChassisInfoDto RobotChassisInfo { get; set; }
-#endif
         /// <summary>The robotSystemInfo property</summary>
 #if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
 #nullable enable
@@ -88,7 +80,6 @@ namespace LGDXRobotCloud.UI.Client.Models
                 { "name", n => { Name = n.GetStringValue(); } },
                 { "realm", n => { Realm = n.GetObjectValue<global::LGDXRobotCloud.UI.Client.Models.RealmSearchDto>(global::LGDXRobotCloud.UI.Client.Models.RealmSearchDto.CreateFromDiscriminatorValue); } },
                 { "robotCertificate", n => { RobotCertificate = n.GetObjectValue<global::LGDXRobotCloud.UI.Client.Models.RobotCertificateDto>(global::LGDXRobotCloud.UI.Client.Models.RobotCertificateDto.CreateFromDiscriminatorValue); } },
-                { "robotChassisInfo", n => { RobotChassisInfo = n.GetObjectValue<global::LGDXRobotCloud.UI.Client.Models.RobotChassisInfoDto>(global::LGDXRobotCloud.UI.Client.Models.RobotChassisInfoDto.CreateFromDiscriminatorValue); } },
                 { "robotSystemInfo", n => { RobotSystemInfo = n.GetObjectValue<global::LGDXRobotCloud.UI.Client.Models.RobotSystemInfoDto>(global::LGDXRobotCloud.UI.Client.Models.RobotSystemInfoDto.CreateFromDiscriminatorValue); } },
             };
         }
@@ -105,7 +96,6 @@ namespace LGDXRobotCloud.UI.Client.Models
             writer.WriteStringValue("name", Name);
             writer.WriteObjectValue<global::LGDXRobotCloud.UI.Client.Models.RealmSearchDto>("realm", Realm);
             writer.WriteObjectValue<global::LGDXRobotCloud.UI.Client.Models.RobotCertificateDto>("robotCertificate", RobotCertificate);
-            writer.WriteObjectValue<global::LGDXRobotCloud.UI.Client.Models.RobotChassisInfoDto>("robotChassisInfo", RobotChassisInfo);
             writer.WriteObjectValue<global::LGDXRobotCloud.UI.Client.Models.RobotSystemInfoDto>("robotSystemInfo", RobotSystemInfo);
         }
     }

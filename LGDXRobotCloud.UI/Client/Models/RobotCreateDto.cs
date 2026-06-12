@@ -24,14 +24,6 @@ namespace LGDXRobotCloud.UI.Client.Models
 #endif
         /// <summary>The realmId property</summary>
         public int? RealmId { get; set; }
-        /// <summary>The robotChassisInfo property</summary>
-#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
-#nullable enable
-        public global::LGDXRobotCloud.UI.Client.Models.RobotChassisInfoCreateDto? RobotChassisInfo { get; set; }
-#nullable restore
-#else
-        public global::LGDXRobotCloud.UI.Client.Models.RobotChassisInfoCreateDto RobotChassisInfo { get; set; }
-#endif
         /// <summary>
         /// Creates a new instance of the appropriate class based on discriminator value
         /// </summary>
@@ -53,7 +45,6 @@ namespace LGDXRobotCloud.UI.Client.Models
                 { "isProtectingHardwareSerialNumber", n => { IsProtectingHardwareSerialNumber = n.GetBoolValue(); } },
                 { "name", n => { Name = n.GetStringValue(); } },
                 { "realmId", n => { RealmId = n.GetIntValue(); } },
-                { "robotChassisInfo", n => { RobotChassisInfo = n.GetObjectValue<global::LGDXRobotCloud.UI.Client.Models.RobotChassisInfoCreateDto>(global::LGDXRobotCloud.UI.Client.Models.RobotChassisInfoCreateDto.CreateFromDiscriminatorValue); } },
             };
         }
         /// <summary>
@@ -66,7 +57,6 @@ namespace LGDXRobotCloud.UI.Client.Models
             writer.WriteBoolValue("isProtectingHardwareSerialNumber", IsProtectingHardwareSerialNumber);
             writer.WriteStringValue("name", Name);
             writer.WriteIntValue("realmId", RealmId);
-            writer.WriteObjectValue<global::LGDXRobotCloud.UI.Client.Models.RobotChassisInfoCreateDto>("robotChassisInfo", RobotChassisInfo);
         }
     }
 }
