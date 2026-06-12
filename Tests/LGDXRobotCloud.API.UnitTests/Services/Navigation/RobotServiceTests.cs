@@ -71,21 +71,6 @@ public class RobotServiceTests
     }
   ];
 
-  private readonly List<RobotChassisInfo> robotChassisInfos = [
-    new() {
-      Id = 1,
-      RobotId = RobotGuid,
-      RobotTypeId = 1,
-      ChassisLengthX = 1,
-      ChassisLengthY = 1,
-      ChassisWheelCount = 1,
-      ChassisWheelRadius = 1,
-      BatteryCount = 1,
-      BatteryMaxVoltage = 1,
-      BatteryMinVoltage = 1
-    }
-  ];
-
   private readonly List<AutoTask> autoTasks = [
     new() 
     {
@@ -112,7 +97,6 @@ public class RobotServiceTests
     lgdxContext.Set<Robot>().AddRange(robots);
     lgdxContext.Set<RobotCertificate>().AddRange(robotCertificates);
     lgdxContext.Set<RobotSystemInfo>().AddRange(robotSystemInfos);
-    lgdxContext.Set<RobotChassisInfo>().AddRange(robotChassisInfos);
     lgdxContext.Set<AutoTask>().AddRange(autoTasks);
     lgdxContext.SaveChanges();
   }
@@ -148,7 +132,6 @@ public class RobotServiceTests
     var expected = robots.Where(r => r.Id == RobotGuid).FirstOrDefault();
     var expectedCertificate = robotCertificates.Where(r => r.RobotId == RobotGuid).FirstOrDefault();
     var expectedRobotSystemInfo = robotSystemInfos.Where(r => r.RobotId == RobotGuid).FirstOrDefault();
-    var expectedRobotChassisInfo = robotChassisInfos.Where(r => r.RobotId == RobotGuid).FirstOrDefault();
     var expectedAutoTask = autoTasks.Where(r => r.AssignedRobotId == RobotGuid).FirstOrDefault();
     
     var robotService = new RobotService(mockActivityLogService.Object, mockMemoryCache.Object, mockRobotCertificateService.Object, lgdxContext);
@@ -180,17 +163,6 @@ public class RobotServiceTests
     Assert.Equal(expectedRobotSystemInfo.Os, actual.RobotSystemInfo.Os);
     Assert.Equal(expectedRobotSystemInfo.Is32Bit, actual.RobotSystemInfo.Is32Bit);
     Assert.Equal(expectedRobotSystemInfo.McuSerialNumber, actual.RobotSystemInfo.McuSerialNumber);
-
-    Assert.NotNull(actual.RobotChassisInfo);
-    Assert.Equal(expectedRobotChassisInfo!.Id, actual.RobotChassisInfo!.Id);
-    Assert.Equal(expectedRobotChassisInfo.RobotTypeId, actual.RobotChassisInfo.RobotTypeId);
-    Assert.Equal(expectedRobotChassisInfo.ChassisLengthX, actual.RobotChassisInfo.ChassisLengthX);
-    Assert.Equal(expectedRobotChassisInfo.ChassisLengthY, actual.RobotChassisInfo.ChassisLengthY);
-    Assert.Equal(expectedRobotChassisInfo.ChassisWheelCount, actual.RobotChassisInfo.ChassisWheelCount);
-    Assert.Equal(expectedRobotChassisInfo.ChassisWheelRadius, actual.RobotChassisInfo.ChassisWheelRadius);
-    Assert.Equal(expectedRobotChassisInfo.BatteryCount, actual.RobotChassisInfo.BatteryCount);
-    Assert.Equal(expectedRobotChassisInfo.BatteryMaxVoltage, actual.RobotChassisInfo.BatteryMaxVoltage);
-    Assert.Equal(expectedRobotChassisInfo.BatteryMinVoltage, actual.RobotChassisInfo.BatteryMinVoltage);
   }
 
   [Fact]
@@ -214,16 +186,6 @@ public class RobotServiceTests
       Name = "Test Robot",
       RealmId = 1,
       IsProtectingHardwareSerialNumber = true,
-      RobotChassisInfo = new RobotChassisInfoCreateBusinessModel {
-        RobotTypeId = 1,
-        ChassisLengthX = 1,
-        ChassisLengthY = 1,
-        ChassisWheelCount = 1,
-        ChassisWheelRadius = 1,
-        BatteryCount = 1,
-        BatteryMaxVoltage = 1,
-        BatteryMinVoltage = 1
-      }
     };
     mockRobotCertificateService.Setup(m => m.IssueRobotCertificateAsync(It.IsAny<Guid>())).ReturnsAsync(new RobotCertificateIssueBusinessModel {
       RootCertificate = "RootCertificate",
@@ -251,16 +213,6 @@ public class RobotServiceTests
       Name = "Test Robot",
       RealmId = realms.Count + 1,
       IsProtectingHardwareSerialNumber = true,
-      RobotChassisInfo = new RobotChassisInfoCreateBusinessModel {
-        RobotTypeId = 1,
-        ChassisLengthX = 1,
-        ChassisLengthY = 1,
-        ChassisWheelCount = 1,
-        ChassisWheelRadius = 1,
-        BatteryCount = 1,
-        BatteryMaxVoltage = 1,
-        BatteryMinVoltage = 1
-      }
     };
     var robotService = new RobotService(mockActivityLogService.Object, mockMemoryCache.Object, mockRobotCertificateService.Object, lgdxContext);
 

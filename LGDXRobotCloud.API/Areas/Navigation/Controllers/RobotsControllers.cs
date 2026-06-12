@@ -105,18 +105,6 @@ public class RobotsController(
     return NoContent();
   }
 
-  [HttpPut("{id}/Chassis")]
-  [ProducesResponseType(StatusCodes.Status204NoContent)]
-  [ProducesResponseType(StatusCodes.Status404NotFound)]
-  public async Task<ActionResult> UpdateRobotChassisInfo(Guid id, RobotChassisInfoUpdateDto robotChassisInfoUpdateDto)
-  {
-    if (!await _robotService.UpdateRobotChassisInfoAsync(id, robotChassisInfoUpdateDto.ToBusinessModel()))
-    {
-      return NotFound();
-    }
-    return NoContent();
-  }
-
   [HttpPost("{id}/TestDelete")]
   [ProducesResponseType(StatusCodes.Status200OK)]
   [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]

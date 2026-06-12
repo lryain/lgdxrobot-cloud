@@ -114,7 +114,6 @@ public partial class RobotClientsService(
       await _robotService.UpdateRobotSystemInfoAsync(robotIdGuid, incomingSystemInfo.ToUpdateBusinessModel());
     }
 
-    var chassisInfo = await _robotService.GetRobotChassisInfoAsync(robotIdGuid);
     var route = await _mapEditorService.GetGeoJsonAsync(robot.RealmId);
     var realm = await _realmService.GetRealmForRobotAsync(robot.RealmId);
 
@@ -134,17 +133,6 @@ public partial class RobotClientsService(
     {
       Status = RobotClientsResultStatus.Success,
       AccessToken = token,
-      ChassisInfo = new RobotClientsChassisInfo
-      {
-        RobotTypeId = chassisInfo!.RobotTypeId,
-        ChassisLX = chassisInfo.ChassisLengthX,
-        ChassisLY = chassisInfo.ChassisLengthY,
-        ChassisWheelCount = chassisInfo.ChassisWheelCount,
-        ChassisWheelRadius = chassisInfo.ChassisWheelRadius,
-        BatteryCount = chassisInfo.BatteryCount,
-        BatteryMaxVoltage = chassisInfo.BatteryMaxVoltage,
-        BatteryMinVoltage = chassisInfo.BatteryMinVoltage,
-      },
       MapInfo = new RobotClientsMapInfo
       {
         Route = route,
