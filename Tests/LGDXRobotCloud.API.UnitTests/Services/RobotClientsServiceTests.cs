@@ -63,7 +63,6 @@ public class RobotClientsServiceTests
       Gpu = "Gpu",
       Os = "Os",
       Is32Bit = true,
-      McuSerialNumber = "McuSerialNumber",
     },
     AssignedTasks = []
   };
@@ -138,7 +137,6 @@ public class RobotClientsServiceTests
       Gpu = "Gpu",
       Os = "Os",
       Is32Bit = true,
-      McuSerialNumber = "McuSerialNumber",
     }
   };
 
@@ -262,41 +260,6 @@ public class RobotClientsServiceTests
         Gpu = "Gpu",
         Os = "Os",
         Is32Bit = true,
-        McuSerialNumber = "McuSerialNumber",
-      }
-    };
-    var serverCallContext = GenerateServerCallContext(nameof(RobotClientsService.Greet), RobotGuid.ToString());
-    mockRobotService.Setup(m => m.GetRobotAsync(RobotGuid)).ReturnsAsync(robotWithSystemInfo);
-    var robotClientsService = new RobotClientsService(mockAutoTaskSchedulerService.Object, mockRedisConnection.Object, mockLogger.Object, mockMapEditorService.Object, mockOnlineRobotsService.Object, mockConfiguration.Object, mockRealmService.Object, mockRobotService.Object, mockSlamService.Object);
-
-    // Act
-    var actural = await robotClientsService.Greet(localRobotClientsGreet, serverCallContext);
-
-    // Assert
-    Assert.NotNull(actural);
-    Assert.Equal(RobotClientsResultStatus.Failed, actural.Status);
-    Assert.Empty(actural.AccessToken);
-    mockRobotService.Verify(m => m.GetRobotAsync(RobotGuid), Times.Once);
-    mockRobotService.Verify(m => m.CreateRobotSystemInfoAsync(RobotGuid, It.IsAny<RobotSystemInfoCreateBusinessModel>()), Times.Never);
-    mockRobotService.Verify(m => m.UpdateRobotSystemInfoAsync(RobotGuid, It.IsAny<RobotSystemInfoUpdateBusinessModel>()), Times.Never);
-    mockOnlineRobotsService.Verify(m => m.AddRobotAsync(RobotGuid), Times.Never);
-  }
-
-  [Fact]
-  public async Task Greet_CalledWithRobotSystemInfoDisparencyMcuSerialNumber_ShouldReturnRobotClientsGreetRespond()
-  {
-    // Arrange
-    var localRobotClientsGreet = new RobotClientsGreet {
-      SystemInfo = new RobotClientsSystemInfo {
-        Cpu = "Cpu",
-        IsLittleEndian = true,
-        Motherboard = "Motherboard",
-        MotherboardSerialNumber = "MotherboardSerialNumber",
-        RamMiB = 1,
-        Gpu = "Gpu",
-        Os = "Os",
-        Is32Bit = true,
-        McuSerialNumber = "123123",
       }
     };
     var serverCallContext = GenerateServerCallContext(nameof(RobotClientsService.Greet), RobotGuid.ToString());

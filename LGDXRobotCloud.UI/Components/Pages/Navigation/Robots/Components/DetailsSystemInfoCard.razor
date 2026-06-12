@@ -41,10 +41,6 @@
           <td>System Type</td>
           <td>@(RobotSystemInfo != null ? ((bool)RobotSystemInfo.Is32Bit! ? "32 Bit" : "64 Bit") : "-")</td>
         </tr>
-        <tr>
-          <td>MCU Serial Number</td>
-          <td>@(RobotSystemInfo != null ? RobotSystemInfo.McuSerialNumber : "-")</td>
-        </tr>
       </tbody>
     </table>
   </div>

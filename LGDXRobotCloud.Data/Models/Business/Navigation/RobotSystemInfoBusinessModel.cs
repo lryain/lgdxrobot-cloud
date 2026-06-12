@@ -21,8 +21,6 @@ public record RobotSystemInfoBusinessModel
   public required string Os { get; set; } = null!;
 
   public required bool Is32Bit { get; set; }
-
-  public string? McuSerialNumber { get; set; }
 }
 
 public static class RobotSystemInfoBusinessModelExtensions
@@ -39,7 +37,6 @@ public static class RobotSystemInfoBusinessModelExtensions
       Gpu = robotSystemInfo.Gpu,
       Os = robotSystemInfo.Os,
       Is32Bit = robotSystemInfo.Is32Bit,
-      McuSerialNumber = robotSystemInfo.McuSerialNumber,
     };
   }
 
@@ -54,7 +51,6 @@ public static class RobotSystemInfoBusinessModelExtensions
       Gpu = model.Gpu,
       Os = model.Os,
       Is32Bit = model.Is32Bit,
-      McuSerialNumber = model.McuSerialNumber,
     };
   }
 
@@ -69,7 +65,6 @@ public static class RobotSystemInfoBusinessModelExtensions
       Gpu = model.Gpu,
       Os = model.Os,
       Is32Bit = model.Is32Bit,
-      McuSerialNumber = model.McuSerialNumber,
     };
   }
 }

@@ -17,6 +17,4 @@ public record RobotSystemInfoCreateBusinessModel
   public required string Os { get; set; }
 
   public required bool Is32Bit { get; set; }
-
-  public string? McuSerialNumber { get; set; }
 }

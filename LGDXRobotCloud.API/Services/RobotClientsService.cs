@@ -84,7 +84,6 @@ public partial class RobotClientsService(
       Gpu = request.SystemInfo.Gpu,
       Os = request.SystemInfo.Os,
       Is32Bit = request.SystemInfo.Is32Bit,
-      McuSerialNumber = request.SystemInfo.McuSerialNumber,
     };
     var systemInfo = robot.RobotSystemInfo;
     if (systemInfo == null)
@@ -96,14 +95,6 @@ public partial class RobotClientsService(
     {
       // Hardware Protection
       if (robot.IsProtectingHardwareSerialNumber && incomingSystemInfo.MotherboardSerialNumber != systemInfo.MotherboardSerialNumber)
-      {
-        return new RobotClientsGreetResponse
-        {
-          Status = RobotClientsResultStatus.Failed,
-          AccessToken = string.Empty
-        };
-      }
-      if (robot.IsProtectingHardwareSerialNumber && incomingSystemInfo.McuSerialNumber != systemInfo.McuSerialNumber)
       {
         return new RobotClientsGreetResponse
         {

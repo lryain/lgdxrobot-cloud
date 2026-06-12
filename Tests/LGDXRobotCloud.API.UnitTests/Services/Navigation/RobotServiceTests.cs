@@ -66,7 +66,6 @@ public class RobotServiceTests
       Gpu = "Gpu",
       Os = "Os",
       Is32Bit = true,
-      McuSerialNumber = "McuSerialNumber",
       RobotId = RobotGuid
     }
   ];
@@ -162,7 +161,6 @@ public class RobotServiceTests
     Assert.Equal(expectedRobotSystemInfo.Gpu, actual.RobotSystemInfo.Gpu);
     Assert.Equal(expectedRobotSystemInfo.Os, actual.RobotSystemInfo.Os);
     Assert.Equal(expectedRobotSystemInfo.Is32Bit, actual.RobotSystemInfo.Is32Bit);
-    Assert.Equal(expectedRobotSystemInfo.McuSerialNumber, actual.RobotSystemInfo.McuSerialNumber);
   }
 
   [Fact]
@@ -273,7 +271,6 @@ public class RobotServiceTests
     Assert.Equal(expected.Gpu, actual.Gpu);
     Assert.Equal(expected.Os, actual.Os);
     Assert.Equal(expected.Is32Bit, actual.Is32Bit);
-    Assert.Equal(expected.McuSerialNumber, actual.McuSerialNumber);
   }
 
   [Fact]
@@ -289,7 +286,6 @@ public class RobotServiceTests
       Gpu = "Gpu",
       Os = "Os",
       Is32Bit = true,
-      McuSerialNumber = "McuSerialNumber",
     };
     var robotService = new RobotService(mockActivityLogService.Object, mockMemoryCache.Object, mockRobotCertificateService.Object, lgdxContext);
 

@@ -34,14 +34,6 @@ namespace LGDXRobotCloud.UI.Client.Models
         public bool? Is32Bit { get; set; }
         /// <summary>The isLittleEndian property</summary>
         public bool? IsLittleEndian { get; set; }
-        /// <summary>The mcuSerialNumber property</summary>
-#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
-#nullable enable
-        public string? McuSerialNumber { get; set; }
-#nullable restore
-#else
-        public string McuSerialNumber { get; set; }
-#endif
         /// <summary>The motherboard property</summary>
 #if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
 #nullable enable
@@ -91,7 +83,6 @@ namespace LGDXRobotCloud.UI.Client.Models
                 { "id", n => { Id = n.GetIntValue(); } },
                 { "is32Bit", n => { Is32Bit = n.GetBoolValue(); } },
                 { "isLittleEndian", n => { IsLittleEndian = n.GetBoolValue(); } },
-                { "mcuSerialNumber", n => { McuSerialNumber = n.GetStringValue(); } },
                 { "motherboard", n => { Motherboard = n.GetStringValue(); } },
                 { "motherboardSerialNumber", n => { MotherboardSerialNumber = n.GetStringValue(); } },
                 { "os", n => { Os = n.GetStringValue(); } },
@@ -110,7 +101,6 @@ namespace LGDXRobotCloud.UI.Client.Models
             writer.WriteIntValue("id", Id);
             writer.WriteBoolValue("is32Bit", Is32Bit);
             writer.WriteBoolValue("isLittleEndian", IsLittleEndian);
-            writer.WriteStringValue("mcuSerialNumber", McuSerialNumber);
             writer.WriteStringValue("motherboard", Motherboard);
             writer.WriteStringValue("motherboardSerialNumber", MotherboardSerialNumber);
             writer.WriteStringValue("os", Os);

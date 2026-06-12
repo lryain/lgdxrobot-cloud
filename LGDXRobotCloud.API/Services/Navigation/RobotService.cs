@@ -100,7 +100,6 @@ public class RobotService(
           Gpu = r.RobotSystemInfo.Gpu,
           Os = r.RobotSystemInfo.Os,
           Is32Bit = r.RobotSystemInfo.Is32Bit,
-          McuSerialNumber = r.RobotSystemInfo.McuSerialNumber,
         },
         AssignedTasks = r.AssignedTasks
           .Where(t =>  t.CurrentProgressId != (int)ProgressState.Aborted 
@@ -233,7 +232,6 @@ public class RobotService(
         Gpu = r.Gpu,
         Os = r.Os,
         Is32Bit = r.Is32Bit,
-        McuSerialNumber = r.McuSerialNumber,
       })
       .FirstOrDefaultAsync();
   }
@@ -249,7 +247,6 @@ public class RobotService(
       Gpu = robotSystemInfoCreateBusinessModel.Gpu,
       Os = robotSystemInfoCreateBusinessModel.Os,
       Is32Bit = robotSystemInfoCreateBusinessModel.Is32Bit,
-      McuSerialNumber = robotSystemInfoCreateBusinessModel.McuSerialNumber,
       RobotId = robotId
     };
     _context.RobotSystemInfos.Add(robotSystemInfo);
@@ -269,7 +266,6 @@ public class RobotService(
         .SetProperty(r => r.Gpu, robotSystemInfoUpdateBusinessModel.Gpu)
         .SetProperty(r => r.Os, robotSystemInfoUpdateBusinessModel.Os)
         .SetProperty(r => r.Is32Bit, robotSystemInfoUpdateBusinessModel.Is32Bit)
-        .SetProperty(r => r.McuSerialNumber, robotSystemInfoUpdateBusinessModel.McuSerialNumber)
       ) == 1;
   }
 
