@@ -68,6 +68,18 @@ public class RobotClientsServiceTests
     AssignedTasks = []
   };
 
+  private readonly RealmRobotClientBusinessModel realmRobotClientBusinessModel = new() {
+    MapWidth = 1,
+    MapHeight = 1,
+    Resolution = 1,
+    OriginX = 1,
+    OriginY = 1,
+    OriginRotation = 1,
+    Map = [],
+    KeepoutMask = [],
+    SpeedMask = []
+  };
+
   private readonly RobotClientsAutoTask robotClientsAutoTask = new() {
     TaskId = 1,
     TaskName = "Task",
@@ -136,6 +148,8 @@ public class RobotClientsServiceTests
     // Arrange
     var serverCallContext = GenerateServerCallContext(nameof(RobotClientsService.Greet), RobotGuid.ToString());
     mockRobotService.Setup(m => m.GetRobotAsync(RobotGuid)).ReturnsAsync(robot);
+    mockMapEditorService.Setup(m => m.GetGeoJsonAsync(It.IsAny<int>())).ReturnsAsync("{}");
+    mockRealmService.Setup(m => m.GetRealmForRobotAsync(It.IsAny<int>())).ReturnsAsync(realmRobotClientBusinessModel);
     var robotClientsService = new RobotClientsService(mockAutoTaskSchedulerService.Object, mockRedisConnection.Object, mockLogger.Object, mockMapEditorService.Object, mockOnlineRobotsService.Object, mockConfiguration.Object, mockRealmService.Object, mockRobotService.Object, mockSlamService.Object);
 
     // Act
@@ -218,6 +232,8 @@ public class RobotClientsServiceTests
     // Arrange
     var serverCallContext = GenerateServerCallContext(nameof(RobotClientsService.Greet), RobotGuid.ToString());
     mockRobotService.Setup(m => m.GetRobotAsync(RobotGuid)).ReturnsAsync(robotWithSystemInfo);
+    mockMapEditorService.Setup(m => m.GetGeoJsonAsync(It.IsAny<int>())).ReturnsAsync("{}");
+    mockRealmService.Setup(m => m.GetRealmForRobotAsync(It.IsAny<int>())).ReturnsAsync(realmRobotClientBusinessModel);
     var robotClientsService = new RobotClientsService(mockAutoTaskSchedulerService.Object, mockRedisConnection.Object, mockLogger.Object, mockMapEditorService.Object, mockOnlineRobotsService.Object, mockConfiguration.Object, mockRealmService.Object, mockRobotService.Object, mockSlamService.Object);
 
     // Act
