@@ -40,6 +40,11 @@ public class InitialiseDataRunner(
     X509Store store = new(StoreName.My, StoreLocation.CurrentUser);
     store.Open(OpenFlags.OpenExistingOnly);
     X509Certificate2 rootCertificate = store.Certificates.First(c => c.SerialNumber.Contains(rootCertificateSn!));
+    if (rootCertificate == null)
+    {
+      Console.WriteLine($"Root Certificate with SN {rootCertificateSn} not found, exiting...");
+      Environment.Exit(0);
+    }
 
     var certificateNotBefore = DateTime.UtcNow;
     var certificateNotAfter = DateTimeOffset.UtcNow.AddDays(365);
@@ -134,31 +139,68 @@ public class InitialiseDataRunner(
         await _context.Database.ExecuteSqlRawAsync(sql, cancellationToken: cancellationToken);
       }
 
-      // Generate Robot Certificates
-      // Note: Assume that the root certificate has been generated
-      Console.WriteLine("Generating Robot Certificates");
-      var robots = _context.Robots.ToList();
-      foreach (var robot in robots)
+      var isGenerateCertificates = _configuration["generateCertificates"];
+      if (!string.IsNullOrEmpty(isGenerateCertificates) && bool.Parse(isGenerateCertificates) == true)
       {
-        // Generate Certificate
-        var certificate = GenerateRobotCertificate(robot.Id);
-        _context.RobotCertificates.Add(new RobotCertificate {
-          Id = Guid.NewGuid(),
-          Thumbprint = certificate.RobotCertificateThumbprint,
-          ThumbprintBackup = null,
-          NotBefore = certificate.RobotCertificateNotBefore.ToUniversalTime(),
-          NotAfter = certificate.RobotCertificateNotAfter.ToUniversalTime(),
-          RobotId = robot.Id
-        });
+        // Generate Robot Certificates
+        // Note: Assume that the root certificate has been generated
+        Console.WriteLine("Generating Robot Certificates");
+        var robots = _context.Robots.ToList();
+        foreach (var robot in robots)
+        {
+          // Generate Certificate
+          var certificate = GenerateRobotCertificate(robot.Id);
+          _context.RobotCertificates.Add(new RobotCertificate {
+            Id = Guid.NewGuid(),
+            Thumbprint = certificate.RobotCertificateThumbprint,
+            ThumbprintBackup = null,
+            NotBefore = certificate.RobotCertificateNotBefore.ToUniversalTime(),
+            NotAfter = certificate.RobotCertificateNotAfter.ToUniversalTime(),
+            RobotId = robot.Id
+          });
 
-        // Save Certificate
-        var publicKeyPath = Path.Combine(Directory.GetCurrentDirectory(), "Certs", $"{robot.Name}.crt");
-        File.WriteAllText(publicKeyPath, certificate.RobotCertificatePublicKey);
-        var privateKeyPath = Path.Combine(Directory.GetCurrentDirectory(), "Certs", $"{robot.Name}.key");
-        File.WriteAllText(privateKeyPath, certificate.RobotCertificatePrivateKey);
+          // Save Certificate
+          var publicKeyPath = Path.Combine(Directory.GetCurrentDirectory(), "Certs", $"{robot.Name}.crt");
+          File.WriteAllText(publicKeyPath, certificate.RobotCertificatePublicKey);
+          var privateKeyPath = Path.Combine(Directory.GetCurrentDirectory(), "Certs", $"{robot.Name}.key");
+          File.WriteAllText(privateKeyPath, certificate.RobotCertificatePrivateKey);
+        }
+        _context.SaveChanges();
       }
-      _context.SaveChanges();
     }
+
+    var isGenerateConfigs = _configuration["generateConfigs"];
+    if (!string.IsNullOrEmpty(isGenerateConfigs) && bool.Parse(isGenerateConfigs) == true)
+    {
+      Console.WriteLine("Generating Configs");
+
+      // Get environment variables
+      var internalCertificateThumbprint = Environment.GetEnvironmentVariable("INTERNAL_CERTIFICATE_THUMBPRINT");
+      var rootCertificateSN = Environment.GetEnvironmentVariable("ROOT_CERTIFICATE_SN");
+      var apiCertificateSN = Environment.GetEnvironmentVariable("API_CERTIFICATE_SN");
+      var redisCertificateSN = Environment.GetEnvironmentVariable("REDIS_CERTIFICATE_SN");
+
+      // API
+      var apiConfigPath = Path.Combine(Directory.GetCurrentDirectory(), "Configs", "appsettings.api.json");
+      string apiConfig = File.ReadAllText(apiConfigPath);
+      apiConfig = apiConfig.Replace("Copy to appsettings.api.json -> InternalCertificateThumbprint", internalCertificateThumbprint);
+      apiConfig = apiConfig.Replace("Copy to appsettings.api.json -> RootCertificateSN", rootCertificateSN);
+      apiConfig = apiConfig.Replace("Copy to appsettings.api.json -> Redis:CertificateSN; Copy to appsettings.ui.json -> Redis:CertificateSN", redisCertificateSN);
+      File.WriteAllText("appsettings.api.json", apiConfig);
+
+      // UI
+      var uiConfigPath = Path.Combine(Directory.GetCurrentDirectory(), "Configs", "appsettings.ui.json");
+      string uiConfig = File.ReadAllText(uiConfigPath);
+      uiConfig = uiConfig.Replace("Copy to appsettings.ui.json -> LGDXRobotCloudAPI:CertificateSN", apiCertificateSN);
+      uiConfig = uiConfig.Replace("Copy to appsettings.api.json -> Redis:CertificateSN; Copy to appsettings.ui.json -> Redis:CertificateSN", redisCertificateSN);
+      File.WriteAllText("appsettings.ui.json", uiConfig);
+
+      // Worker
+      var workerConfigPath = Path.Combine(Directory.GetCurrentDirectory(), "Configs", "appsettings.worker.json");
+      string workerConfig = File.ReadAllText(workerConfigPath);
+      File.WriteAllText("appsettings.worker.json", workerConfig);
+    }
+
     Console.WriteLine("Initialise Data Completed");
 
     Environment.Exit(0);

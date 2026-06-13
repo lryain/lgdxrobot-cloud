@@ -8,4 +8,4 @@ cd Certs
 cd ..
 
 ## Initialise Data
-dotnet LGDXRobotCloud.Data.dll --initialiseData "true" --email "email@example.com" --fullName "Full Name" --userName "admin" --password "123456" --seedData "true"
+dotnet LGDXRobotCloud.Data.dll --initialiseData "true" --email "email@example.com" --fullName "Full Name" --userName "admin" --password "123456" --seedData "true" --generateCertificates "true" --generateConfigs "true"

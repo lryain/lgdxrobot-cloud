@@ -35,24 +35,28 @@ echo "------COMPLETE------"
 echo ""
 
 echo "Copy to appsettings.api.json -> InternalCertificateThumbprint"
-INTERNAL_CERTIFICATE_THUMBPRINT=$(openssl x509 -in grpc.crt -noout -fingerprint -sha1 | sed 's/://g' | cut -d '=' -f2)
+export INTERNAL_CERTIFICATE_THUMBPRINT=$(openssl x509 -in grpc.crt -noout -fingerprint -sha1 | sed 's/://g' | cut -d '=' -f2)
 echo $INTERNAL_CERTIFICATE_THUMBPRINT
+echo "export INTERNAL_CERTIFICATE_THUMBPRINT=$INTERNAL_CERTIFICATE_THUMBPRINT" >> ~/.bashrc
 
 echo ""
 
 echo "Copy to appsettings.api.json -> RootCertificateSN"
-ROOT_CERTIFICATE_SN=$(openssl x509 -in rootCA.crt -noout -serial | cut -d '=' -f2)
+export ROOT_CERTIFICATE_SN=$(openssl x509 -in rootCA.crt -noout -serial | cut -d '=' -f2)
 echo $ROOT_CERTIFICATE_SN
+echo "export ROOT_CERTIFICATE_SN=$ROOT_CERTIFICATE_SN" >> ~/.bashrc
 
 echo ""
 
 echo "Copy to appsettings.ui.json -> LGDXRobotCloudAPI:CertificateSN"
-API_CERTIFICATE_SN=$(openssl x509 -in app.crt -noout -serial | cut -d '=' -f2)
+export API_CERTIFICATE_SN=$(openssl x509 -in app.crt -noout -serial | cut -d '=' -f2)
 echo $API_CERTIFICATE_SN
+echo "export API_CERTIFICATE_SN=$API_CERTIFICATE_SN" >> ~/.bashrc
 
 echo ""
 
 echo "Copy to appsettings.api.json -> Redis:CertificateSN; Copy to appsettings.ui.json -> Redis:CertificateSN"
-REDIS_CERTIFICATE_SN=$(openssl x509 -in redis_server.crt -noout -serial | cut -d '=' -f2)
+export REDIS_CERTIFICATE_SN=$(openssl x509 -in redis_server.crt -noout -serial | cut -d '=' -f2)
 echo $REDIS_CERTIFICATE_SN
+echo "export REDIS_CERTIFICATE_SN=$REDIS_CERTIFICATE_SN" >> ~/.bashrc
  

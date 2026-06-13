@@ -496,3 +496,4 @@ secrets.json
 /LGDXRobotCloud.Data/Certs/*.pfx
 /LGDXRobotCloud.Data/Certs/*.srl
 /LGDXRobotCloud.Data/Certs/*.csr
+/LGDXRobotCloud.Data/appsettings.*.json

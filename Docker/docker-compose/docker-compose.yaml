@@ -86,6 +86,9 @@ services:
     restart: "no"
     volumes:
       - ./appsettings.data.json:/App/appsettings.json
+      - ./appsettings.api.json:/App/Configs/appsettings.api.json
+      - ./appsettings.ui.json:/App/Configs/appsettings.ui.json
+      - ./appsettings.worker.json:/App/Configs/appsettings.worker.json
       - ./certs:/App/Certs
     depends_on:
       - postgres
