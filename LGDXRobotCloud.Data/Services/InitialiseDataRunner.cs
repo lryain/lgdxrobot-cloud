@@ -1,4 +1,6 @@
 using System.Security.Claims;
+using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
 using LGDXRobotCloud.Data.DbContexts;
 using LGDXRobotCloud.Data.Entities;
 using LGDXRobotCloud.Utilities.Helpers;
@@ -7,6 +9,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace LGDXRobotCloud.Data.Services;
+
 
 public class InitialiseDataRunner(
     LgdxContext context,
@@ -19,6 +22,42 @@ public class InitialiseDataRunner(
   private readonly LgdxLogsContext _logsContext = logsContext ?? throw new ArgumentNullException(nameof(logsContext));
   private readonly UserManager<LgdxUser> _userManager = userManager;
   private readonly IConfiguration _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+
+  private record CertificateDetail 
+  {
+    required public string RootCertificate { get; set; }
+    required public string RobotCertificatePrivateKey { get; set; }
+    required public string RobotCertificatePublicKey { get; set; }
+    required public string RobotCertificateThumbprint { get; set; }
+    required public DateTime RobotCertificateNotBefore { get; set; }
+    required public DateTime RobotCertificateNotAfter { get; set; }
+  }
+
+  private static CertificateDetail GenerateRobotCertificate(Guid robotId)
+  {
+    var rootCertificateSn = Environment.GetEnvironmentVariable("ROOT_CERTIFICATE_SN");
+
+    X509Store store = new(StoreName.My, StoreLocation.CurrentUser);
+    store.Open(OpenFlags.OpenExistingOnly);
+    X509Certificate2 rootCertificate = store.Certificates.First(c => c.SerialNumber.Contains(rootCertificateSn!));
+
+    var certificateNotBefore = DateTime.UtcNow;
+    var certificateNotAfter = DateTimeOffset.UtcNow.AddDays(365);
+
+    var rsa = RSA.Create();
+    var certificateRequest = new CertificateRequest("CN=" + robotId.ToString(), rsa, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
+    var certificate = certificateRequest.Create(rootCertificate, certificateNotBefore, certificateNotAfter, RandomNumberGenerator.GetBytes(20));
+
+    return new CertificateDetail
+    {
+      RootCertificate = rootCertificate.ExportCertificatePem(),
+      RobotCertificatePrivateKey = new string(PemEncoding.Write("PRIVATE KEY", rsa.ExportPkcs8PrivateKey())),
+      RobotCertificatePublicKey = certificate.ExportCertificatePem(),
+      RobotCertificateThumbprint = certificate.Thumbprint,
+      RobotCertificateNotBefore = certificateNotBefore,
+      RobotCertificateNotAfter = certificateNotAfter.DateTime
+    };
+  }
 
   public async Task StartAsync(CancellationToken cancellationToken)
   {
@@ -85,6 +124,7 @@ public class InitialiseDataRunner(
     var isSeedData = _configuration["seedData"];
     if (!string.IsNullOrEmpty(isSeedData) && bool.Parse(isSeedData) == true)
     {
+      // Seed data from SQL files
       var scriptsPath = Path.Combine(Directory.GetCurrentDirectory(), "SQL");
       var files = Directory.GetFiles(scriptsPath, "*.sql").OrderBy(f => f);
       foreach (var file in files)
@@ -93,7 +133,33 @@ public class InitialiseDataRunner(
         var sql = await File.ReadAllTextAsync(file, cancellationToken);
         await _context.Database.ExecuteSqlRawAsync(sql, cancellationToken: cancellationToken);
       }
+
+      // Generate Robot Certificates
+      // Note: Assume that the root certificate has been generated
+      Console.WriteLine("Generating Robot Certificates");
+      var robots = _context.Robots.ToList();
+      foreach (var robot in robots)
+      {
+        // Generate Certificate
+        var certificate = GenerateRobotCertificate(robot.Id);
+        _context.RobotCertificates.Add(new RobotCertificate {
+          Id = Guid.NewGuid(),
+          Thumbprint = certificate.RobotCertificateThumbprint,
+          ThumbprintBackup = null,
+          NotBefore = certificate.RobotCertificateNotBefore.ToUniversalTime(),
+          NotAfter = certificate.RobotCertificateNotAfter.ToUniversalTime(),
+          RobotId = robot.Id
+        });
+
+        // Save Certificate
+        var publicKeyPath = Path.Combine(Directory.GetCurrentDirectory(), "Certs", $"{robot.Name}.crt");
+        File.WriteAllText(publicKeyPath, certificate.RobotCertificatePublicKey);
+        var privateKeyPath = Path.Combine(Directory.GetCurrentDirectory(), "Certs", $"{robot.Name}.key");
+        File.WriteAllText(privateKeyPath, certificate.RobotCertificatePrivateKey);
+      }
+      _context.SaveChanges();
     }
+    Console.WriteLine("Initialise Data Completed");
 
     Environment.Exit(0);
   }
@@ -102,4 +168,8 @@ public class InitialiseDataRunner(
   {
     return Task.CompletedTask;
   }
+}
+
+internal class CertificateDetail
+{
 }

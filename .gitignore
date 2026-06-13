@@ -489,3 +489,10 @@ $RECYCLE.BIN/
 # Secret file
 secrets.json
 /coveragereport
+
+# Certificates
+/LGDXRobotCloud.Data/Certs/*.crt
+/LGDXRobotCloud.Data/Certs/*.key
+/LGDXRobotCloud.Data/Certs/*.pfx
+/LGDXRobotCloud.Data/Certs/*.srl
+/LGDXRobotCloud.Data/Certs/*.csr

@@ -30,24 +30,29 @@ openssl req -newkey rsa:4096 -keyout redis_client.key -out redis_client.csr -con
 openssl x509 -req -in redis_client.csr -CA rootCA.crt -CAkey rootCA.key -CAcreateserial -out redis_client.crt -days 9999 -sha256 -extfile redis_client.conf -extensions req_ext
 openssl pkcs12 -export -out redis_client.pfx -inkey redis_client.key -in redis_client.crt -certfile rootCA.crt -passout pass:""
 
-echo "END"
+echo "------COMPLETE------"
 
 echo ""
 
 echo "Copy to appsettings.api.json -> InternalCertificateThumbprint"
-openssl x509 -in ui.crt -noout -fingerprint -sha1 | sed 's/://g'
+INTERNAL_CERTIFICATE_THUMBPRINT=$(openssl x509 -in grpc.crt -noout -fingerprint -sha1 | sed 's/://g' | cut -d '=' -f2)
+echo $INTERNAL_CERTIFICATE_THUMBPRINT
 
 echo ""
 
 echo "Copy to appsettings.api.json -> RootCertificateSN"
-openssl x509 -in rootCA.crt -noout -serial
+ROOT_CERTIFICATE_SN=$(openssl x509 -in rootCA.crt -noout -serial | cut -d '=' -f2)
+echo $ROOT_CERTIFICATE_SN
 
 echo ""
 
 echo "Copy to appsettings.ui.json -> LGDXRobotCloudAPI:CertificateSN"
-openssl x509 -in ui.crt -noout -serial
+API_CERTIFICATE_SN=$(openssl x509 -in app.crt -noout -serial | cut -d '=' -f2)
+echo $API_CERTIFICATE_SN
 
 echo ""
 
 echo "Copy to appsettings.api.json -> Redis:CertificateSN; Copy to appsettings.ui.json -> Redis:CertificateSN"
-openssl x509 -in redis_client.crt -noout -serial
+REDIS_CERTIFICATE_SN=$(openssl x509 -in redis_server.crt -noout -serial | cut -d '=' -f2)
+echo $REDIS_CERTIFICATE_SN
+ 
