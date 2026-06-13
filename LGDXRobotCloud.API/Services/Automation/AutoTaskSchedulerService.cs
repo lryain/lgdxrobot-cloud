@@ -199,7 +199,7 @@ public class AutoTaskSchedulerService(
     {
       // Get waiting task
       task = await _context.AutoTasks.FromSql(
-        $@"SELECT * FROM ""Automation.AutoTasks"" AS T 
+        $@"SELECT * FROM ""AutoTasks"" AS T 
             WHERE T.""CurrentProgressId"" = {(int)ProgressState.Waiting} AND (T.""AssignedRobotId"" = {robotId} OR T.""AssignedRobotId"" IS NULL) AND T.""RealmId"" = {realmId}
             ORDER BY T.""Priority"" DESC, T.""AssignedRobotId"" DESC, T.""Id""
             LIMIT 1 FOR UPDATE SKIP LOCKED"
@@ -277,7 +277,7 @@ public class AutoTaskSchedulerService(
       {
         // From API
         task = await _context.AutoTasks.FromSql(
-          $@"SELECT * FROM ""Automation.AutoTasks"" AS T
+          $@"SELECT * FROM ""AutoTasks"" AS T
             WHERE T.""Id"" = {taskId}
             LIMIT 1 FOR UPDATE NOWAIT"
         ).FirstOrDefaultAsync();
@@ -285,7 +285,7 @@ public class AutoTaskSchedulerService(
       else
       {
         task = await _context.AutoTasks.FromSql(
-          $@"SELECT * FROM ""Automation.AutoTasks"" AS T
+          $@"SELECT * FROM ""AutoTasks"" AS T
               WHERE T.""Id"" = {taskId} AND T.""AssignedRobotId"" = {robotId} AND T.""NextToken"" = {token}
               LIMIT 1 FOR UPDATE NOWAIT"
         ).FirstOrDefaultAsync();
@@ -375,7 +375,7 @@ public class AutoTaskSchedulerService(
     {
       // Get waiting task
       task = await _context.AutoTasks.FromSql(
-        $@"SELECT * FROM ""Automation.AutoTasks"" AS T
+        $@"SELECT * FROM ""AutoTasks"" AS T
             WHERE T.""Id"" = {taskId} AND T.""AssignedRobotId"" = {robotId} AND T.""NextToken"" = {token}
             LIMIT 1 FOR UPDATE NOWAIT"
       ).FirstOrDefaultAsync();

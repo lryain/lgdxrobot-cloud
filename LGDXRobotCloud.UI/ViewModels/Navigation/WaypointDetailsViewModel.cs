@@ -15,6 +15,7 @@ public class WaypointDetailsViewModel : FormViewModelBase
   [Required (ErrorMessage = "A realm is required.")]
   public int? RealmId { get; set; } = null;
 
+  [Range(1, int.MaxValue)]
   public int? FeatureId { get; set; }
 
   [MaxLength(100)]
