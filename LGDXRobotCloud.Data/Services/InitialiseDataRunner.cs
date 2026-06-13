@@ -70,11 +70,13 @@ public class InitialiseDataRunner(
     _logsContext.Database.Migrate();
     if (_context.Users.Any())
     {
+      Console.WriteLine("The database has already been initialised.");
       return;
     }
     /*
      * Identity
      */
+    Console.WriteLine("Initialising database...");
     // Roles
     var defaultRoles = LgdxRolesHelper.DefaultRoles;
     foreach (var (key, value) in defaultRoles)
@@ -129,6 +131,7 @@ public class InitialiseDataRunner(
     var isSeedData = _configuration["seedData"];
     if (!string.IsNullOrEmpty(isSeedData) && bool.Parse(isSeedData) == true)
     {
+      Console.WriteLine("Seeding data...");
       // Seed data from SQL files
       var scriptsPath = Path.Combine(Directory.GetCurrentDirectory(), "SQL");
       var files = Directory.GetFiles(scriptsPath, "*.sql").OrderBy(f => f);
@@ -144,7 +147,7 @@ public class InitialiseDataRunner(
       {
         // Generate Robot Certificates
         // Note: Assume that the root certificate has been generated
-        Console.WriteLine("Generating Robot Certificates");
+        Console.WriteLine("Generating Robot Certificates...");
         var robots = _context.Robots.ToList();
         foreach (var robot in robots)
         {
@@ -172,12 +175,12 @@ public class InitialiseDataRunner(
     var isGenerateConfigs = _configuration["generateConfigs"];
     if (!string.IsNullOrEmpty(isGenerateConfigs) && bool.Parse(isGenerateConfigs) == true)
     {
-      Console.WriteLine("Generating Configs");
+      Console.WriteLine("Generating Configs...");
 
       // Get environment variables
       var internalCertificateThumbprint = Environment.GetEnvironmentVariable("INTERNAL_CERTIFICATE_THUMBPRINT");
       var rootCertificateSN = Environment.GetEnvironmentVariable("ROOT_CERTIFICATE_SN");
-      var apiCertificateSN = Environment.GetEnvironmentVariable("API_CERTIFICATE_SN");
+      var uiCertificateSN = Environment.GetEnvironmentVariable("UI_CERTIFICATE_SN");
       var redisCertificateSN = Environment.GetEnvironmentVariable("REDIS_CERTIFICATE_SN");
 
       // API
@@ -191,7 +194,7 @@ public class InitialiseDataRunner(
       // UI
       var uiConfigPath = Path.Combine(Directory.GetCurrentDirectory(), "Configs", "appsettings.ui.json");
       string uiConfig = File.ReadAllText(uiConfigPath);
-      uiConfig = uiConfig.Replace("Copy to appsettings.ui.json -> LGDXRobotCloudAPI:CertificateSN", apiCertificateSN);
+      uiConfig = uiConfig.Replace("Copy to appsettings.ui.json -> LGDXRobotCloudAPI:CertificateSN", uiCertificateSN);
       uiConfig = uiConfig.Replace("Copy to appsettings.api.json -> Redis:CertificateSN; Copy to appsettings.ui.json -> Redis:CertificateSN", redisCertificateSN);
       File.WriteAllText("appsettings.ui.json", uiConfig);
 
@@ -201,7 +204,7 @@ public class InitialiseDataRunner(
       File.WriteAllText("appsettings.worker.json", workerConfig);
     }
 
-    Console.WriteLine("Initialise Data Completed");
+    Console.WriteLine("Initialise Data Completed, if you are using Docker Compose, please restart the containers.");
 
     Environment.Exit(0);
   }

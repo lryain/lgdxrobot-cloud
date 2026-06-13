@@ -25,7 +25,7 @@ services:
     restart: always
     command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
     volumes:
-      - ./data/redis.conf:/usr/local/etc/redis/redis.conf
+      - ./redis.conf:/usr/local/etc/redis/redis.conf
       - ./data/certs/rootCA.crt:/certs/rootCA.crt
       - ./data/certs/redis_server.crt:/certs/redis_server.crt
       - ./data/certs/redis_server.key:/certs/redis_server.key

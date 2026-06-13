@@ -1,6 +1,10 @@
 #!/bin/bash
 
-sleep 1s
+sleep 5s
+
+if [ -f /App/data/.initialised ]; then
+  exit 0
+fi
 
 ## Generate Certificates
 cd Certs
@@ -38,7 +42,7 @@ openssl pkcs12 -export -out redis_client.pfx -inkey redis_client.key -in redis_c
 echo ""
 
 echo "Copy to appsettings.api.json -> InternalCertificateThumbprint"
-export INTERNAL_CERTIFICATE_THUMBPRINT=$(openssl x509 -in grpc.crt -noout -fingerprint -sha1 | sed 's/://g' | cut -d '=' -f2)
+export INTERNAL_CERTIFICATE_THUMBPRINT=$(openssl x509 -in ui.crt -noout -fingerprint -sha1 | sed 's/://g' | cut -d '=' -f2)
 echo $INTERNAL_CERTIFICATE_THUMBPRINT
 
 echo ""
@@ -50,14 +54,16 @@ echo $ROOT_CERTIFICATE_SN
 echo ""
 
 echo "Copy to appsettings.ui.json -> LGDXRobotCloudAPI:CertificateSN"
-export API_CERTIFICATE_SN=$(openssl x509 -in app.crt -noout -serial | cut -d '=' -f2)
-echo $API_CERTIFICATE_SN
+export UI_CERTIFICATE_SN=$(openssl x509 -in ui.crt -noout -serial | cut -d '=' -f2)
+echo $UI_CERTIFICATE_SN
 
 echo ""
 
 echo "Copy to appsettings.api.json -> Redis:CertificateSN; Copy to appsettings.ui.json -> Redis:CertificateSN"
-export REDIS_CERTIFICATE_SN=$(openssl x509 -in redis_server.crt -noout -serial | cut -d '=' -f2)
+export REDIS_CERTIFICATE_SN=$(openssl x509 -in redis_client.pfx -noout -serial | cut -d '=' -f2)
 echo $REDIS_CERTIFICATE_SN
+
+echo ""
 
 # Remove old data
 rm -rf /App/data/certs /App/data/configs
@@ -73,9 +79,12 @@ cp *.key /App/data/certs
 cd /App
 
 ## Initialise Data
-dotnet LGDXRobotCloud.Data.dll --initialiseData "true" --email "email@example.com" --fullName "Full Name" --userName "admin" --password "123456" --seedData "true" --generateCertificates "true" --generateConfigs "true"
+dotnet LGDXRobotCloud.Data.dll --initialiseData "true" --email "murray@example.com" --fullName "Lei Ho, MAK" --userName "murray" --password "123456" --seedData "true" --generateCertificates "true" --generateConfigs "true"
 
 # Copy configs
-cd /App/Configs
-cp *.json /App/data/configs
+cd /App
+cp appsettings.*.json /App/data/configs
 cd ..
+
+cd /App/data
+touch .initialised
