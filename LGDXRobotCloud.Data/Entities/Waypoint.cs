@@ -3,7 +3,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LGDXRobotCloud.Data.Entities;
 
-[Table("Navigation.Waypoints")]
 public class Waypoint
 {
   [Key]

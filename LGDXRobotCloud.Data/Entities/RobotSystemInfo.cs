@@ -3,7 +3,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LGDXRobotCloud.Data.Entities;
 
-[Table("Navigation.RobotSystemInfos")]
 public class RobotSystemInfo
 {
   [Key]

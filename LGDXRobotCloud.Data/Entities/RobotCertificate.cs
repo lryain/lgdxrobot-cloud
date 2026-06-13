@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LGDXRobotCloud.Data.Entities;
 
-[Table("Navigation.RobotCertificates")]
 public class RobotCertificate
 {
   [Key]

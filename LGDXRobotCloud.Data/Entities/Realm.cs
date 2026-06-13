@@ -4,7 +4,6 @@ using LGDXRobotCloud.Utilities.Constants;
 
 namespace LGDXRobotCloud.Data.Entities;
 
-[Table("Navigation.Realms")]
 public class Realm
 {
   [Key]

@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LGDXRobotCloud.Data.Entities;
 
-[Table("Automation.Triggers")]
 [Index(nameof(ApiKeyInsertLocationId))]
 public class Trigger
 {

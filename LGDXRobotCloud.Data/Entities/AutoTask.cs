@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LGDXRobotCloud.Data.Entities;
 
-[Table("Automation.AutoTasks")]
 [Index(nameof(RealmId), nameof(AssignedRobotId))]
 public class AutoTask
 {

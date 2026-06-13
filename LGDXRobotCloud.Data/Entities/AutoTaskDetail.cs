@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LGDXRobotCloud.Data.Entities;
 
-[Table("Automation.AutoTaskDetails")]
 [Index(nameof(Order))]
 public class AutoTaskDetail
 {

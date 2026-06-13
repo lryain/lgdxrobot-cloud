@@ -3,7 +3,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LGDXRobotCloud.Data.Entities;
 
-[Table("Automation.Flows")]
 public class Flow
 {
   [Key]

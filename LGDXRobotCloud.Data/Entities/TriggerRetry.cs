@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LGDXRobotCloud.Data.Entities;
 
-[Table("Automation.TriggerRetries")]
 public class TriggerRetry
 {
   [Key]
