@@ -1,12 +1,15 @@
 #!/bin/bash
 
-sleep 5s
+sleep 1s
 
+# Check if data has been initialised
 if [ -f /App/data/.initialised ]; then
   exit 0
 fi
 
-## Generate Certificates
+#
+# Generate Certificates
+# 
 cd Certs
 
 # Generate Root CA and convert to pfx
@@ -40,51 +43,51 @@ openssl x509 -req -in redis_client.csr -CA rootCA.crt -CAkey rootCA.key -CAcreat
 openssl pkcs12 -export -out redis_client.pfx -inkey redis_client.key -in redis_client.crt -certfile rootCA.crt -passout pass:""
 
 echo ""
-
 echo "Copy to appsettings.api.json -> InternalCertificateThumbprint"
 export INTERNAL_CERTIFICATE_THUMBPRINT=$(openssl x509 -in ui.crt -noout -fingerprint -sha1 | sed 's/://g' | cut -d '=' -f2)
 echo $INTERNAL_CERTIFICATE_THUMBPRINT
-
 echo ""
-
 echo "Copy to appsettings.api.json -> RootCertificateSN"
 export ROOT_CERTIFICATE_SN=$(openssl x509 -in rootCA.crt -noout -serial | cut -d '=' -f2)
 echo $ROOT_CERTIFICATE_SN
-
 echo ""
-
 echo "Copy to appsettings.ui.json -> LGDXRobotCloudAPI:CertificateSN"
 export UI_CERTIFICATE_SN=$(openssl x509 -in ui.crt -noout -serial | cut -d '=' -f2)
 echo $UI_CERTIFICATE_SN
-
 echo ""
-
 echo "Copy to appsettings.api.json -> Redis:CertificateSN; Copy to appsettings.ui.json -> Redis:CertificateSN"
 export REDIS_CERTIFICATE_SN=$(openssl x509 -in redis_client.pfx -noout -serial | cut -d '=' -f2)
 echo $REDIS_CERTIFICATE_SN
-
 echo ""
 
-# Remove old data
+# Copy root CA to .dotnet folder
+mkdir -p /root/.dotnet/corefx/cryptography/x509stores/my
+cp rootCA.pfx /root/.dotnet/corefx/cryptography/x509stores/my/rootCA.pfx
+#
+# Initialise Database and Generate Data
+#
+cd /App
+
+dotnet LGDXRobotCloud.Data.dll --initialiseData "true" --email "murray@example.com" --fullName "Lei Ho, MAK" --userName "murray" --password "123456" --seedData "true" --generateCertificates "true" --generateConfigs "true"
+
+#
+# Copy Certs and Configs
+#
 rm -rf /App/data/certs /App/data/configs
 mkdir -p /App/data/certs
 mkdir -p /App/data/configs
-# Copy data
+
+# Copy certs
 cd /App/Certs
-mkdir -p /root/.dotnet/corefx/cryptography/x509stores/my
-cp rootCA.pfx /root/.dotnet/corefx/cryptography/x509stores/my/rootCA.pfx
+
 cp *.pfx /App/data/certs
 cp *.crt /App/data/certs
 cp *.key /App/data/certs
-cd /App
-
-## Initialise Data
-dotnet LGDXRobotCloud.Data.dll --initialiseData "true" --email "murray@example.com" --fullName "Lei Ho, MAK" --userName "murray" --password "123456" --seedData "true" --generateCertificates "true" --generateConfigs "true"
 
 # Copy configs
 cd /App
 cp appsettings.*.json /App/data/configs
-cd ..
 
+# Mark data as initialised
 cd /App/data
 touch .initialised
