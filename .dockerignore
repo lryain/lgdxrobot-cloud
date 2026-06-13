@@ -7,9 +7,6 @@
 Dockerfile*
 **/*.md
 
-**/appsettings.json
-**/appsettings.*.json
-
 .config/*
 .vscode/*
 Docker/*

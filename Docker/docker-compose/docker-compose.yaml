@@ -25,10 +25,10 @@ services:
     restart: always
     command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
     volumes:
-      - ./redis.conf:/usr/local/etc/redis/redis.conf
-      - ./certs/rootCA.crt:/certs/rootCA.crt
-      - ./certs/redis_server.crt:/certs/redis_server.crt
-      - ./certs/redis_server.key:/certs/redis_server.key
+      - ./data/redis.conf:/usr/local/etc/redis/redis.conf
+      - ./data/certs/rootCA.crt:/certs/rootCA.crt
+      - ./data/certs/redis_server.crt:/certs/redis_server.crt
+      - ./data/certs/redis_server.key:/certs/redis_server.key
 
   api:
     image: lgdxrobot/lgdxrobotcloud-api
@@ -40,12 +40,12 @@ services:
       ASPNETCORE_Kestrel__Certificates__Default__Password: ""
       ASPNETCORE_Kestrel__Certificates__Default__Path: "/App/app.pfx"
     volumes:
-      - ./appsettings.api.json:/App/appsettings.json
-      - ./certs/grpc.pfx:/App/grpc.pfx
-      - ./certs/app.pfx:/App/app.pfx
-      - ./certs/rootCA.crt:/etc/ssl/certs/rootCA.crt
-      - ./certs/rootCA.pfx:/root/.dotnet/corefx/cryptography/x509stores/my/rootCA.pfx
-      - ./certs/redis_client.pfx:/root/.dotnet/corefx/cryptography/x509stores/my/redis_client.pfx
+      - ./data/configs/appsettings.api.json:/App/appsettings.json
+      - ./data/certs/grpc.pfx:/App/grpc.pfx
+      - ./data/certs/app.pfx:/App/app.pfx
+      - ./data/certs/rootCA.crt:/etc/ssl/certs/rootCA.crt
+      - ./data/certs/rootCA.pfx:/root/.dotnet/corefx/cryptography/x509stores/my/rootCA.pfx
+      - ./data/certs/redis_client.pfx:/root/.dotnet/corefx/cryptography/x509stores/my/redis_client.pfx
     depends_on:
       - postgres
       - rabbitmq
@@ -61,11 +61,11 @@ services:
       ASPNETCORE_Kestrel__Certificates__Default__Password: ""
       ASPNETCORE_Kestrel__Certificates__Default__Path: "/App/app.pfx"
     volumes:
-      - ./appsettings.ui.json:/App/appsettings.json
-      - ./certs/ui.pfx:/root/.dotnet/corefx/cryptography/x509stores/my/ui.pfx
-      - ./certs/redis_client.pfx:/root/.dotnet/corefx/cryptography/x509stores/my/redis_client.pfx
-      - ./certs/app.pfx:/App/app.pfx
-      - ./certs/rootCA.crt:/etc/ssl/certs/rootCA.crt
+      - ./data/configs/appsettings.ui.json:/App/appsettings.json
+      - ./data/certs/ui.pfx:/root/.dotnet/corefx/cryptography/x509stores/my/ui.pfx
+      - ./data/certs/redis_client.pfx:/root/.dotnet/corefx/cryptography/x509stores/my/redis_client.pfx
+      - ./data/certs/app.pfx:/App/app.pfx
+      - ./data/certs/rootCA.crt:/etc/ssl/certs/rootCA.crt
     depends_on:
       - api
       - rabbitmq
@@ -75,7 +75,7 @@ services:
     image: lgdxrobot/lgdxrobotcloud-worker
     restart: always
     volumes:
-      - ./appsettings.worker.json:/App/appsettings.json
+      - ./data/configs/appsettings.worker.json:/App/appsettings.json
     depends_on:
       - api
       - postgres
@@ -86,10 +86,7 @@ services:
     restart: "no"
     volumes:
       - ./appsettings.data.json:/App/appsettings.json
-      - ./appsettings.api.json:/App/Configs/appsettings.api.json
-      - ./appsettings.ui.json:/App/Configs/appsettings.ui.json
-      - ./appsettings.worker.json:/App/Configs/appsettings.worker.json
-      - ./certs:/App/Certs
+      - ./data:/App/data
     depends_on:
       - postgres
 

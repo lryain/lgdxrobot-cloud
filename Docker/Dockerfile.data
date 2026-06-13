@@ -15,9 +15,18 @@ RUN dotnet publish --property:PublishDir=./out
 #
 
 FROM mcr.microsoft.com/dotnet/aspnet:10.0
+
+RUN apt-get update && apt-get install -y libgssapi-krb5-2 \
+    && rm -rf /var/lib/apt/lists/*
+
 WORKDIR /App
 COPY --from=build /App/LGDXRobotCloud.Data/out .
 COPY --from=build /App/LGDXRobotCloud.Data/initaliseData.sh .
 RUN chmod +x initaliseData.sh
-RUN chmod +x Certs/generate-certs.sh
+
+# Bootstrap Files
+COPY LGDXRobotCloud.Data/Configs/ /App/Configs
+COPY LGDXRobotCloud.Data/SQL/ /App/SQL
+COPY LGDXRobotCloud.Data/Certs/ /App/Certs
+
 ENTRYPOINT ["./initaliseData.sh"]

@@ -497,3 +497,4 @@ secrets.json
 /LGDXRobotCloud.Data/Certs/*.srl
 /LGDXRobotCloud.Data/Certs/*.csr
 /LGDXRobotCloud.Data/appsettings.*.json
+/Docker/docker-compose/data/*
