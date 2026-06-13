@@ -85,8 +85,14 @@ public class InitialiseDataRunner(
     var isSeedData = _configuration["seedData"];
     if (!string.IsNullOrEmpty(isSeedData) && bool.Parse(isSeedData) == true)
     {
-      var seeder = new DataSeeder(_context);
-      await seeder.Seed();
+      var scriptsPath = Path.Combine(Directory.GetCurrentDirectory(), "SQL");
+      var files = Directory.GetFiles(scriptsPath, "*.sql").OrderBy(f => f);
+      foreach (var file in files)
+      {
+        Console.WriteLine($"Executing {Path.GetFileName(file)}");
+        var sql = await File.ReadAllTextAsync(file, cancellationToken);
+        await _context.Database.ExecuteSqlRawAsync(sql, cancellationToken: cancellationToken);
+      }
     }
 
     Environment.Exit(0);

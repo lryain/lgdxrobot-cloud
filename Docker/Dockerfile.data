@@ -19,4 +19,5 @@ WORKDIR /App
 COPY --from=build /App/LGDXRobotCloud.Data/out .
 COPY --from=build /App/LGDXRobotCloud.Data/initaliseData.sh .
 RUN chmod +x initaliseData.sh
+RUN chmod +x Certs/generate-certs.sh
 ENTRYPOINT ["./initaliseData.sh"]
