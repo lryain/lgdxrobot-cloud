@@ -3,7 +3,6 @@
 @using LGDXRobotCloud.Data.Entities
 @using LGDXRobotCloud.UI.Components.Pages.Administration.ActivityLogs.Components;
 @using LGDXRobotCloud.UI.Components.Pages.Navigation.Robots.Components
-@using LGDXRobotCloud.Utilities.Enums
 
 <DetailsHeader ReturnUrl="@ReturnUrl" RobotDetailsViewModel="@RobotDetailsViewModel" @ref="Header" />
 
@@ -12,8 +11,14 @@
     <div class="col-12">
       <DetailsTasksCard AutoTasks="AutoTasks" />
     </div>
-    <div class="col-12">
+    <div class="col-sm-12 col-lg-6">
       <DetailsRobotDataCard @ref="RobotDataCard" />
+    </div>
+    <div class="col-sm-12 col-lg-6">
+      <DetailsNavigationDataCard @ref="NavigationDataCard" />
+    </div>
+    <div class="col-12">
+      <DetailsSystemMonitoringCard @ref="SystemMonitoringCard" />
     </div>
     <div class="col-12">
       <ul class="nav nav-bordered mb-4">

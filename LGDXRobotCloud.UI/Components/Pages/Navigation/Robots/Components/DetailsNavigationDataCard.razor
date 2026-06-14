@@ -1,0 +1,51 @@
+@using LGDXRobotCloud.Data.Models.Redis
+
+<div class="card h-100">
+  <!-- Header -->
+  <div class="card-header">
+    <h3 class="card-title">Navigation Data</h3>
+  </div>
+
+  <!-- Data -->
+  @if (RobotData != null)
+  {
+    <div class="table-responsive">
+      <table class="table card-table table-vcenter text-nowrap datatable">
+        <tbody>
+          <tr>
+            <td>ETA</td>
+            <td>@RobotData.NavProgress.Eta seconds</td>
+          </tr>
+          <tr>
+            <td>Recoveries</td>
+            <td>@RobotData.NavProgress.Recoveries</td>
+          </tr>
+          <tr>
+            <td>Distance Remaining</td>
+            <td>@RobotData.NavProgress.DistanceRemaining m</td>
+          </tr>
+          <tr>
+            <td>Waypoints Remaining</td>
+            <td>@RobotData.NavProgress.WaypointsRemaining</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  }
+  else
+  {
+    <p class="text-secondary text-center my-3">The robot is offline.</p>
+  }
+</div>
+
+@code
+{
+  // Assign the RobotData from Refresh to prevent full re-rendering 
+  private RobotData? RobotData { get; set; }
+
+  public async Task Refresh(RobotData? rd)
+  {
+    RobotData = rd;
+    await InvokeAsync(StateHasChanged);
+  }
+}
