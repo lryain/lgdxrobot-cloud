@@ -57,6 +57,7 @@ public class MapEditorService(
         X = w.X,
         Y = w.Y,
         Rotation = w.Rotation,
+        IsIntermediate = w.IsIntermediate,
         IsDocking = w.IsDocking,
       })
       .ToListAsync();
@@ -333,6 +334,7 @@ public class MapEditorService(
         X = w.X,
         Y = w.Y,
         Rotation = w.Rotation,
+        IsIntermediate = w.IsIntermediate,
         IsDocking = w.IsDocking,
       })
       .ToListAsync();

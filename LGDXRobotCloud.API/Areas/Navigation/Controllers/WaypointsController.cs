@@ -5,6 +5,7 @@ using LGDXRobotCloud.Data.Models.Business.Navigation;
 using LGDXRobotCloud.Data.Models.DTOs.V1.Commands;
 using LGDXRobotCloud.Data.Models.DTOs.V1.Responses;
 using LGDXRobotCloud.Utilities.Constants;
+using LGDXRobotCloud.Utilities.Enums;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -39,9 +40,13 @@ public class WaypointsController(
 
   [HttpGet("Search")]
   [ProducesResponseType(typeof(IEnumerable<WaypointSearchDto>), StatusCodes.Status200OK)]
-  public async Task<ActionResult<IEnumerable<WaypointSearchDto>>> SearchWaypoints(int realmId, string? name)
+  public async Task<ActionResult<IEnumerable<WaypointSearchDto>>> SearchWaypoints(int realmId, string? name, WaypointsFilter filter = WaypointsFilter.NoFilter)
   {
-    var waypoints = await _waypointService.SearchWaypointsAsync(realmId, name);
+    IEnumerable<WaypointSearchBusinessModel> waypoints = filter switch
+    {
+      WaypointsFilter.AutoTask => await _waypointService.SearchWaypointsAutoTaskAsync(realmId, name),
+      _ => await _waypointService.SearchWaypointsAsync(realmId, name),
+    };
     return Ok(waypoints.ToDto());
   }
 

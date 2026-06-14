@@ -21,6 +21,7 @@ public interface IWaypointService
   Task<bool> DeleteWaypointAsync(int waypointId);
   
   Task<IEnumerable<WaypointSearchBusinessModel>> SearchWaypointsAsync(int realmId, string? name);
+  Task<IEnumerable<WaypointSearchBusinessModel>> SearchWaypointsAutoTaskAsync(int realmId, string? name);
 }
 
 public class WaypointService(
@@ -80,6 +81,7 @@ public class WaypointService(
         X = w.X,
         Y = w.Y,
         Rotation = w.Rotation,
+        IsIntermediate = w.IsIntermediate,
         IsDocking = w.IsDocking,
       })
       .FirstOrDefaultAsync()
@@ -144,6 +146,7 @@ public class WaypointService(
       X = waypoint.X,
       Y = waypoint.Y,
       Rotation = waypoint.Rotation,
+      IsIntermediate = waypoint.IsIntermediate,
       IsDocking = waypoint.IsDocking,
     };
   }
@@ -240,7 +243,22 @@ public class WaypointService(
     return await _context.Waypoints.AsNoTracking()
       .Where(w => w.RealmId == realmId)
       .Where(t => t.Name.ToLower().Contains(n.ToLower()))
-      .Take(10)
+      .Take(20)
+      .Select(m => new WaypointSearchBusinessModel {
+        Id = m.Id,
+        Name = m.Name,
+      })
+      .ToListAsync();
+  }
+
+  public async Task<IEnumerable<WaypointSearchBusinessModel>> SearchWaypointsAutoTaskAsync(int realmId, string? name)
+  {
+    var n = name ?? string.Empty;
+    return await _context.Waypoints.AsNoTracking()
+      .Where(w => w.RealmId == realmId)
+      .Where(t => t.Name.ToLower().Contains(n.ToLower()))
+      .Where(t => t.IsIntermediate == false)
+      .Take(20)
       .Select(m => new WaypointSearchBusinessModel {
         Id = m.Id,
         Name = m.Name,

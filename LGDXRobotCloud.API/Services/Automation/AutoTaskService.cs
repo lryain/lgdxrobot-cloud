@@ -156,6 +156,7 @@ public class AutoTaskService(
             X = td.Waypoint.X,
             Y = td.Waypoint.Y,
             Rotation = td.Waypoint.Rotation,
+            IsIntermediate = td.Waypoint.IsIntermediate,
             IsDocking = td.Waypoint.IsDocking,
           },
         })
@@ -286,6 +287,7 @@ public class AutoTaskService(
             X = td.Waypoint.X,
             Y = td.Waypoint.Y,
             Rotation = td.Waypoint.Rotation,
+            IsIntermediate = td.Waypoint.IsIntermediate,
             IsDocking = td.Waypoint.IsDocking,
           },
         })
