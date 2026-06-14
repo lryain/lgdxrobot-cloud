@@ -9,26 +9,35 @@ public class RobotSystemInfo
   [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
   public int Id { get; set; }
 
+  // CPU
   [MaxLength(100)]
-  public string Cpu { get; set; } = null!;
+  public string Cpu { get; set; } = string.Empty;
+
+  public int CpuCores { get; set; }
+
+  [MaxLength(100)]
+  public string CpuArchitecture { get; set; } = string.Empty;
 
   public bool IsLittleEndian { get; set; }
 
+  // Storage (HDD, SSD) can be changed, so it is not here
+  // Memory
+  public int RamMiB { get; set; }
+
+  // Motherboard
   [MaxLength(100)]
   public string Motherboard { get; set; } = null!;
 
   [MaxLength(100)]
   public string MotherboardSerialNumber { get; set; } = null!;
 
-  public int RamMiB { get; set; }
-
+  // GPU
   [MaxLength(100)]
   public string? Gpu { get; set; }
 
   [MaxLength(100)]
   public string Os { get; set; } = null!;
 
-  public bool Is32Bit { get; set; }
 
   [ForeignKey("RobotId")]
   public Robot Robot { get; set; } = null!;

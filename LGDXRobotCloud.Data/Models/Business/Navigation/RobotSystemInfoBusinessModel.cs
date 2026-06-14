@@ -6,21 +6,23 @@ public record RobotSystemInfoBusinessModel
 {
   public required int Id { get; set; }
 
-  public required string Cpu { get; set; } = null!;
+  public required string Cpu { get; set; }
+
+  public required int CpuCores { get; set; }
+
+  public required string CpuArchitecture { get; set; }
 
   public required bool IsLittleEndian { get; set; }
 
-  public required string Motherboard { get; set; } = null!;
-
-  public required string MotherboardSerialNumber { get; set; } = null!;
-
   public required int RamMiB { get; set; }
+
+  public required string Motherboard { get; set; }
+
+  public required string MotherboardSerialNumber { get; set; } 
 
   public string? Gpu { get; set; }
 
-  public required string Os { get; set; } = null!;
-
-  public required bool Is32Bit { get; set; }
+  public required string Os { get; set; } 
 }
 
 public static class RobotSystemInfoBusinessModelExtensions
@@ -30,13 +32,14 @@ public static class RobotSystemInfoBusinessModelExtensions
     return new RobotSystemInfoDto {
       Id = robotSystemInfo.Id,
       Cpu = robotSystemInfo.Cpu,
+      CpuCores = robotSystemInfo.CpuCores,
+      CpuArchitecture = robotSystemInfo.CpuArchitecture,
       IsLittleEndian = robotSystemInfo.IsLittleEndian,
+      RamMiB = robotSystemInfo.RamMiB,
       Motherboard = robotSystemInfo.Motherboard,
       MotherboardSerialNumber = robotSystemInfo.MotherboardSerialNumber,
-      RamMiB = robotSystemInfo.RamMiB,
       Gpu = robotSystemInfo.Gpu,
       Os = robotSystemInfo.Os,
-      Is32Bit = robotSystemInfo.Is32Bit,
     };
   }
 
@@ -44,13 +47,14 @@ public static class RobotSystemInfoBusinessModelExtensions
   {
     return new RobotSystemInfoCreateBusinessModel {
       Cpu = model.Cpu,
+      CpuCores = model.CpuCores,
+      CpuArchitecture = model.CpuArchitecture,
       IsLittleEndian = model.IsLittleEndian,
+      RamMiB = model.RamMiB,
       Motherboard = model.Motherboard,
       MotherboardSerialNumber = model.MotherboardSerialNumber,
-      RamMiB = model.RamMiB,
       Gpu = model.Gpu,
       Os = model.Os,
-      Is32Bit = model.Is32Bit,
     };
   }
 
@@ -58,13 +62,14 @@ public static class RobotSystemInfoBusinessModelExtensions
   {
     return new RobotSystemInfoUpdateBusinessModel {
       Cpu = model.Cpu,
+      CpuCores = model.CpuCores,
+      CpuArchitecture = model.CpuArchitecture,
       IsLittleEndian = model.IsLittleEndian,
+      RamMiB = model.RamMiB,
       Motherboard = model.Motherboard,
       MotherboardSerialNumber = model.MotherboardSerialNumber,
-      RamMiB = model.RamMiB,
       Gpu = model.Gpu,
       Os = model.Os,
-      Is32Bit = model.Is32Bit,
     };
   }
 }
