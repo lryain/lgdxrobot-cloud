@@ -22,6 +22,8 @@ public record WaypointBusinessModel
 
   public double Rotation { get; set; } = 0;
 
+  public required bool IsIntermediate { get; set; }
+
   public required bool IsDocking { get; set; }
 }
 
@@ -41,6 +43,7 @@ public static class WaypointBusinessModelExtensions
       X = model.X,
       Y = model.Y,
       Rotation = model.Rotation,
+      IsIntermediate = model.IsIntermediate,
       IsDocking = model.IsDocking,
     };
   }

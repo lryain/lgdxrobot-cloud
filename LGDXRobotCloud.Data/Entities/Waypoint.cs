@@ -33,6 +33,9 @@ public class Waypoint
   public double Rotation { get; set; } = 0;
 
   [Required]
+  public bool IsIntermediate { get; set; }
+
+  [Required]
   public bool IsDocking { get; set; }
 
   [NotMapped]

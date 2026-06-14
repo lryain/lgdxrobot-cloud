@@ -13,6 +13,7 @@ public record WaypointUpsertDto
 
   // For Map Editor No realmId is required
 
+  [Range(1, int.MaxValue)]
   public int? FeatureId { get; set; }
 
   [MaxLength(100)]
@@ -25,6 +26,8 @@ public record WaypointUpsertDto
   public required double Y { get; set; }
 
   public double Rotation { get; set; } = 0;
+
+  public bool IsIntermediate { get; set; } = false;
 
   public bool IsDocking { get; set; } = false;
 
@@ -44,6 +47,7 @@ public static class WaypointUpsertDtoExtensions
       Y = model.Y,
       Rotation = model.Rotation,
       IsDocking = model.IsDocking,
+      IsIntermediate = model.IsIntermediate,
       AlternateId = model.AlternativeId,
     };
   }

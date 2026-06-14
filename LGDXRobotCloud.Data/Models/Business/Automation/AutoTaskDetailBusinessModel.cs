@@ -40,6 +40,7 @@ public static class AutoTaskDetailBusinessModelExtensions
         X = model.Waypoint.X,
         Y = model.Waypoint.Y,
         Rotation = model.Waypoint.Rotation,
+        IsIntermediate = model.Waypoint.IsIntermediate,
         IsDocking = model.Waypoint.IsDocking,
       },
     };

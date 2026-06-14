@@ -14,5 +14,7 @@ public record WaypointUpdateBusinessModel
 
   public required double Rotation { get; set; }
 
+  public required bool IsIntermediate { get; set; }
+
   public required bool IsDocking { get; set; }
 }

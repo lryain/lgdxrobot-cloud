@@ -9,6 +9,7 @@ public record WaypointUpdateDto
   [Required (ErrorMessage = "Please enter a name.")]
   public required string Name { get; set; }
 
+  [Range(1, int.MaxValue)]
   public int? FeatureId { get; set; }
 
   [MaxLength(100)]
@@ -21,6 +22,8 @@ public record WaypointUpdateDto
   public required double Y { get; set; }
 
   public double Rotation { get; set; } = 0;
+
+  public bool IsIntermediate { get; set; } = false;
 
   public bool IsDocking { get; set; } = false;
 }
@@ -36,6 +39,7 @@ public static class WaypointUpdateDtoExtensions
       FeatureId = model.FeatureId,
       ClassName = model.ClassName,
       Rotation = model.Rotation,
+      IsIntermediate = model.IsIntermediate,
       IsDocking = model.IsDocking,
     };
   }

@@ -18,6 +18,7 @@ public record WaypointDto
 
   public double Rotation { get; set; } = 0;
 
-  public required bool IsDocking { get; set; }
+  public required bool IsIntermediate { get; set; }
 
+  public required bool IsDocking { get; set; }
 }

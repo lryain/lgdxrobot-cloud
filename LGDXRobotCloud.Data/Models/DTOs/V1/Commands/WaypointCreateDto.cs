@@ -12,6 +12,7 @@ public record WaypointCreateDto
   [Required (ErrorMessage = "A realm is required.")]
   public required int RealmId { get; set; }
 
+  [Range(1, int.MaxValue)]
   public int? FeatureId { get; set; }
 
   [MaxLength(100)]
@@ -24,6 +25,8 @@ public record WaypointCreateDto
   public required double Y { get; set; }
 
   public double Rotation { get; set; } = 0;
+
+  public bool IsIntermediate { get; set; } = false;
 
   public bool IsDocking { get; set; } = false;
 }
@@ -40,6 +43,7 @@ public static class WaypointCreateDtoExtensions
       X = model.X,
       Y = model.Y,
       Rotation = model.Rotation,
+      IsIntermediate = model.IsIntermediate,
       IsDocking = model.IsDocking,
     };
   }
