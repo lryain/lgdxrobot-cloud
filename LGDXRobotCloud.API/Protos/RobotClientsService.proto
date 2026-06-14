@@ -68,13 +68,14 @@ enum RobotClientsResultStatus {
 
 message RobotClientsSystemInfo {
   string Cpu = 1;
-  string Motherboard = 2;
-  string MotherboardSerialNumber = 3;
+  int32 CpuCores = 2;
+  string CpuArchitecture = 3;
   bool IsLittleEndian = 4;
   int32 RamMiB = 5;
-  string Gpu = 6;
-  string Os = 7;
-  bool Is32Bit = 8;
+  string Motherboard = 6;
+  string MotherboardSerialNumber = 7;
+  string Gpu = 8;
+  string Os = 9;
 }
 
 message RobotClientsMapInfo {

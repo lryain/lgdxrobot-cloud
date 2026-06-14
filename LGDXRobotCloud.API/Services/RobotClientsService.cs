@@ -77,13 +77,14 @@ public partial class RobotClientsService(
     {
       Id = 0,
       Cpu = request.SystemInfo.Cpu,
+      CpuCores = request.SystemInfo.CpuCores,
+      CpuArchitecture = request.SystemInfo.CpuArchitecture,
       IsLittleEndian = request.SystemInfo.IsLittleEndian,
+      RamMiB = request.SystemInfo.RamMiB,
       Motherboard = request.SystemInfo.Motherboard,
       MotherboardSerialNumber = request.SystemInfo.MotherboardSerialNumber,
-      RamMiB = request.SystemInfo.RamMiB,
       Gpu = request.SystemInfo.Gpu,
       Os = request.SystemInfo.Os,
-      Is32Bit = request.SystemInfo.Is32Bit,
     };
     var systemInfo = robot.RobotSystemInfo;
     if (systemInfo == null)

@@ -93,13 +93,14 @@ public class RobotService(
         RobotSystemInfo = r.RobotSystemInfo == null ? null : new RobotSystemInfoBusinessModel {
           Id = r.RobotSystemInfo.Id,
           Cpu = r.RobotSystemInfo.Cpu,
+          CpuCores = r.RobotSystemInfo.CpuCores,
+          CpuArchitecture = r.RobotSystemInfo.CpuArchitecture,
           IsLittleEndian = r.RobotSystemInfo.IsLittleEndian,
+          RamMiB = r.RobotSystemInfo.RamMiB,
           Motherboard = r.RobotSystemInfo.Motherboard,
           MotherboardSerialNumber = r.RobotSystemInfo.MotherboardSerialNumber,
-          RamMiB = r.RobotSystemInfo.RamMiB,
           Gpu = r.RobotSystemInfo.Gpu,
           Os = r.RobotSystemInfo.Os,
-          Is32Bit = r.RobotSystemInfo.Is32Bit,
         },
         AssignedTasks = r.AssignedTasks
           .Where(t =>  t.CurrentProgressId != (int)ProgressState.Aborted 
@@ -225,13 +226,14 @@ public class RobotService(
       .Select(r => new RobotSystemInfoBusinessModel {
         Id = r.Id,
         Cpu = r.Cpu,
+        CpuCores = r.CpuCores,
+        CpuArchitecture = r.CpuArchitecture,
         IsLittleEndian = r.IsLittleEndian,
+        RamMiB = r.RamMiB,
         Motherboard = r.Motherboard,
         MotherboardSerialNumber = r.MotherboardSerialNumber,
-        RamMiB = r.RamMiB,
         Gpu = r.Gpu,
         Os = r.Os,
-        Is32Bit = r.Is32Bit,
       })
       .FirstOrDefaultAsync();
   }
@@ -240,13 +242,14 @@ public class RobotService(
   {
     var robotSystemInfo = new RobotSystemInfo {
       Cpu = robotSystemInfoCreateBusinessModel.Cpu,
+      CpuCores = robotSystemInfoCreateBusinessModel.CpuCores,
+      CpuArchitecture = robotSystemInfoCreateBusinessModel.CpuArchitecture,
       IsLittleEndian = robotSystemInfoCreateBusinessModel.IsLittleEndian,
+      RamMiB = robotSystemInfoCreateBusinessModel.RamMiB,
       Motherboard = robotSystemInfoCreateBusinessModel.Motherboard,
       MotherboardSerialNumber = robotSystemInfoCreateBusinessModel.MotherboardSerialNumber,
-      RamMiB = robotSystemInfoCreateBusinessModel.RamMiB,
       Gpu = robotSystemInfoCreateBusinessModel.Gpu,
       Os = robotSystemInfoCreateBusinessModel.Os,
-      Is32Bit = robotSystemInfoCreateBusinessModel.Is32Bit,
       RobotId = robotId
     };
     _context.RobotSystemInfos.Add(robotSystemInfo);
@@ -259,13 +262,14 @@ public class RobotService(
       .Where(r => r.RobotId == robotId)
       .ExecuteUpdateAsync(setters => setters
         .SetProperty(r => r.Cpu, robotSystemInfoUpdateBusinessModel.Cpu)
+        .SetProperty(r => r.CpuCores, robotSystemInfoUpdateBusinessModel.CpuCores)
+        .SetProperty(r => r.CpuArchitecture, robotSystemInfoUpdateBusinessModel.CpuArchitecture)
         .SetProperty(r => r.IsLittleEndian, robotSystemInfoUpdateBusinessModel.IsLittleEndian)
+        .SetProperty(r => r.RamMiB, robotSystemInfoUpdateBusinessModel.RamMiB)
         .SetProperty(r => r.Motherboard, robotSystemInfoUpdateBusinessModel.Motherboard)
         .SetProperty(r => r.MotherboardSerialNumber, robotSystemInfoUpdateBusinessModel.MotherboardSerialNumber)
-        .SetProperty(r => r.RamMiB, robotSystemInfoUpdateBusinessModel.RamMiB)
         .SetProperty(r => r.Gpu, robotSystemInfoUpdateBusinessModel.Gpu)
         .SetProperty(r => r.Os, robotSystemInfoUpdateBusinessModel.Os)
-        .SetProperty(r => r.Is32Bit, robotSystemInfoUpdateBusinessModel.Is32Bit)
       ) == 1;
   }
 
