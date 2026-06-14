@@ -55,11 +55,13 @@ public partial class UserDetails : ComponentBase
   {
     try
     {
+      UserDetailViewModel.IsSuccess = false;
       await LgdxApiClient.Identity.User.PutAsync(UserDetailViewModel.ToUpdateDto());
       var user = AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User;
       var settings = TokenService.GetSessionSettings(user);
       settings.DarkMode = UserDetailViewModel.DarkMode;
       TokenService.UpdateSessionSettings(user, settings);
+      UserDetailViewModel.IsSuccess = true;
     }
     catch (ApiException ex)
     {
@@ -71,7 +73,9 @@ public partial class UserDetails : ComponentBase
   {
     try
     {
+      UserDetailPasswordViewModel.IsSuccess = false;
       await LgdxApiClient.Identity.User.Password.PostAsync(UserDetailPasswordViewModel.ToUpdateDto());
+      UserDetailPasswordViewModel.IsSuccess = true;
     }
     catch (ApiException ex)
     {
