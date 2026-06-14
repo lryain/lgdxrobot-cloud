@@ -17,9 +17,7 @@
     <div class="col-sm-12 col-lg-6">
       <DetailsNavigationDataCard @ref="NavigationDataCard" />
     </div>
-    <div class="col-12">
-      <DetailsSystemMonitoringCard @ref="SystemMonitoringCard" />
-    </div>
+    <DetailsSystemMonitoringCards @ref="SystemMonitoringCard" />
     <div class="col-12">
       <ul class="nav nav-bordered mb-4">
         @for (int i = 0; i < Tabs.Count; i++)

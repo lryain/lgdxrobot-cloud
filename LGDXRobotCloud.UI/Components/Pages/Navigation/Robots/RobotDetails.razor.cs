@@ -54,7 +54,7 @@ public partial class RobotDetails : ComponentBase, IAsyncDisposable
   private Timer? Timer = null;
   private DetailsRobotDataCard? RobotDataCard;
   private DetailsNavigationDataCard? NavigationDataCard;
-  private DetailsSystemMonitoringCard? SystemMonitoringCard;
+  private DetailsSystemMonitoringCards? SystemMonitoringCard;
   private DetailsHeader? Header;
   private SoftwareEmergencyStopModel? SoftwareEmergencyStop;
   private PauseTaskAssignmentModel? PauseTaskAssignment;
