@@ -180,6 +180,7 @@ public class WaypointServiceTests
       X = 123,
       Y = 456,
       Rotation = 0.123,
+      IsIntermediate = false,
       IsDocking = true,
     };
     var waypointService = new WaypointService(mockActivityLogService.Object, mockMemoryCache.Object, lgdxContext);
@@ -207,6 +208,7 @@ public class WaypointServiceTests
       X = 123,
       Y = 456,
       Rotation = 0.123,
+      IsIntermediate = false,
       IsDocking = true,
     };
     var waypointService = new WaypointService(mockActivityLogService.Object, mockMemoryCache.Object, lgdxContext);
