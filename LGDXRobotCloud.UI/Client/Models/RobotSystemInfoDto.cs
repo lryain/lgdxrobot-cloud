@@ -20,6 +20,16 @@ namespace LGDXRobotCloud.UI.Client.Models
 #else
         public string Cpu { get; set; }
 #endif
+        /// <summary>The cpuArchitecture property</summary>
+#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
+#nullable enable
+        public string? CpuArchitecture { get; set; }
+#nullable restore
+#else
+        public string CpuArchitecture { get; set; }
+#endif
+        /// <summary>The cpuCores property</summary>
+        public int? CpuCores { get; set; }
         /// <summary>The gpu property</summary>
 #if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
 #nullable enable
@@ -30,8 +40,6 @@ namespace LGDXRobotCloud.UI.Client.Models
 #endif
         /// <summary>The id property</summary>
         public int? Id { get; set; }
-        /// <summary>The is32Bit property</summary>
-        public bool? Is32Bit { get; set; }
         /// <summary>The isLittleEndian property</summary>
         public bool? IsLittleEndian { get; set; }
         /// <summary>The motherboard property</summary>
@@ -79,9 +87,10 @@ namespace LGDXRobotCloud.UI.Client.Models
             return new Dictionary<string, Action<IParseNode>>
             {
                 { "cpu", n => { Cpu = n.GetStringValue(); } },
+                { "cpuArchitecture", n => { CpuArchitecture = n.GetStringValue(); } },
+                { "cpuCores", n => { CpuCores = n.GetIntValue(); } },
                 { "gpu", n => { Gpu = n.GetStringValue(); } },
                 { "id", n => { Id = n.GetIntValue(); } },
-                { "is32Bit", n => { Is32Bit = n.GetBoolValue(); } },
                 { "isLittleEndian", n => { IsLittleEndian = n.GetBoolValue(); } },
                 { "motherboard", n => { Motherboard = n.GetStringValue(); } },
                 { "motherboardSerialNumber", n => { MotherboardSerialNumber = n.GetStringValue(); } },
@@ -97,9 +106,10 @@ namespace LGDXRobotCloud.UI.Client.Models
         {
             if(ReferenceEquals(writer, null)) throw new ArgumentNullException(nameof(writer));
             writer.WriteStringValue("cpu", Cpu);
+            writer.WriteStringValue("cpuArchitecture", CpuArchitecture);
+            writer.WriteIntValue("cpuCores", CpuCores);
             writer.WriteStringValue("gpu", Gpu);
             writer.WriteIntValue("id", Id);
-            writer.WriteBoolValue("is32Bit", Is32Bit);
             writer.WriteBoolValue("isLittleEndian", IsLittleEndian);
             writer.WriteStringValue("motherboard", Motherboard);
             writer.WriteStringValue("motherboardSerialNumber", MotherboardSerialNumber);

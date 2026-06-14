@@ -82,7 +82,17 @@ public class OnlineRobotsService(
         WaypointsRemaining = data.NavProgress.WaypointsRemaining,
         Plan = [.. data.NavProgress.Plan.Select(x => new Robot2Dof { X = x.X, Y = x.Y })]
       },
-      PauseTaskAssignment = data.PauseTaskAssignment
+      PauseTaskAssignment = data.PauseTaskAssignment,
+      SystemMonitoringInfo = new SystemMonitoringInfo
+      {
+        CpuUsage = data.SystemMonitoringInfo.CpuUsage,
+        DiskTotal = data.SystemMonitoringInfo.DiskTotal,
+        DiskUsed = data.SystemMonitoringInfo.DiskUsed,
+        MemoryTotal = data.SystemMonitoringInfo.MemoryTotal,
+        MemoryUsed = data.SystemMonitoringInfo.MemoryUsed,
+        SwapTotal = data.SystemMonitoringInfo.SwapTotal,
+        SwapUsed = data.SystemMonitoringInfo.SwapUsed
+      }
     });
     
     var robotStatus = (RobotStatus)data.RobotStatus;

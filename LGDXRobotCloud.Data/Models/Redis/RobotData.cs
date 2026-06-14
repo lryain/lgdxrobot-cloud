@@ -30,6 +30,17 @@ public record RobotCriticalStatus
   public bool SoftwareEmergencyStop { get; set; }
 }
 
+public record SystemMonitoringInfo
+{
+  public float CpuUsage { get; set; }
+  public int MemoryTotal { get; set; }
+  public int MemoryUsed { get; set; }
+  public int SwapTotal { get; set; }
+  public int SwapUsed { get; set; }
+  public int DiskTotal { get; set; }
+  public int DiskUsed { get; set; }
+}
+
 public record RobotData
 {
   public RobotStatus RobotStatus { get; set; } = RobotStatus.Offline;
@@ -38,4 +49,5 @@ public record RobotData
   public RobotDof Position { get; set; } = new();
   public AutoTaskNavProgress NavProgress { get; set; } = new();
   public bool PauseTaskAssignment { get; set; }
+  public SystemMonitoringInfo SystemMonitoringInfo { get; set; } = new();
 }

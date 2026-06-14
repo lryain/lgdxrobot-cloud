@@ -48,6 +48,16 @@ message RobotClientsAutoTaskNavProgress {
   repeated RobotClients2Dof Plan = 5;
 }
 
+message RobotClientsSystemMonitoringInfo {
+  float CpuUsage = 1;
+  int32 MemoryTotal = 2;
+  int32 MemoryUsed = 3;
+  int32 SwapTotal = 4;
+  int32 SwapUsed = 5;
+  int32 DiskTotal = 6;
+  int32 DiskUsed = 7;
+}
+
 // Final Data
 message RobotClientsData {
   RobotClientsRobotStatus RobotStatus = 1;
@@ -56,6 +66,7 @@ message RobotClientsData {
   RobotClientsDof Position = 4;
   RobotClientsAutoTaskNavProgress NavProgress = 5;
   bool PauseTaskAssignment = 6;
+  RobotClientsSystemMonitoringInfo SystemMonitoringInfo = 7;
 }
 
 /*

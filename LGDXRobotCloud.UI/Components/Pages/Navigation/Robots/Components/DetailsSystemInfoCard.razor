@@ -13,9 +13,21 @@
           <td>@(RobotSystemInfo != null ? RobotSystemInfo.Cpu : "-")</td>
         </tr>
         <tr>
+          <td>CPU Architecture</td>
+          <td>@(RobotSystemInfo != null ? RobotSystemInfo.CpuArchitecture : "-")</td>
+        </tr>
+        <tr>
+          <td>CPU Cores</td>
+          <td>@(RobotSystemInfo != null ? RobotSystemInfo.CpuCores : "-")</td>
+        </tr>
+        <tr>
           <td>CPU Endianness</td>
           <td>@(RobotSystemInfo != null ? ((bool)RobotSystemInfo.IsLittleEndian! ? "Little-endian" : "Big-endian") : "-")
           </td>
+        </tr>
+        <tr>
+          <td>RAM Size</td>
+          <td>@(RobotSystemInfo != null ? RobotSystemInfo.RamMiB + " MiB" : "-")</td>
         </tr>
         <tr>
           <td>Motherboard Model</td>
@@ -26,20 +38,12 @@
           <td>@(RobotSystemInfo != null ? RobotSystemInfo.MotherboardSerialNumber : "-")</td>
         </tr>
         <tr>
-          <td>RAM Size</td>
-          <td>@(RobotSystemInfo != null ? RobotSystemInfo.RamMiB + " MiB" : "-")</td>
-        </tr>
-        <tr>
           <td>GPU Model</td>
           <td>@(RobotSystemInfo?.Gpu != null ? RobotSystemInfo?.Gpu : "-")</td>
         </tr>
         <tr>
           <td>Operation System</td>
           <td>@(RobotSystemInfo != null ? RobotSystemInfo.Os : "-")</td>
-        </tr>
-        <tr>
-          <td>System Type</td>
-          <td>@(RobotSystemInfo != null ? ((bool)RobotSystemInfo.Is32Bit! ? "32 Bit" : "64 Bit") : "-")</td>
         </tr>
       </tbody>
     </table>

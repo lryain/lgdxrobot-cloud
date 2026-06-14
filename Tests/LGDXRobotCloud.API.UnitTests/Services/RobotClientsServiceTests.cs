@@ -56,13 +56,14 @@ public class RobotClientsServiceTests
     RobotSystemInfo = new RobotSystemInfoBusinessModel {
       Id = 1,
       Cpu = "Cpu",
+      CpuCores = 1,
+      CpuArchitecture = "CpuArchitecture",
       IsLittleEndian = true,
       Motherboard = "Motherboard",
       MotherboardSerialNumber = "MotherboardSerialNumber",
       RamMiB = 1,
       Gpu = "Gpu",
       Os = "Os",
-      Is32Bit = true,
     },
     AssignedTasks = []
   };
@@ -130,13 +131,14 @@ public class RobotClientsServiceTests
   private static readonly RobotClientsGreet robotClientsGreet = new() {
     SystemInfo = new RobotClientsSystemInfo {
       Cpu = "Cpu",
+      CpuCores = 1,
+      CpuArchitecture = "CpuArchitecture",
       IsLittleEndian = true,
       Motherboard = "Motherboard",
       MotherboardSerialNumber = "MotherboardSerialNumber",
       RamMiB = 1,
       Gpu = "Gpu",
       Os = "Os",
-      Is32Bit = true,
     }
   };
 
@@ -253,13 +255,14 @@ public class RobotClientsServiceTests
     var localRobotClientsGreet = new RobotClientsGreet {
       SystemInfo = new RobotClientsSystemInfo {
         Cpu = "Cpu",
+        CpuCores = 1,
+        CpuArchitecture = "CpuArchitecture",
         IsLittleEndian = true,
         Motherboard = "Motherboard",
         MotherboardSerialNumber = "123123",
         RamMiB = 1,
         Gpu = "Gpu",
         Os = "Os",
-        Is32Bit = true,
       }
     };
     var serverCallContext = GenerateServerCallContext(nameof(RobotClientsService.Greet), RobotGuid.ToString());

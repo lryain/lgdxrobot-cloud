@@ -59,13 +59,14 @@ public class RobotServiceTests
     new() {
       Id = 1,
       Cpu = "Cpu",
+      CpuCores = 1,
+      CpuArchitecture = "CpuArchitecture",
       IsLittleEndian = true,
       Motherboard = "Motherboard",
       MotherboardSerialNumber = "MotherboardSerialNumber",
       RamMiB = 1,
       Gpu = "Gpu",
       Os = "Os",
-      Is32Bit = true,
       RobotId = RobotGuid
     }
   ];
@@ -160,7 +161,6 @@ public class RobotServiceTests
     Assert.Equal(expectedRobotSystemInfo.RamMiB, actual.RobotSystemInfo.RamMiB);
     Assert.Equal(expectedRobotSystemInfo.Gpu, actual.RobotSystemInfo.Gpu);
     Assert.Equal(expectedRobotSystemInfo.Os, actual.RobotSystemInfo.Os);
-    Assert.Equal(expectedRobotSystemInfo.Is32Bit, actual.RobotSystemInfo.Is32Bit);
   }
 
   [Fact]
@@ -270,7 +270,6 @@ public class RobotServiceTests
     Assert.Equal(expected.RamMiB, actual.RamMiB);
     Assert.Equal(expected.Gpu, actual.Gpu);
     Assert.Equal(expected.Os, actual.Os);
-    Assert.Equal(expected.Is32Bit, actual.Is32Bit);
   }
 
   [Fact]
@@ -279,13 +278,14 @@ public class RobotServiceTests
     // Arrange
     var expected = new RobotSystemInfoCreateBusinessModel {
       Cpu = "Cpu",
+      CpuCores = 1,
+      CpuArchitecture = "CpuArchitecture",
       IsLittleEndian = true,
       Motherboard = "Motherboard",
       MotherboardSerialNumber = "MotherboardSerialNumber",
       RamMiB = 1,
       Gpu = "Gpu",
       Os = "Os",
-      Is32Bit = true,
     };
     var robotService = new RobotService(mockActivityLogService.Object, mockMemoryCache.Object, mockRobotCertificateService.Object, lgdxContext);
 
