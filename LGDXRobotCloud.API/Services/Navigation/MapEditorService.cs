@@ -180,6 +180,7 @@ public class MapEditorService(
       X = w.X,
       Y = w.Y,
       Rotation = w.Rotation,
+      IsIntermediate = w.IsIntermediate,
       IsDocking = w.IsDocking,
       AlternateId = w.AlternateId,
     }).ToList();
@@ -193,6 +194,7 @@ public class MapEditorService(
       waypoint.X = w.X;
       waypoint.Y = w.Y;
       waypoint.Rotation = w.Rotation; 
+      waypoint.IsIntermediate = w.IsIntermediate;
       waypoint.IsDocking = w.IsDocking;
     }
     _context.Waypoints.RemoveRange(deleteWaypoints);

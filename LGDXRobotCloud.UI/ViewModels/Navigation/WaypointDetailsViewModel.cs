@@ -31,6 +31,8 @@ public class WaypointDetailsViewModel : FormViewModelBase
 
   public double? Rotation { get; set; } = null!;
 
+  public bool IsIntermediate { get; set; }
+
   public bool IsDocking { get; set; }
 
   public Guid? MapEditorObjectId { get; set; }
@@ -49,6 +51,7 @@ public static class WaypointDetailsViewModelExtensions
     WaypointDetailsViewModel.X = waypointDto.X;
     WaypointDetailsViewModel.Y = waypointDto.Y;
     WaypointDetailsViewModel.Rotation = waypointDto.Rotation;
+    WaypointDetailsViewModel.IsIntermediate = (bool)waypointDto.IsIntermediate!;
     WaypointDetailsViewModel.IsDocking = (bool)waypointDto.IsDocking!;
   }
 
@@ -61,6 +64,7 @@ public static class WaypointDetailsViewModelExtensions
       X = WaypointDetailsViewModel.X,
       Y = WaypointDetailsViewModel.Y,
       Rotation = WaypointDetailsViewModel.Rotation,
+      IsIntermediate = WaypointDetailsViewModel.IsIntermediate,
       IsDocking = WaypointDetailsViewModel.IsDocking,
     };
   }
@@ -75,6 +79,7 @@ public static class WaypointDetailsViewModelExtensions
       X = WaypointDetailsViewModel.X,
       Y = WaypointDetailsViewModel.Y,
       Rotation = WaypointDetailsViewModel.Rotation,
+      IsIntermediate = WaypointDetailsViewModel.IsIntermediate,
       IsDocking = WaypointDetailsViewModel.IsDocking,
       AlternativeId = WaypointDetailsViewModel.MapEditorObjectId,
     };
@@ -95,6 +100,7 @@ public static class WaypointDetailsViewModelExtensions
       X = WaypointDetailsViewModel.X,
       Y = WaypointDetailsViewModel.Y,
       Rotation = WaypointDetailsViewModel.Rotation,
+      IsIntermediate = WaypointDetailsViewModel.IsIntermediate,
       IsDocking = WaypointDetailsViewModel.IsDocking,
     };
   }
@@ -110,6 +116,7 @@ public static class WaypointDetailsViewModelExtensions
       X = WaypointDetailsViewModel.X,
       Y = WaypointDetailsViewModel.Y,
       Rotation = WaypointDetailsViewModel.Rotation,
+      IsIntermediate = WaypointDetailsViewModel.IsIntermediate,
       IsDocking = WaypointDetailsViewModel.IsDocking,
     };
   }

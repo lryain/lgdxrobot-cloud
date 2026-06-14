@@ -22,7 +22,7 @@ namespace LGDXRobotCloud.UI.Client.Navigation.Waypoints.Search
         /// </summary>
         /// <param name="pathParameters">Path parameters for the request</param>
         /// <param name="requestAdapter">The request adapter to use to execute the requests.</param>
-        public SearchRequestBuilder(Dictionary<string, object> pathParameters, IRequestAdapter requestAdapter) : base(requestAdapter, "{+baseurl}/Navigation/Waypoints/Search{?name*,realmId*}", pathParameters)
+        public SearchRequestBuilder(Dictionary<string, object> pathParameters, IRequestAdapter requestAdapter) : base(requestAdapter, "{+baseurl}/Navigation/Waypoints/Search{?filter*,name*,realmId*}", pathParameters)
         {
         }
         /// <summary>
@@ -30,7 +30,7 @@ namespace LGDXRobotCloud.UI.Client.Navigation.Waypoints.Search
         /// </summary>
         /// <param name="rawUrl">The raw URL to use for the request builder.</param>
         /// <param name="requestAdapter">The request adapter to use to execute the requests.</param>
-        public SearchRequestBuilder(string rawUrl, IRequestAdapter requestAdapter) : base(requestAdapter, "{+baseurl}/Navigation/Waypoints/Search{?name*,realmId*}", rawUrl)
+        public SearchRequestBuilder(string rawUrl, IRequestAdapter requestAdapter) : base(requestAdapter, "{+baseurl}/Navigation/Waypoints/Search{?filter*,name*,realmId*}", rawUrl)
         {
         }
         /// <returns>A List&lt;global::LGDXRobotCloud.UI.Client.Models.WaypointSearchDto&gt;</returns>
@@ -79,6 +79,8 @@ namespace LGDXRobotCloud.UI.Client.Navigation.Waypoints.Search
         public partial class SearchRequestBuilderGetQueryParameters 
         #pragma warning restore CS1591
         {
+            [QueryParameter("filter")]
+            public int? Filter { get; set; }
 #if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
 #nullable enable
             [QueryParameter("name")]

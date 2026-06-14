@@ -28,6 +28,8 @@ namespace LGDXRobotCloud.UI.Client.Models
         public int? Id { get; set; }
         /// <summary>The isDocking property</summary>
         public bool? IsDocking { get; set; }
+        /// <summary>The isIntermediate property</summary>
+        public bool? IsIntermediate { get; set; }
         /// <summary>The name property</summary>
 #if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
 #nullable enable
@@ -65,6 +67,7 @@ namespace LGDXRobotCloud.UI.Client.Models
                 { "featureId", n => { FeatureId = n.GetIntValue(); } },
                 { "id", n => { Id = n.GetIntValue(); } },
                 { "isDocking", n => { IsDocking = n.GetBoolValue(); } },
+                { "isIntermediate", n => { IsIntermediate = n.GetBoolValue(); } },
                 { "name", n => { Name = n.GetStringValue(); } },
                 { "rotation", n => { Rotation = n.GetDoubleValue(); } },
                 { "x", n => { X = n.GetDoubleValue(); } },
@@ -83,6 +86,7 @@ namespace LGDXRobotCloud.UI.Client.Models
             writer.WriteIntValue("featureId", FeatureId);
             writer.WriteIntValue("id", Id);
             writer.WriteBoolValue("isDocking", IsDocking);
+            writer.WriteBoolValue("isIntermediate", IsIntermediate);
             writer.WriteStringValue("name", Name);
             writer.WriteDoubleValue("rotation", Rotation);
             writer.WriteDoubleValue("x", X);

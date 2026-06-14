@@ -91,7 +91,8 @@ public partial class AutoTaskDetails : ComponentBase, IDisposable
     {
       var response = await LgdxApiClient.Navigation.Waypoints.Search.GetAsync(x => x.QueryParameters = new() {
         RealmId = AutoTaskDetailsViewModel.RealmId,
-        Name = name
+        Name = name,
+        Filter = (int?)WaypointsFilter.AutoTask,
       });
       result = JsonSerializer.Serialize(response);
     }

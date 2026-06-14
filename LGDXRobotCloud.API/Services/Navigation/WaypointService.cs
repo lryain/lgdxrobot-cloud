@@ -122,6 +122,7 @@ public class WaypointService(
       X = waypointCreateBusinessModel.X,
       Y = waypointCreateBusinessModel.Y,
       Rotation = waypointCreateBusinessModel.Rotation,
+      IsIntermediate = waypointCreateBusinessModel.IsIntermediate,
       IsDocking = waypointCreateBusinessModel.IsDocking,
     };
 
@@ -186,6 +187,7 @@ public class WaypointService(
     waypoint.X = waypointUpdateBusinessModel.X;
     waypoint.Y = waypointUpdateBusinessModel.Y;
     waypoint.Rotation = waypointUpdateBusinessModel.Rotation;
+    waypoint.IsIntermediate = waypointUpdateBusinessModel.IsIntermediate;
     waypoint.IsDocking = waypointUpdateBusinessModel.IsDocking;
 
     if (await _context.SaveChangesAsync() == 1)
