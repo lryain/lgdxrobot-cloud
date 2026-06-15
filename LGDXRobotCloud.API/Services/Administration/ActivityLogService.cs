@@ -40,7 +40,7 @@ public class ActivityLogService(
     if (!string.IsNullOrWhiteSpace(entityId))
     {
       entityId = entityId.Trim();
-      query = query.Where(t => t.EntityId.ToLower().Contains(entityId.ToLower()));
+      query = query.Where(t => t.EntityId.ToLower() == entityId.ToLower());
     }
     var itemCount = await query.CountAsync();
     var PaginationHelper = new PaginationHelper(itemCount, pageNumber, pageSize);
