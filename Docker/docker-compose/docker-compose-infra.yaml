@@ -1,0 +1,34 @@
+services:
+  postgres:
+    image: postgres:18
+    ports:
+      - 5432:5432
+    restart: always
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: mysecretpassword
+      POSTGRES_DB: LGDXRobotCloud
+    volumes:
+      - pgdata:/var/lib/postgresql
+
+  rabbitmq:
+    image: rabbitmq:4
+    ports:
+      - 5672:5672
+      - 15672:15672
+    restart: always
+
+  redis:
+    image: redis:8
+    ports:
+      - 6379:6379
+    restart: always
+    command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
+    volumes:
+      - ./redis.conf:/usr/local/etc/redis/redis.conf
+      - ./data/certs/rootCA.crt:/certs/rootCA.crt
+      - ./data/certs/redis_server.crt:/certs/redis_server.crt
+      - ./data/certs/redis_server.key:/certs/redis_server.key
+
+volumes:
+  pgdata:
