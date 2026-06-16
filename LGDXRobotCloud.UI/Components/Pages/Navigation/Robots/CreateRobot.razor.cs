@@ -41,12 +41,12 @@ public partial class CreateRobot
       {
         var response = await LgdxApiClient.Navigation.Robots.PostAsync(Robot.ToCreateDto(RobotChassisInfo.ToCreateDto()));
         RobotCertificates = response;
+        currentStep++;
       }
       catch (ApiException ex)
       {
         Robot.Errors = ApiHelper.GenerateErrorDictionary(ex);
       }   
-      currentStep++;
     }
     else if (currentStep == 2)
     {

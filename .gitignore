@@ -3,10 +3,11 @@
 ##
 ## Get latest from `dotnet new gitignore`
 
+Docker/docker-compose/certs.bk
 deps
 docs
 scripts
-Docker/docker-compose/certs/
+Docker/docker-compose/certs
 **/appsettings.Development.json
 
 *.bk

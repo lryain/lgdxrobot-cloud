@@ -121,6 +121,20 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 	.AddCookie(cfg =>
 	{
 		cfg.LoginPath = AppRoutes.Identity.Login;
+		cfg.Events = new Microsoft.AspNetCore.Authentication.Cookies.CookieAuthenticationEvents
+		{
+			OnRedirectToAccessDenied = ctx =>
+			{
+				ctx.Response.StatusCode = StatusCodes.Status302Found;
+				ctx.Response.Redirect(cfg.LoginPath);
+				return Task.CompletedTask;
+			},
+			OnRedirectToLogin = ctx =>
+			{
+				ctx.Response.Redirect(ctx.RedirectUri);
+				return Task.CompletedTask;
+			}
+		};
 	});
 builder.Services.AddAuthorization();
 builder.Services.AddCascadingAuthenticationState();

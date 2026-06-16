@@ -84,7 +84,8 @@ public class RobotCertificateService(
   {
     X509Store store = new(StoreName.My, StoreLocation.CurrentUser);
     store.Open(OpenFlags.OpenExistingOnly);
-    X509Certificate2 rootCertificate = store.Certificates.First(c => c.SerialNumber.Contains(_lgdxRobotCloudConfiguration.RootCertificateSN!));
+    X509Certificate2 rootCertificate = store.Certificates.FirstOrDefault(c => c.SerialNumber.Contains(_lgdxRobotCloudConfiguration.RootCertificateSN!))
+      ?? throw new LgdxValidation400Expection("RootCertificate", $"Root certificate with serial number '{_lgdxRobotCloudConfiguration.RootCertificateSN}' not found in certificate store. Please install the root certificate first.");
 
     var certificateNotBefore = DateTime.UtcNow;
     var certificateNotAfter = DateTimeOffset.UtcNow.AddDays(_lgdxRobotCloudConfiguration.RobotCertificateValidDay);
@@ -177,7 +178,8 @@ public class RobotCertificateService(
   {
     X509Store store = new(StoreName.My, StoreLocation.CurrentUser);
     store.Open(OpenFlags.OpenExistingOnly);
-    X509Certificate2 rootCertificate = store.Certificates.First(c => c.SerialNumber.Contains(_lgdxRobotCloudConfiguration.RootCertificateSN!));
+    X509Certificate2 rootCertificate = store.Certificates.FirstOrDefault(c => c.SerialNumber.Contains(_lgdxRobotCloudConfiguration.RootCertificateSN!))
+      ?? throw new LgdxValidation400Expection("RootCertificate", $"Root certificate with serial number '{_lgdxRobotCloudConfiguration.RootCertificateSN}' not found in certificate store. Please install the root certificate first.");
     return new RootCertificateBusinessModel {
       NotBefore = rootCertificate.NotBefore.ToUniversalTime(),
       NotAfter = rootCertificate.NotAfter.ToUniversalTime(),

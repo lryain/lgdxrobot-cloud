@@ -1,38 +1,48 @@
 @using LGDXRobotCloud.UI.Client.Models
 
-<InformationAlert>
-  The system does not store the "Robot Private Key" and "Robot Public Key". Please save the keys before continuing.
-</InformationAlert>
-<div class="mb-3">
-  <label class="form-label">Root Certificate</label>
-  <textarea id="RootCertificateTextarea" class="form-control mb-2" rows="6"
-    readonly>@RobotCertificates!.RootCertificate</textarea>
-  <div class="input-group mb-2">
-    <input id="RootCertificateFileName" type="text" class="form-control" placeholder="File name for Root Certificate"
-      value="root.crt">
-    <button class="btn" type="button" onclick="downloadCertificate(0)">Download</button>
+@if (RobotCertificates == null)
+{
+  <div class="alert alert-warning">
+    <p class="mb-2"><strong>No certificate generated.</strong></p>
+    <p class="mb-0">Please go back and try again. If the problem persists, contact your administrator.</p>
   </div>
-</div>
-<div class="mb-3">
-  <label class="form-label">Robot Private Key</label>
-  <textarea id="RobotPrivateKeyTextarea" class="form-control mb-2" rows="6"
-    readonly>@RobotCertificates!.RobotCertificatePrivateKey</textarea>
-  <div class="input-group mb-2">
-    <input id="RobotPrivateKeyFileName" type="text" class="form-control" placeholder="File name for Robot Private Key"
-      value="@(RobotCertificates!.Robot!.Name).key">
-    <button class="btn" type="button" onclick="downloadCertificate(1)">Download</button>
+}
+else
+{
+  <InformationAlert>
+    The system does not store the "Robot Private Key" and "Robot Public Key". Please save the keys before continuing.
+  </InformationAlert>
+  <div class="mb-3">
+    <label class="form-label">Root Certificate</label>
+    <textarea id="RootCertificateTextarea" class="form-control mb-2" rows="6"
+      readonly>@RobotCertificates.RootCertificate</textarea>
+    <div class="input-group mb-2">
+      <input id="RootCertificateFileName" type="text" class="form-control" placeholder="File name for Root Certificate"
+        value="root.crt">
+      <button class="btn" type="button" onclick="downloadCertificate(0)">Download</button>
+    </div>
   </div>
-</div>
-<div class="mb-3">
-  <label class="form-label">Robot Public Key</label>
-  <textarea id="RobotPublicKeyTextarea" class="form-control mb-2" rows="6"
-    readonly>@RobotCertificates!.RobotCertificatePublicKey</textarea>
-  <div class="input-group mb-2">
-    <input id="RobotPublicKeyFileName" type="text" class="form-control" placeholder="File name for Robot Public Key"
-      value="@(RobotCertificates!.Robot.Name).crt">
-    <button class="btn" type="button" onclick="downloadCertificate(2)">Download</button>
+  <div class="mb-3">
+    <label class="form-label">Robot Private Key</label>
+    <textarea id="RobotPrivateKeyTextarea" class="form-control mb-2" rows="6"
+      readonly>@RobotCertificates.RobotCertificatePrivateKey</textarea>
+    <div class="input-group mb-2">
+      <input id="RobotPrivateKeyFileName" type="text" class="form-control" placeholder="File name for Robot Private Key"
+        value="@(RobotCertificates.Robot!.Name).key">
+      <button class="btn" type="button" onclick="downloadCertificate(1)">Download</button>
+    </div>
   </div>
-</div>
+  <div class="mb-3">
+    <label class="form-label">Robot Public Key</label>
+    <textarea id="RobotPublicKeyTextarea" class="form-control mb-2" rows="6"
+      readonly>@RobotCertificates.RobotCertificatePublicKey</textarea>
+    <div class="input-group mb-2">
+      <input id="RobotPublicKeyFileName" type="text" class="form-control" placeholder="File name for Robot Public Key"
+        value="@(RobotCertificates.Robot.Name).crt">
+      <button class="btn" type="button" onclick="downloadCertificate(2)">Download</button>
+    </div>
+  </div>
+}
 
 <script>
   function downloadCertificate(fileType) 
