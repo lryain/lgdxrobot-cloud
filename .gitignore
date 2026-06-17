@@ -7,6 +7,9 @@ docs
 scripts
 # dotenv files
 .env
+*.bk
+certs
+.local-dev-initialised
 
 # User-specific files
 *.rsuser

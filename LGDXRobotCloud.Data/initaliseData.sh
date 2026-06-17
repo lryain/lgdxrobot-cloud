@@ -68,7 +68,7 @@ cp rootCA.pfx /root/.dotnet/corefx/cryptography/x509stores/my/rootCA.pfx
 #
 cd /App
 
-dotnet LGDXRobotCloud.Data.dll --initialiseData "true" --email "murray@example.com" --fullName "Lei Ho, MAK" --userName "murray" --password "123456" --seedData "true" --generateCertificates "true" --generateConfigs "true"
+dotnet LGDXRobotCloud.Data.dll --initialiseData "true" --email "47129927@qq.com" --fullName "Kevin.Liu" --userName "lryain" --password "123456" --seedData "true" --generateCertificates "true" --generateConfigs "true"
 
 #
 # Copy Certs and Configs
